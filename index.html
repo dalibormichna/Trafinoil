@@ -11,9 +11,6 @@
 <title>Trafin Oil – Objednávky</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
-
-<!-- QR Code library -->
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <style>
@@ -26,6 +23,8 @@
     --amber:        #f59e0b;
     --amber-dark:   #d97706;
     --red:          #dc2626;
+    --blue:         #2563eb;
+    --blue-pale:    #eff6ff;
     --white:        #ffffff;
     --off-white:    #f7faf7;
     --gray-100:     #f1f5f1;
@@ -39,473 +38,145 @@
     --radius:       12px;
     --radius-lg:    20px;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body { font-family: 'Barlow', sans-serif; background: var(--off-white); color: var(--gray-800); min-height: 100vh; overflow-x: hidden; padding-bottom: 80px; }
 
-  body {
-    font-family: 'Barlow', sans-serif;
-    background: var(--off-white);
-    color: var(--gray-800);
-    min-height: 100vh;
-    overflow-x: hidden;
-    padding-bottom: 80px;
-  }
-
-  /* ── HEADER ── */
-  header {
-    background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-main) 100%);
-    color: white;
-    padding: 0;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 12px rgba(0,0,0,.25);
-  }
-  .header-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 20px;
-  }
+  header { background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-main) 100%); color: white; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,.25); }
+  .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; }
   .logo-wrap img { height: 36px; filter: brightness(0) invert(1); }
-  .header-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    opacity: .85;
-    text-align: right;
-  }
+  .logo-fallback { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; color: white; letter-spacing: 1px; display: none; }
+  .header-title { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; opacity: .85; text-align: right; }
 
-  /* ── NAV TABS ── */
-  .tabs {
-    display: flex;
-    background: var(--green-dark);
-    border-top: 1px solid rgba(255,255,255,.1);
-  }
-  .tab {
-    flex: 1;
-    padding: 10px 0;
-    text-align: center;
-    color: rgba(255,255,255,.6);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: .8px;
-    text-transform: uppercase;
-    cursor: pointer;
-    border-bottom: 3px solid transparent;
-    transition: all .2s;
-    user-select: none;
-  }
-  .tab.active {
-    color: white;
-    border-bottom-color: var(--green-accent);
-    background: rgba(255,255,255,.06);
-  }
+  .tabs { display: flex; background: var(--green-dark); border-top: 1px solid rgba(255,255,255,.1); }
+  .tab { flex: 1; padding: 10px 0; text-align: center; color: rgba(255,255,255,.6); font-size: 11px; font-weight: 600; letter-spacing: .8px; text-transform: uppercase; cursor: pointer; border-bottom: 3px solid transparent; transition: all .2s; user-select: none; }
+  .tab.active { color: white; border-bottom-color: var(--green-accent); background: rgba(255,255,255,.06); }
   .tab-icon { font-size: 18px; display: block; margin-bottom: 2px; }
 
-  /* ── PAGES ── */
   .page { display: none; padding: 20px 16px; }
   .page.active { display: block; }
 
-  /* ── SECTION TITLE ── */
-  .section-label {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--green-main);
-    margin-bottom: 12px;
-    margin-top: 24px;
-  }
+  .section-label { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green-main); margin-bottom: 12px; margin-top: 24px; }
   .section-label:first-child { margin-top: 0; }
 
-  /* ── CARD ── */
-  .card {
-    background: white;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-sm);
-    overflow: hidden;
-    margin-bottom: 12px;
-    border: 1px solid var(--gray-200);
-  }
-  .card-header {
-    background: linear-gradient(90deg, var(--green-dark), var(--green-main));
-    color: white;
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+  .card { background: white; border-radius: var(--radius); box-shadow: var(--shadow-sm); overflow: hidden; margin-bottom: 12px; border: 1px solid var(--gray-200); }
+  .card-header { background: linear-gradient(90deg, var(--green-dark), var(--green-main)); color: white; padding: 12px 16px; display: flex; align-items: center; gap: 10px; }
   .card-header .icon { font-size: 20px; }
-  .card-header-text h3 {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 17px;
-    font-weight: 700;
-    letter-spacing: .5px;
-  }
-  .card-header-text p {
-    font-size: 12px;
-    opacity: .8;
-    margin-top: 1px;
-  }
+  .card-header-text h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 700; letter-spacing: .5px; }
+  .card-header-text p { font-size: 12px; opacity: .8; margin-top: 1px; }
   .card-body { padding: 16px; }
 
-  /* ── OIL PRODUCT ROW ── */
-  .oil-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 0;
-    border-bottom: 1px solid var(--gray-100);
-  }
+  .oil-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--gray-100); }
   .oil-row:last-child { border-bottom: none; padding-bottom: 0; }
   .oil-row:first-child { padding-top: 0; }
   .oil-name { font-weight: 600; font-size: 15px; }
   .oil-sub { font-size: 12px; color: var(--gray-400); margin-top: 2px; }
   .oil-btns { display: flex; gap: 6px; }
 
-  /* ── QUANTITY BUTTONS ── */
-  .qty-btn {
-    border: none;
-    border-radius: 8px;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 14px;
-    letter-spacing: .5px;
-    padding: 8px 14px;
-    cursor: pointer;
-    transition: all .15s;
-    user-select: none;
-  }
+  .qty-btn { border: none; border-radius: 8px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 14px; letter-spacing: .5px; padding: 8px 14px; cursor: pointer; transition: all .15s; user-select: none; }
   .qty-btn:active { transform: scale(.93); }
-  .qty-btn.small {
-    background: var(--green-pale);
-    color: var(--green-dark);
-  }
-  .qty-btn.small:hover { background: #c8e6c9; }
-  .qty-btn.large {
-    background: var(--green-main);
-    color: white;
-  }
-  .qty-btn.large:hover { background: var(--green-dark); }
+  .qty-btn.small { background: var(--green-pale); color: var(--green-dark); }
+  .qty-btn.large { background: var(--green-main); color: white; }
 
-  /* ── CART SUMMARY ── */
-  .cart-summary {
-    background: linear-gradient(135deg, var(--green-dark), var(--green-main));
-    color: white;
-    border-radius: var(--radius);
-    padding: 16px;
-    margin-bottom: 12px;
-    box-shadow: var(--shadow-md);
-  }
-  .cart-summary h3 {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 13px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    opacity: .8;
-    margin-bottom: 10px;
-  }
+  .cart-summary { background: linear-gradient(135deg, var(--green-dark), var(--green-main)); color: white; border-radius: var(--radius); padding: 16px; margin-bottom: 12px; box-shadow: var(--shadow-md); }
+  .cart-summary h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; opacity: .8; margin-bottom: 10px; }
   .cart-items { margin-bottom: 14px; }
-  .cart-item {
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-    padding: 3px 0;
-    border-bottom: 1px solid rgba(255,255,255,.15);
-  }
+  .cart-item { display: flex; justify-content: space-between; font-size: 14px; padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,.15); }
   .cart-item:last-child { border-bottom: none; }
   .cart-item-qty { font-weight: 700; font-family: 'Barlow Condensed', sans-serif; font-size: 16px; }
-  .cart-total {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 26px;
-    font-weight: 700;
-    letter-spacing: .5px;
-  }
-  .cart-total span { font-size: 14px; font-weight: 400; opacity: .7; }
+  .cart-total { font-family: 'Barlow Condensed', sans-serif; font-size: 26px; font-weight: 700; letter-spacing: .5px; }
   .cart-empty { text-align: center; opacity: .6; font-size: 14px; padding: 8px 0; }
 
-  /* ── BUTTONS ── */
-  .btn {
-    display: block;
-    width: 100%;
-    padding: 15px;
-    border: none;
-    border-radius: var(--radius);
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all .2s;
-    text-align: center;
-    user-select: none;
-    margin-bottom: 10px;
-  }
+  .btn { display: block; width: 100%; padding: 15px; border: none; border-radius: var(--radius); font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all .2s; text-align: center; user-select: none; margin-bottom: 10px; }
   .btn:active { transform: scale(.97); }
   .btn-primary { background: var(--green-accent); color: white; box-shadow: 0 4px 12px rgba(76,175,80,.4); }
-  .btn-primary:hover { background: #43a047; }
   .btn-danger { background: var(--red); color: white; }
   .btn-amber { background: var(--amber); color: white; box-shadow: 0 4px 12px rgba(245,158,11,.35); }
-  .btn-amber:hover { background: var(--amber-dark); }
   .btn-outline { background: transparent; color: var(--green-dark); border: 2px solid var(--green-main); }
-  .btn-outline:hover { background: var(--green-pale); }
   .btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
 
-  /* ── ODVOZ (PICKUP) ── */
   .volume-selector { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
-  .vol-btn {
-    flex: 1;
-    min-width: 60px;
-    padding: 10px 6px;
-    border: 2px solid var(--gray-200);
-    border-radius: 8px;
-    background: white;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 15px;
-    cursor: pointer;
-    text-align: center;
-    transition: all .2s;
-    color: var(--gray-600);
-  }
-  .vol-btn.selected {
-    border-color: var(--green-main);
-    background: var(--green-pale);
-    color: var(--green-dark);
-  }
+  .vol-btn { flex: 1; min-width: 60px; padding: 10px 6px; border: 2px solid var(--gray-200); border-radius: 8px; background: white; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 15px; cursor: pointer; text-align: center; transition: all .2s; color: var(--gray-600); }
+  .vol-btn.selected { border-color: var(--green-main); background: var(--green-pale); color: var(--green-dark); }
   .vol-btn .vol-label { font-size: 10px; display: block; font-weight: 500; opacity: .7; margin-top: 1px; }
 
-  /* ── INFO BANNER ── */
-  .info-banner {
-    background: var(--green-pale);
-    border-left: 4px solid var(--green-main);
-    border-radius: 0 var(--radius) var(--radius) 0;
-    padding: 12px 14px;
-    font-size: 13px;
-    color: var(--green-dark);
-    margin-bottom: 16px;
-    line-height: 1.5;
-  }
-  .info-banner strong { font-weight: 700; }
+  .info-banner { background: var(--green-pale); border-left: 4px solid var(--green-main); border-radius: 0 var(--radius) var(--radius) 0; padding: 12px 14px; font-size: 13px; color: var(--green-dark); margin-bottom: 16px; line-height: 1.5; }
 
-  /* ── MODAL ── */
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.55);
-    z-index: 999;
-    padding: 20px 16px;
-    overflow-y: auto;
-    backdrop-filter: blur(3px);
-  }
-  .modal-overlay.open { display: flex; align-items: center; justify-content: center; }
-  .modal {
-    background: white;
-    border-radius: var(--radius-lg);
-    width: 100%;
-    max-width: 420px;
-    overflow: hidden;
-    box-shadow: var(--shadow-lg);
-    animation: slideUp .25s ease;
-  }
-  @keyframes slideUp {
-    from { transform: translateY(30px); opacity: 0; }
-    to   { transform: translateY(0);    opacity: 1; }
-  }
-  .modal-header {
-    background: linear-gradient(135deg, var(--green-dark), var(--green-main));
-    color: white;
-    padding: 20px;
-    text-align: center;
-  }
-  .modal-header h2 {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
+  /* STATUS BADGES */
+  .status-badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .5px; }
+  .status-pending  { background: #fff8e1; color: #b45309; }
+  .status-confirmed { background: var(--green-pale); color: var(--green-dark); }
+  .status-rejected { background: #fee2e2; color: var(--red); }
+  .status-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; animation: pulse 1.5s infinite; }
+  .status-confirmed .status-dot, .status-rejected .status-dot { animation: none; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
+
+  /* HISTORY ITEMS WITH STATUS */
+  .history-item { background: white; border-radius: var(--radius); border: 1px solid var(--gray-200); padding: 14px; margin-bottom: 10px; box-shadow: var(--shadow-sm); }
+  .hist-row { display: flex; gap: 12px; align-items: flex-start; }
+  .hist-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+  .hist-icon.order { background: var(--green-pale); }
+  .hist-icon.pickup { background: #fff3e0; }
+  .hist-content { flex: 1; min-width: 0; }
+  .hist-title { font-weight: 600; font-size: 14px; }
+  .hist-sub { font-size: 12px; color: var(--gray-400); margin-top: 3px; }
+  .hist-meta { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; flex-wrap: wrap; gap: 6px; }
+  .hist-vol { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; color: var(--green-dark); }
+
+  /* ADMIN NOTE in history */
+  .admin-note { margin-top: 8px; background: var(--blue-pale); border-left: 3px solid var(--blue); border-radius: 0 6px 6px 0; padding: 8px 10px; font-size: 12px; color: #1e40af; }
+  .admin-note strong { display: block; font-size: 10px; letter-spacing: .5px; text-transform: uppercase; margin-bottom: 2px; opacity: .7; }
+
+  /* TOAST */
+  .toast { position: fixed; top: 12px; left: 16px; right: 16px; background: white; border-radius: var(--radius); box-shadow: var(--shadow-lg); border-left: 5px solid var(--green-main); padding: 14px 16px; z-index: 2000; display: none; max-width: 480px; margin: 0 auto; }
+  .toast.open { display: block; animation: toastIn .3s ease; }
+  @keyframes toastIn { from { transform: translateY(-20px); opacity: 0; } to { transform: none; opacity: 1; } }
+  .toast-title { font-weight: 700; font-size: 14px; color: var(--green-dark); margin-bottom: 3px; }
+  .toast-body { font-size: 13px; color: var(--gray-600); }
+  .toast-actions { display: flex; gap: 8px; margin-top: 10px; }
+  .toast-btn { flex: 1; padding: 8px; border: none; border-radius: 7px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: .5px; cursor: pointer; }
+  .toast-btn.confirm { background: var(--green-main); color: white; }
+  .toast-btn.dismiss { background: var(--gray-100); color: var(--gray-600); }
+
+  /* MODAL */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 999; padding: 20px 16px; overflow-y: auto; backdrop-filter: blur(3px); align-items: center; justify-content: center; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: white; border-radius: var(--radius-lg); width: 100%; max-width: 420px; overflow: hidden; box-shadow: var(--shadow-lg); animation: slideUp .25s ease; }
+  @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: none; opacity: 1; } }
+  .modal-header { background: linear-gradient(135deg, var(--green-dark), var(--green-main)); color: white; padding: 20px; text-align: center; }
+  .modal-header h2 { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
   .modal-header p { font-size: 13px; opacity: .8; margin-top: 4px; }
   .modal-body { padding: 24px 20px; }
-  .order-num {
-    text-align: center;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 13px;
-    letter-spacing: 2px;
-    color: var(--gray-400);
-    text-transform: uppercase;
-    margin-bottom: 4px;
-  }
-  .order-num strong {
-    display: block;
-    font-size: 28px;
-    color: var(--green-dark);
-    letter-spacing: 3px;
-    margin-top: 2px;
-  }
-  #qrcode-wrap {
-    display: flex;
-    justify-content: center;
-    margin: 20px 0;
-    padding: 16px;
-    background: var(--gray-100);
-    border-radius: var(--radius);
-  }
-  .order-detail-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-    padding: 6px 0;
-    border-bottom: 1px solid var(--gray-100);
-  }
+  .order-num { text-align: center; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; letter-spacing: 2px; color: var(--gray-400); text-transform: uppercase; margin-bottom: 4px; }
+  .order-num strong { display: block; font-size: 28px; color: var(--green-dark); letter-spacing: 3px; margin-top: 2px; }
+  #qrcode-wrap { display: flex; justify-content: center; margin: 20px 0; padding: 16px; background: var(--gray-100); border-radius: var(--radius); }
+  .order-detail-row { display: flex; justify-content: space-between; font-size: 14px; padding: 6px 0; border-bottom: 1px solid var(--gray-100); }
   .order-detail-row:last-child { border-bottom: none; }
   .order-detail-row .label { color: var(--gray-400); }
   .order-detail-row .val { font-weight: 600; color: var(--green-dark); }
 
-  /* ── HISTORY ── */
-  .history-item {
-    background: white;
-    border-radius: var(--radius);
-    border: 1px solid var(--gray-200);
-    padding: 14px;
-    margin-bottom: 10px;
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-    box-shadow: var(--shadow-sm);
-  }
-  .hist-icon {
-    width: 40px; height: 40px;
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px;
-    flex-shrink: 0;
-  }
-  .hist-icon.order { background: var(--green-pale); }
-  .hist-icon.pickup { background: #fff3e0; }
-  .hist-content { flex: 1; }
-  .hist-title { font-weight: 600; font-size: 14px; }
-  .hist-sub { font-size: 12px; color: var(--gray-400); margin-top: 3px; }
-  .hist-badge {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: .5px;
-    padding: 2px 8px;
-    border-radius: 20px;
-    margin-left: auto;
-    flex-shrink: 0;
-  }
-  .hist-badge.green { background: var(--green-pale); color: var(--green-dark); }
-  .hist-badge.amber { background: #fff3e0; color: #b45309; }
-
-  /* ── PUSH NOTIFICATION TOAST ── */
-  .toast {
-    position: fixed;
-    top: 12px;
-    left: 16px; right: 16px;
-    background: white;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-lg);
-    border-left: 5px solid var(--green-main);
-    padding: 14px 16px;
-    z-index: 2000;
-    display: none;
-    animation: toastIn .3s ease;
-    max-width: 480px;
-    margin: 0 auto;
-  }
-  .toast.open { display: block; }
-  @keyframes toastIn {
-    from { transform: translateY(-20px); opacity: 0; }
-    to   { transform: translateY(0);     opacity: 1; }
-  }
-  .toast-title { font-weight: 700; font-size: 14px; color: var(--green-dark); margin-bottom: 3px; }
-  .toast-body { font-size: 13px; color: var(--gray-600); }
-  .toast-actions { display: flex; gap: 8px; margin-top: 10px; }
-  .toast-btn {
-    flex: 1; padding: 8px; border: none; border-radius: 7px;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700; font-size: 13px; letter-spacing: .5px;
-    cursor: pointer;
-  }
-  .toast-btn.confirm { background: var(--green-main); color: white; }
-  .toast-btn.dismiss { background: var(--gray-100); color: var(--gray-600); }
-
-  /* ── SETTINGS ── */
-  .setting-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 0;
-    border-bottom: 1px solid var(--gray-100);
-  }
+  .setting-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--gray-100); }
   .setting-row:last-child { border-bottom: none; }
   .setting-label { font-size: 14px; font-weight: 500; }
   .setting-sub { font-size: 12px; color: var(--gray-400); margin-top: 2px; }
-  .toggle {
-    width: 44px; height: 24px;
-    background: var(--gray-200);
-    border-radius: 12px;
-    position: relative;
-    cursor: pointer;
-    transition: background .2s;
-    flex-shrink: 0;
-  }
+  .toggle { width: 44px; height: 24px; background: var(--gray-200); border-radius: 12px; position: relative; cursor: pointer; transition: background .2s; flex-shrink: 0; }
   .toggle.on { background: var(--green-main); }
-  .toggle::after {
-    content: '';
-    width: 18px; height: 18px;
-    background: white;
-    border-radius: 50%;
-    position: absolute;
-    top: 3px; left: 3px;
-    transition: transform .2s;
-    box-shadow: 0 1px 3px rgba(0,0,0,.2);
-  }
+  .toggle::after { content: ''; width: 18px; height: 18px; background: white; border-radius: 50%; position: absolute; top: 3px; left: 3px; transition: transform .2s; box-shadow: 0 1px 3px rgba(0,0,0,.2); }
   .toggle.on::after { transform: translateX(20px); }
 
-  /* ── PHONE INPUT ── */
   .input-group { margin-bottom: 14px; }
   .input-group label { display: block; font-size: 12px; font-weight: 600; color: var(--green-dark); letter-spacing: .5px; text-transform: uppercase; margin-bottom: 6px; }
-  .input-group input, .input-group select {
-    width: 100%;
-    padding: 12px 14px;
-    border: 1.5px solid var(--gray-200);
-    border-radius: 8px;
-    font-family: 'Barlow', sans-serif;
-    font-size: 15px;
-    color: var(--gray-800);
-    background: white;
-    transition: border-color .2s;
-    outline: none;
-  }
-  .input-group input:focus, .input-group select:focus { border-color: var(--green-main); }
+  .input-group input, .input-group select { width: 100%; padding: 12px 14px; border: 1.5px solid var(--gray-200); border-radius: 8px; font-family: 'Barlow', sans-serif; font-size: 15px; color: var(--gray-800); background: white; transition: border-color .2s; outline: none; }
+  .input-group input:focus { border-color: var(--green-main); }
 
-  /* ── FOOTER CONTACT ── */
-  .contact-strip {
-    background: var(--green-dark);
-    color: white;
-    border-radius: var(--radius);
-    padding: 16px;
-    text-align: center;
-    margin-top: 8px;
-  }
-  .contact-strip .phone {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 24px;
-    font-weight: 700;
-    letter-spacing: 1px;
-  }
+  .contact-strip { background: var(--green-dark); color: white; border-radius: var(--radius); padding: 16px; text-align: center; margin-top: 8px; }
+  .contact-strip .phone { font-family: 'Barlow Condensed', sans-serif; font-size: 24px; font-weight: 700; letter-spacing: 1px; }
   .contact-strip .sub { font-size: 12px; opacity: .7; margin-top: 3px; }
 
-  /* Scroll fade in */
+  /* SYNC INDICATOR */
+  .sync-pill { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; color: rgba(255,255,255,.7); }
+  .sync-dot { width: 6px; height: 6px; border-radius: 50%; background: #4caf50; animation: syncPulse 2s infinite; }
+  @keyframes syncPulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .4; transform: scale(.7); } }
+
   .fade-in { animation: fadeIn .4s ease both; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; } }
 </style>
@@ -513,13 +184,13 @@
 </head>
 <body>
 
-<!-- PUSH NOTIFICATION TOAST -->
+<!-- TOAST -->
 
 <div class="toast" id="toast">
   <div class="toast-title">🛢️ Trafin Oil – Týdenní připomínka</div>
   <div class="toast-body">Potřebujete objednat čerstvý olej nebo odvézt použitý?</div>
   <div class="toast-actions">
-    <button class="toast-btn confirm" onclick="toastAction('order')">📦 Objednat olej</button>
+    <button class="toast-btn confirm" onclick="toastAction('order')">📦 Objednat</button>
     <button class="toast-btn confirm" onclick="toastAction('pickup')" style="background:#f59e0b">🚛 Odvoz</button>
     <button class="toast-btn dismiss" onclick="closeToast()">Zavřít</button>
   </div>
@@ -530,184 +201,106 @@
 <header>
   <div class="header-inner">
     <div class="logo-wrap">
-      <img src="https://www.trafinoil.cz/dist/front/images/logo.svg" alt="Trafin Oil" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
-      <span style="display:none;font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;color:white;letter-spacing:1px;">TRAFIN OIL</span>
+      <img src="https://www.trafinoil.cz/dist/front/images/logo.svg" alt="Trafin Oil"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="logo-fallback">TRAFIN OIL</span>
     </div>
-    <div class="header-title">Gastro portál<br>Objednávky</div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+      <div class="header-title">Gastro portál</div>
+      <div class="sync-pill"><span class="sync-dot"></span>Synchronizováno</div>
+    </div>
   </div>
   <div class="tabs">
-    <div class="tab active" onclick="showPage('order')" id="tab-order">
-      <span class="tab-icon">🛒</span>Objednat
-    </div>
-    <div class="tab" onclick="showPage('pickup')" id="tab-pickup">
-      <span class="tab-icon">🚛</span>Odvoz
-    </div>
-    <div class="tab" onclick="showPage('history')" id="tab-history">
-      <span class="tab-icon">📋</span>Historie
-    </div>
-    <div class="tab" onclick="showPage('settings')" id="tab-settings">
-      <span class="tab-icon">⚙️</span>Nastavení
-    </div>
+    <div class="tab active" onclick="showPage('order')" id="tab-order"><span class="tab-icon">🛒</span>Objednat</div>
+    <div class="tab" onclick="showPage('pickup')" id="tab-pickup"><span class="tab-icon">🚛</span>Odvoz</div>
+    <div class="tab" onclick="showPage('history')" id="tab-history"><span class="tab-icon">📋</span>Historie</div>
+    <div class="tab" onclick="showPage('settings')" id="tab-settings"><span class="tab-icon">⚙️</span>Nastavení</div>
   </div>
 </header>
 
-<!-- ═══════════════ PAGE: OBJEDNÁVKA ═══════════════ -->
+<!-- PAGE: OBJEDNÁVKA -->
 
 <div class="page active fade-in" id="page-order">
-
-  <div class="info-banner">
-    <strong>Přivezeme zdarma</strong> – doručení a vynesení fritovacích olejů je bez příplatku po celé ČR. Objednávka se zpracuje do 24 hodin.
-  </div>
-
+  <div class="info-banner"><strong>Přivezeme zdarma</strong> – doručení a vynesení fritovacích olejů bez příplatku po celé ČR. Objednávka se zpracuje do 24 hodin.</div>
   <p class="section-label">Fritovací oleje</p>
-
   <div class="card">
     <div class="card-header">
       <span class="icon">🍟</span>
-      <div class="card-header-text">
-        <h3>Fritovací oleje</h3>
-        <p>Vyberte produkt a množství</p>
-      </div>
+      <div class="card-header-text"><h3>Fritovací oleje</h3><p>Vyberte produkt a množství</p></div>
     </div>
     <div class="card-body">
       <div class="oil-row">
-        <div>
-          <div class="oil-name">Frit Standard</div>
-          <div class="oil-sub">Rafinovaný rostlinný – vysoký bod kouře</div>
-        </div>
-        <div class="oil-btns">
-          <button class="qty-btn small" onclick="addToCart('Frit Standard', 10)">+10 l</button>
-          <button class="qty-btn large" onclick="addToCart('Frit Standard', 500)">+500 l</button>
-        </div>
+        <div><div class="oil-name">Frit Standard</div><div class="oil-sub">Rafinovaný rostlinný – vysoký bod kouře</div></div>
+        <div class="oil-btns"><button class="qty-btn small" onclick="addToCart('Frit Standard',10)">+10 l</button><button class="qty-btn large" onclick="addToCart('Frit Standard',500)">+500 l</button></div>
       </div>
       <div class="oil-row">
-        <div>
-          <div class="oil-name">Smažáček Premium</div>
-          <div class="oil-sub">Směsný olej pro smažení – dlouhá životnost</div>
-        </div>
-        <div class="oil-btns">
-          <button class="qty-btn small" onclick="addToCart('Smažáček Premium', 10)">+10 l</button>
-          <button class="qty-btn large" onclick="addToCart('Smažáček Premium', 500)">+500 l</button>
-        </div>
+        <div><div class="oil-name">Smažáček Premium</div><div class="oil-sub">Směsný olej pro smažení – dlouhá životnost</div></div>
+        <div class="oil-btns"><button class="qty-btn small" onclick="addToCart('Smažáček Premium',10)">+10 l</button><button class="qty-btn large" onclick="addToCart('Smažáček Premium',500)">+500 l</button></div>
       </div>
       <div class="oil-row">
-        <div>
-          <div class="oil-name">Palmový olej</div>
-          <div class="oil-sub">Tuhý palmový tuk – fritování &amp; pečení</div>
-        </div>
-        <div class="oil-btns">
-          <button class="qty-btn small" onclick="addToCart('Palmový olej', 10)">+10 l</button>
-          <button class="qty-btn large" onclick="addToCart('Palmový olej', 500)">+500 l</button>
-        </div>
+        <div><div class="oil-name">Palmový olej</div><div class="oil-sub">Tuhý palmový tuk – fritování & pečení</div></div>
+        <div class="oil-btns"><button class="qty-btn small" onclick="addToCart('Palmový olej',10)">+10 l</button><button class="qty-btn large" onclick="addToCart('Palmový olej',500)">+500 l</button></div>
       </div>
       <div class="oil-row">
-        <div>
-          <div class="oil-name">Řepkový olej</div>
-          <div class="oil-sub">Univerzální – studená i teplá kuchyně</div>
-        </div>
-        <div class="oil-btns">
-          <button class="qty-btn small" onclick="addToCart('Řepkový olej', 10)">+10 l</button>
-          <button class="qty-btn large" onclick="addToCart('Řepkový olej', 500)">+500 l</button>
-        </div>
+        <div><div class="oil-name">Řepkový olej</div><div class="oil-sub">Univerzální – studená i teplá kuchyně</div></div>
+        <div class="oil-btns"><button class="qty-btn small" onclick="addToCart('Řepkový olej',10)">+10 l</button><button class="qty-btn large" onclick="addToCart('Řepkový olej',500)">+500 l</button></div>
       </div>
       <div class="oil-row">
-        <div>
-          <div class="oil-name">Slunečnicový olej</div>
-          <div class="oil-sub">Rafinovaný – jemná chuť, světlá barva</div>
-        </div>
-        <div class="oil-btns">
-          <button class="qty-btn small" onclick="addToCart('Slunečnicový olej', 10)">+10 l</button>
-          <button class="qty-btn large" onclick="addToCart('Slunečnicový olej', 500)">+500 l</button>
-        </div>
+        <div><div class="oil-name">Slunečnicový olej</div><div class="oil-sub">Rafinovaný – jemná chuť, světlá barva</div></div>
+        <div class="oil-btns"><button class="qty-btn small" onclick="addToCart('Slunečnicový olej',10)">+10 l</button><button class="qty-btn large" onclick="addToCart('Slunečnicový olej',500)">+500 l</button></div>
       </div>
     </div>
   </div>
-
   <p class="section-label">Košík objednávky</p>
-
-  <div class="cart-summary" id="cart-summary">
+  <div class="cart-summary">
     <h3>Vybrané položky</h3>
-    <div class="cart-items" id="cart-items">
-      <div class="cart-empty">Košík je prázdný. Přidejte oleje výše ↑</div>
-    </div>
-    <div class="cart-total" id="cart-total" style="display:none">
-      Celkem: <span id="cart-total-val">0</span> l
-    </div>
+    <div class="cart-items" id="cart-items"><div class="cart-empty">Košík je prázdný. Přidejte oleje výše ↑</div></div>
+    <div class="cart-total" id="cart-total" style="display:none">Celkem: <span id="cart-total-val">0</span> l</div>
   </div>
-
-<button class="btn btn-outline" onclick="clearCart()" id="btn-clear" style="display:none">🗑 Vyprázdnit košík</button>
-<button class="btn btn-primary" onclick="placeOrder()" id="btn-order" disabled>📦 Odeslat objednávku</button>
-
-  <div class="contact-strip">
-    <div class="phone">📞 800 800 070</div>
-    <div class="sub">Zákaznická linka · Po–Pá 8–18 h · Zdarma</div>
-  </div>
-
+  <button class="btn btn-outline" onclick="clearCart()" id="btn-clear" style="display:none">🗑 Vyprázdnit košík</button>
+  <button class="btn btn-primary" onclick="placeOrder()" id="btn-order" disabled>📦 Odeslat objednávku</button>
+  <div class="contact-strip"><div class="phone">📞 800 800 070</div><div class="sub">Zákaznická linka · Po–Pá 8–18 h · Zdarma</div></div>
 </div>
 
-<!-- ═══════════════ PAGE: ODVOZ ═══════════════ -->
+<!-- PAGE: ODVOZ -->
 
 <div class="page fade-in" id="page-pickup">
-
-  <div class="info-banner">
-    <strong>Výkup použitého oleje</strong> – vykupujeme férově. Zajišťujeme ekologickou likvidaci. Palivo 2. generace z vašeho odpadu.
-  </div>
-
+  <div class="info-banner"><strong>Výkup použitého oleje</strong> – vykupujeme férově. Zajišťujeme ekologickou likvidaci a výrobu biopaliva 2. generace.</div>
   <p class="section-label">Objem použitého oleje k odvozu</p>
-
   <div class="card">
     <div class="card-header">
       <span class="icon">🚛</span>
-      <div class="card-header-text">
-        <h3>Odvoz použitého oleje</h3>
-        <p>Vyberte přibližný objem v nádrži</p>
-      </div>
+      <div class="card-header-text"><h3>Odvoz použitého oleje</h3><p>Vyberte přibližný objem v nádrži</p></div>
     </div>
     <div class="card-body">
       <p style="font-size:13px;color:var(--gray-400);margin-bottom:14px;">Minimální objem pro odvoz je <strong>40 litrů</strong>, maximální je <strong>200 litrů</strong>.</p>
       <div class="volume-selector" id="vol-selector">
-        <button class="vol-btn" onclick="selectVol(this, 40)">40<span class="vol-label">litrů</span></button>
-        <button class="vol-btn" onclick="selectVol(this, 60)">60<span class="vol-label">litrů</span></button>
-        <button class="vol-btn" onclick="selectVol(this, 80)">80<span class="vol-label">litrů</span></button>
-        <button class="vol-btn" onclick="selectVol(this, 100)">100<span class="vol-label">litrů</span></button>
-        <button class="vol-btn" onclick="selectVol(this, 120)">120<span class="vol-label">litrů</span></button>
-        <button class="vol-btn" onclick="selectVol(this, 150)">150<span class="vol-label">litrů</span></button>
-        <button class="vol-btn" onclick="selectVol(this, 180)">180<span class="vol-label">litrů</span></button>
-        <button class="vol-btn" onclick="selectVol(this, 200)">200<span class="vol-label">litrů</span></button>
+        <button class="vol-btn" onclick="selectVol(this,40)">40<span class="vol-label">litrů</span></button>
+        <button class="vol-btn" onclick="selectVol(this,60)">60<span class="vol-label">litrů</span></button>
+        <button class="vol-btn" onclick="selectVol(this,80)">80<span class="vol-label">litrů</span></button>
+        <button class="vol-btn" onclick="selectVol(this,100)">100<span class="vol-label">litrů</span></button>
+        <button class="vol-btn" onclick="selectVol(this,120)">120<span class="vol-label">litrů</span></button>
+        <button class="vol-btn" onclick="selectVol(this,150)">150<span class="vol-label">litrů</span></button>
+        <button class="vol-btn" onclick="selectVol(this,180)">180<span class="vol-label">litrů</span></button>
+        <button class="vol-btn" onclick="selectVol(this,200)">200<span class="vol-label">litrů</span></button>
       </div>
-
-```
-  <div class="input-group" style="margin-top:16px">
-    <label>Poznámka pro řidiče (nepovinné)</label>
-    <input type="text" id="pickup-note" placeholder="Např. zadní vchod, klíče u obsluhy...">
-  </div>
-</div>
-```
-
-  </div>
-
-  <div class="card" id="pickup-confirm-card" style="display:none">
-    <div class="card-body">
-      <div class="order-detail-row">
-        <span class="label">Objem k odvozu</span>
-        <span class="val" id="pickup-vol-disp">–</span>
-      </div>
-      <div class="order-detail-row">
-        <span class="label">Druh odpadu</span>
-        <span class="val">Použitý kuchyňský olej</span>
+      <div class="input-group" style="margin-top:16px">
+        <label>Poznámka pro řidiče (nepovinné)</label>
+        <input type="text" id="pickup-note" placeholder="Např. zadní vchod, klíče u obsluhy...">
       </div>
     </div>
   </div>
-
-<button class="btn btn-amber" onclick="placePickup()" id="btn-pickup" disabled>🚛 Objednat odvoz</button>
-
-  <div class="contact-strip">
-    <div class="phone">📞 800 800 070</div>
-    <div class="sub">Zákaznická linka · Po–Pá 8–18 h · Zdarma</div>
+  <div class="card" id="pickup-confirm-card" style="display:none">
+    <div class="card-body">
+      <div class="order-detail-row"><span class="label">Objem k odvozu</span><span class="val" id="pickup-vol-disp">–</span></div>
+      <div class="order-detail-row"><span class="label">Druh odpadu</span><span class="val">Použitý kuchyňský olej</span></div>
+    </div>
   </div>
+  <button class="btn btn-amber" onclick="placePickup()" id="btn-pickup" disabled>🚛 Objednat odvoz</button>
+  <div class="contact-strip"><div class="phone">📞 800 800 070</div><div class="sub">Zákaznická linka · Po–Pá 8–18 h · Zdarma</div></div>
 </div>
 
-<!-- ═══════════════ PAGE: HISTORIE ═══════════════ -->
+<!-- PAGE: HISTORIE -->
 
 <div class="page fade-in" id="page-history">
   <p class="section-label">Poslední objednávky</p>
@@ -719,75 +312,52 @@
   </div>
 </div>
 
-<!-- ═══════════════ PAGE: NASTAVENÍ ═══════════════ -->
+<!-- PAGE: NASTAVENÍ -->
 
 <div class="page fade-in" id="page-settings">
-
   <p class="section-label">Profil provozovny</p>
   <div class="card">
     <div class="card-body">
-      <div class="input-group">
-        <label>Název provozovny</label>
-        <input type="text" id="set-name" placeholder="Restaurace U Nováků">
-      </div>
-      <div class="input-group">
-        <label>Adresa</label>
-        <input type="text" id="set-addr" placeholder="Ul. Příklad 1, Praha">
-      </div>
-      <div class="input-group">
-        <label>IČO</label>
-        <input type="text" id="set-ico" placeholder="12345678" maxlength="8">
-      </div>
-      <div class="input-group">
-        <label>Kontaktní telefon</label>
-        <input type="tel" id="set-phone" placeholder="+420 777 000 000">
-      </div>
+      <div class="input-group"><label>Název provozovny</label><input type="text" id="set-name" placeholder="Restaurace U Nováků"></div>
+      <div class="input-group"><label>Adresa</label><input type="text" id="set-addr" placeholder="Ul. Příklad 1, Praha"></div>
+      <div class="input-group"><label>IČO</label><input type="text" id="set-ico" placeholder="12345678" maxlength="8"></div>
+      <div class="input-group"><label>Kontaktní telefon</label><input type="tel" id="set-phone" placeholder="+420 777 000 000"></div>
     </div>
   </div>
-
   <p class="section-label">Notifikace</p>
   <div class="card">
     <div class="card-body">
       <div class="setting-row">
-        <div>
-          <div class="setting-label">Týdenní připomínka</div>
-          <div class="setting-sub">Každý týden dotaz na olej / odvoz</div>
-        </div>
-        <div class="toggle on" id="toggle-weekly" onclick="toggleSetting(this, 'weekly')"></div>
+        <div><div class="setting-label">Týdenní připomínka</div><div class="setting-sub">Každý týden dotaz na olej / odvoz</div></div>
+        <div class="toggle on" id="toggle-weekly" onclick="toggleSetting(this,'weekly')"></div>
       </div>
       <div class="setting-row">
-        <div>
-          <div class="setting-label">Potvrzení objednávky</div>
-          <div class="setting-sub">Notifikace při odeslání objednávky</div>
-        </div>
-        <div class="toggle on" id="toggle-confirm" onclick="toggleSetting(this, 'confirm')"></div>
+        <div><div class="setting-label">Potvrzení objednávky</div><div class="setting-sub">Notifikace při odeslání objednávky</div></div>
+        <div class="toggle on" id="toggle-confirm" onclick="toggleSetting(this,'confirm')"></div>
       </div>
     </div>
   </div>
-
-<button class="btn btn-primary" onclick="saveSettings()" style="margin-top:8px">💾 Uložit nastavení</button>
-<button class="btn btn-outline" onclick="showToast()" style="margin-top:0">🔔 Test notifikace</button>
-
+  <button class="btn btn-primary" onclick="saveSettings()" style="margin-top:8px">💾 Uložit nastavení</button>
+  <button class="btn btn-outline" onclick="showWeeklyToast()" style="margin-top:0">🔔 Test notifikace</button>
   <p class="section-label">O aplikaci</p>
   <div class="card">
     <div class="card-body">
       <div class="order-detail-row"><span class="label">Aplikace</span><span class="val">Trafin Oil Gastro</span></div>
-      <div class="order-detail-row"><span class="label">Verze</span><span class="val">1.0.0</span></div>
+      <div class="order-detail-row"><span class="label">Verze</span><span class="val">2.0.0</span></div>
       <div class="order-detail-row"><span class="label">Dodavatel</span><span class="val">TRAFIN OIL, a.s.</span></div>
       <div class="order-detail-row"><span class="label">Kontakt</span><span class="val">odpady@trafinoil.cz</span></div>
-      <div class="order-detail-row"><span class="label">Adresa</span><span class="val">Na Františku 1551/6, Horní Suchá</span></div>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════ MODAL: OBJEDNÁVKA POTVRZENA ═══════════════ -->
+<!-- MODAL: OBJEDNÁVKA POTVRZENA -->
 
 <div class="modal-overlay" id="modal-order">
   <div class="modal">
     <div class="modal-header">
       <div style="font-size:36px;margin-bottom:8px;">✅</div>
       <h2>Objednávka odeslána</h2>
-      <p>Zpracujeme ji do 24 hodin</p>
+      <p>Dispečer objednávku brzy zpracuje</p>
     </div>
     <div class="modal-body">
       <div class="order-num">Číslo objednávky<strong id="modal-order-num">–</strong></div>
@@ -801,7 +371,7 @@
   </div>
 </div>
 
-<!-- ═══════════════ MODAL: ODVOZ POTVRZEN ═══════════════ -->
+<!-- MODAL: ODVOZ POTVRZEN -->
 
 <div class="modal-overlay" id="modal-pickup">
   <div class="modal">
@@ -822,23 +392,101 @@
 </div>
 
 <script>
+/* ══════════════════════════════════════
+   SHARED STORAGE BRIDGE
+   Obě appky komunikují přes window.storage (shared:true).
+   Zákaznická appka zapisuje nové objednávky, čte aktualizace stavů.
+   Klíče: "orders:list" (shared) = pole všech objednávek
+══════════════════════════════════════ */
+
+const STORAGE_KEY = 'trafinoil:orders';
+
+async function sharedRead() {
+  try {
+    const r = await window.storage.get(STORAGE_KEY, true);
+    return r ? JSON.parse(r.value) : [];
+  } catch { return []; }
+}
+
+async function sharedWrite(orders) {
+  try {
+    await window.storage.set(STORAGE_KEY, JSON.stringify(orders), true);
+  } catch (e) { console.warn('Shared storage nedostupný, fallback na localStorage', e); }
+}
+
+async function sharedAddOrder(order) {
+  const all = await sharedRead();
+  all.unshift(order);
+  if (all.length > 200) all.splice(200);
+  await sharedWrite(all);
+}
+
+async function sharedUpdateOrder(num, patch) {
+  const all = await sharedRead();
+  const idx = all.findIndex(o => o.num === num);
+  if (idx !== -1) { Object.assign(all[idx], patch); await sharedWrite(all); }
+}
+
 /* ══════ STATE ══════ */
-let cart = {}; // { productName: litres }
+let cart = {};
 let selectedVol = null;
-let history = JSON.parse(localStorage.getItem('to_history') || '[]');
+let localHistory = JSON.parse(localStorage.getItem('to_history') || '[]');
 let settings = JSON.parse(localStorage.getItem('to_settings') || '{"weekly":true,"confirm":true,"name":"","addr":"","ico":"","phone":""}');
+let knownStatuses = {}; // num -> status (pro detekci změn)
 
 /* ══════ INIT ══════ */
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   loadSettings();
+  await syncHistoryFromShared();
   renderHistory();
   scheduleWeeklyNotif();
-  // Show demo toast after 3s on first visit
+  // Polling každých 15 sekund
+  setInterval(pollStatusUpdates, 15000);
   const shown = localStorage.getItem('to_toast_shown');
-  if (!shown) {
-    setTimeout(() => { showToast(); localStorage.setItem('to_toast_shown','1'); }, 3000);
-  }
+  if (!shown) { setTimeout(() => { showWeeklyToast(); localStorage.setItem('to_toast_shown','1'); }, 3000); }
 });
+
+/* ══════ SYNC – načtení stavů z shared storage ══════ */
+async function syncHistoryFromShared() {
+  const shared = await sharedRead();
+  const myIco = settings.ico || '';
+  // Merge stavů do localHistory
+  shared.forEach(so => {
+    const local = localHistory.find(h => h.num === so.num);
+    if (local) {
+      local.status = so.status;
+      local.driver = so.driver || local.driver;
+      local.delivDate = so.delivDate || local.delivDate;
+      local.adminNote = so.adminNote || local.adminNote;
+      knownStatuses[so.num] = so.status;
+    }
+  });
+  localStorage.setItem('to_history', JSON.stringify(localHistory));
+}
+
+async function pollStatusUpdates() {
+  const shared = await sharedRead();
+  let changed = false;
+  shared.forEach(so => {
+    const local = localHistory.find(h => h.num === so.num);
+    if (!local) return;
+    const prev = knownStatuses[so.num];
+    if (so.status && so.status !== prev) {
+      local.status = so.status;
+      local.driver = so.driver || local.driver;
+      local.delivDate = so.delivDate || local.delivDate;
+      local.adminNote = so.adminNote || local.adminNote;
+      knownStatuses[so.num] = so.status;
+      changed = true;
+      if (so.status === 'confirmed') showStatusToast(so.num, 'confirmed', so.driver, so.delivDate, so.adminNote);
+      if (so.status === 'rejected')  showStatusToast(so.num, 'rejected', null, null, so.adminNote);
+    }
+  });
+  if (changed) {
+    localStorage.setItem('to_history', JSON.stringify(localHistory));
+    renderHistory();
+  }
+}
 
 /* ══════ NAVIGATION ══════ */
 function showPage(id) {
@@ -852,89 +500,68 @@ function showPage(id) {
 function addToCart(name, qty) {
   cart[name] = (cart[name] || 0) + qty;
   renderCart();
-  // micro pulse animation
   const btn = event.target;
   btn.style.transform = 'scale(1.2)';
   setTimeout(() => btn.style.transform = '', 200);
 }
-
 function renderCart() {
   const items = document.getElementById('cart-items');
   const total = document.getElementById('cart-total');
-  const totalVal = document.getElementById('cart-total-val');
   const btnOrder = document.getElementById('btn-order');
   const btnClear = document.getElementById('btn-clear');
-
   const keys = Object.keys(cart).filter(k => cart[k] > 0);
-  if (keys.length === 0) {
+  if (!keys.length) {
     items.innerHTML = '<div class="cart-empty">Košík je prázdný. Přidejte oleje výše ↑</div>';
-    total.style.display = 'none';
-    btnOrder.disabled = true;
-    btnClear.style.display = 'none';
-    return;
+    total.style.display = 'none'; btnOrder.disabled = true; btnClear.style.display = 'none'; return;
   }
   let sum = 0;
-  items.innerHTML = keys.map(k => {
-    sum += cart[k];
-    return `<div class="cart-item">
-      <span>${k}</span>
-      <span class="cart-item-qty">${cart[k]} l</span>
-    </div>`;
-  }).join('');
-  totalVal.textContent = sum;
-  total.style.display = 'block';
-  btnOrder.disabled = false;
-  btnClear.style.display = 'block';
+  items.innerHTML = keys.map(k => { sum += cart[k]; return `<div class="cart-item"><span>${k}</span><span class="cart-item-qty">${cart[k]} l</span></div>`; }).join('');
+  document.getElementById('cart-total-val').textContent = sum;
+  total.style.display = 'block'; btnOrder.disabled = false; btnClear.style.display = 'block';
 }
+function clearCart() { cart = {}; renderCart(); }
 
-function clearCart() {
-  cart = {};
-  renderCart();
-}
-
-/* ══════ ORDER ══════ */
-function placeOrder() {
+/* ══════ PLACE ORDER ══════ */
+async function placeOrder() {
   const orderNum = generateOrderNum('OBJ');
   const date = fmtDate(new Date());
   const keys = Object.keys(cart).filter(k => cart[k] > 0);
   const totalL = keys.reduce((s,k) => s + cart[k], 0);
-  const items = keys.map(k => `${k}: ${cart[k]} l`).join('\n');
 
   document.getElementById('modal-order-num').textContent = orderNum;
   document.getElementById('modal-date').textContent = date;
   document.getElementById('modal-total').textContent = totalL + ' litrů';
   document.getElementById('modal-order-items').innerHTML = keys.map(k =>
-    `<div class="order-detail-row"><span class="label">${k}</span><span class="val">${cart[k]} l</span></div>`
-  ).join('');
+    `<div class="order-detail-row"><span class="label">${k}</span><span class="val">${cart[k]} l</span></div>`).join('');
 
-  // QR code
   document.getElementById('qrcode').innerHTML = '';
-  const qrData = `SPD*1.0*ACC:CZ6508000000192000145399*AM:0.00*MSG:${orderNum}*X-VS:${orderNum.replace(/\D/g,'')}`;
   new QRCode(document.getElementById('qrcode'), {
-    text: qrData, width: 160, height: 160,
-    colorDark: '#1a5c1a', colorLight: '#ffffff',
-    correctLevel: QRCode.CorrectLevel.M
+    text: `SPD*1.0*ACC:CZ6508000000192000145399*AM:0.00*MSG:${orderNum}*X-VS:${orderNum.replace(/\D/g,'')}`,
+    width: 160, height: 160, colorDark: '#1a5c1a', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M
   });
 
-  // Save to history
-  addHistory({ type: 'order', num: orderNum, date, desc: keys.map(k=>`${k} ${cart[k]}l`).join(', '), vol: totalL + ' l' });
+  const orderObj = {
+    num: orderNum, type: 'order', date, status: 'pending',
+    desc: keys.map(k => `${k} ${cart[k]}l`).join(', '),
+    items: keys.map(k => ({ name: k, qty: cart[k] })),
+    vol: totalL + ' l',
+    provozovna: settings.name || '–',
+    addr: settings.addr || '–',
+    ico: settings.ico || '–',
+    phone: settings.phone || '–',
+    driver: '', delivDate: '', adminNote: ''
+  };
+
+  addLocalHistory(orderObj);
+  await sharedAddOrder(orderObj);
+  knownStatuses[orderNum] = 'pending';
+
   cart = {}; renderCart();
   openModal('modal-order');
-
-  if (settings.confirm) scheduleConfirmToast('Objednávka ' + orderNum + ' byla přijata.');
 }
 
-/* ══════ PICKUP ══════ */
-function selectVol(btn, vol) {
-  document.querySelectorAll('.vol-btn').forEach(b => b.classList.remove('selected'));
-  btn.classList.add('selected');
-  selectedVol = vol;
-  document.getElementById('pickup-vol-disp').textContent = vol + ' l';
-  document.getElementById('pickup-confirm-card').style.display = 'block';
-  document.getElementById('btn-pickup').disabled = false;
-}
-
-function placePickup() {
+/* ══════ PLACE PICKUP ══════ */
+async function placePickup() {
   if (!selectedVol) return;
   const orderNum = generateOrderNum('ODV');
   const date = fmtDate(new Date());
@@ -944,51 +571,71 @@ function placePickup() {
   document.getElementById('modal-pickup-date').textContent = date;
 
   document.getElementById('qrcode-pickup').innerHTML = '';
-  const qrData = `TRAFIN-ODVOZ*${orderNum}*VOL:${selectedVol}L*${date}`;
   new QRCode(document.getElementById('qrcode-pickup'), {
-    text: qrData, width: 160, height: 160,
-    colorDark: '#b45309', colorLight: '#ffffff',
-    correctLevel: QRCode.CorrectLevel.M
+    text: `TRAFIN-ODVOZ*${orderNum}*VOL:${selectedVol}L*${date}`,
+    width: 160, height: 160, colorDark: '#b45309', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M
   });
 
-  addHistory({ type: 'pickup', num: orderNum, date, desc: 'Odvoz použitého oleje', vol: selectedVol + ' l' });
+  const pickupObj = {
+    num: orderNum, type: 'pickup', date, status: 'pending',
+    desc: 'Odvoz použitého oleje',
+    vol: selectedVol + ' l', volNum: selectedVol,
+    note: document.getElementById('pickup-note').value,
+    provozovna: settings.name || '–',
+    addr: settings.addr || '–',
+    ico: settings.ico || '–',
+    phone: settings.phone || '–',
+    driver: '', delivDate: '', adminNote: ''
+  };
 
-  // Reset
+  addLocalHistory(pickupObj);
+  await sharedAddOrder(pickupObj);
+  knownStatuses[orderNum] = 'pending';
+
   selectedVol = null;
   document.querySelectorAll('.vol-btn').forEach(b => b.classList.remove('selected'));
   document.getElementById('pickup-confirm-card').style.display = 'none';
   document.getElementById('btn-pickup').disabled = true;
   document.getElementById('pickup-note').value = '';
-
   openModal('modal-pickup');
 }
 
-/* ══════ HISTORY ══════ */
-function addHistory(item) {
-  history.unshift(item);
-  if (history.length > 50) history = history.slice(0, 50);
-  localStorage.setItem('to_history', JSON.stringify(history));
+/* ══════ LOCAL HISTORY ══════ */
+function addLocalHistory(item) {
+  localHistory.unshift(item);
+  if (localHistory.length > 100) localHistory = localHistory.slice(0, 100);
+  localStorage.setItem('to_history', JSON.stringify(localHistory));
   renderHistory();
+}
+
+function statusLabel(s) {
+  if (s === 'confirmed') return '<span class="status-badge status-confirmed"><span class="status-dot"></span>Potvrzeno</span>';
+  if (s === 'rejected')  return '<span class="status-badge status-rejected"><span class="status-dot"></span>Odmítnuto</span>';
+  return '<span class="status-badge status-pending"><span class="status-dot"></span>Čeká</span>';
 }
 
 function renderHistory() {
   const el = document.getElementById('history-list');
-  if (history.length === 0) {
-    el.innerHTML = `<div style="text-align:center;padding:40px 0;color:var(--gray-400);">
-      <div style="font-size:48px;margin-bottom:12px;">📋</div>
-      <div style="font-size:14px;">Zatím žádné objednávky.<br>Začněte objednáním v záložce <strong>Objednat</strong>.</div>
-    </div>`;
+  if (!localHistory.length) {
+    el.innerHTML = `<div style="text-align:center;padding:40px 0;color:var(--gray-400);"><div style="font-size:48px;margin-bottom:12px;">📋</div><div style="font-size:14px;">Zatím žádné objednávky.<br>Začněte objednáním v záložce <strong>Objednat</strong>.</div></div>`;
     return;
   }
-  el.innerHTML = history.map(h => `
+  el.innerHTML = localHistory.map(h => `
     <div class="history-item">
-      <div class="hist-icon ${h.type}">${h.type === 'order' ? '📦' : '🚛'}</div>
-      <div class="hist-content">
-        <div class="hist-title">${h.type === 'order' ? 'Objednávka oleje' : 'Odvoz oleje'}</div>
-        <div class="hist-sub">${h.desc}</div>
-        <div class="hist-sub" style="margin-top:4px;font-size:11px;color:var(--gray-400)">${h.num} · ${h.date}</div>
+      <div class="hist-row">
+        <div class="hist-icon ${h.type}">${h.type === 'order' ? '📦' : '🚛'}</div>
+        <div class="hist-content">
+          <div class="hist-title">${h.type === 'order' ? 'Objednávka oleje' : 'Odvoz oleje'}</div>
+          <div class="hist-sub">${h.desc}</div>
+          <div class="hist-sub" style="margin-top:2px;font-size:11px">${h.num} · ${h.date}</div>
+          ${h.driver ? `<div class="hist-sub" style="margin-top:2px;font-size:11px">🚚 ${h.driver}${h.delivDate ? ' · ' + h.delivDate : ''}</div>` : ''}
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--green-dark)">${h.vol}</span>
+          ${statusLabel(h.status || 'pending')}
+        </div>
       </div>
-      <div class="hist-badge ${h.type === 'order' ? 'green' : 'amber'}">${h.vol}</div>
+      ${h.adminNote ? `<div class="admin-note"><strong>Poznámka dispečera</strong>${h.adminNote}</div>` : ''}
     </div>
   `).join('');
 }
@@ -1002,89 +649,91 @@ function loadSettings() {
   setToggle('toggle-weekly', settings.weekly !== false);
   setToggle('toggle-confirm', settings.confirm !== false);
 }
-
 function saveSettings() {
   settings.name = document.getElementById('set-name').value;
   settings.addr = document.getElementById('set-addr').value;
-  settings.ico = document.getElementById('set-ico').value;
+  settings.ico  = document.getElementById('set-ico').value;
   settings.phone = document.getElementById('set-phone').value;
   localStorage.setItem('to_settings', JSON.stringify(settings));
   flashBtn(event.target, '✅ Uloženo!', 2000);
 }
-
 function toggleSetting(el, key) {
   el.classList.toggle('on');
   settings[key] = el.classList.contains('on');
   localStorage.setItem('to_settings', JSON.stringify(settings));
 }
-
 function setToggle(id, val) {
   const el = document.getElementById(id);
   if (val) el.classList.add('on'); else el.classList.remove('on');
 }
 
-/* ══════ TOAST / PUSH NOTIF ══════ */
-function showToast() {
+/* ══════ TOASTS ══════ */
+function showWeeklyToast() {
   const t = document.getElementById('toast');
+  t.querySelector('.toast-title').textContent = '🛢️ Trafin Oil – Týdenní připomínka';
+  t.querySelector('.toast-body').textContent = 'Potřebujete objednat čerstvý olej nebo odvézt použitý?';
+  t.querySelector('.toast-actions').innerHTML = `
+    <button class="toast-btn confirm" onclick="toastAction('order')">📦 Objednat</button>
+    <button class="toast-btn confirm" onclick="toastAction('pickup')" style="background:#f59e0b">🚛 Odvoz</button>
+    <button class="toast-btn dismiss" onclick="closeToast()">Zavřít</button>`;
+  t.style.borderLeftColor = 'var(--green-main)';
   t.classList.add('open');
   setTimeout(() => t.classList.remove('open'), 12000);
 }
 
-function closeToast() {
-  document.getElementById('toast').classList.remove('open');
+function showStatusToast(num, status, driver, delivDate, note) {
+  const t = document.getElementById('toast');
+  if (status === 'confirmed') {
+    t.style.borderLeftColor = 'var(--green-accent)';
+    t.querySelector('.toast-title').textContent = '✅ Objednávka potvrzena';
+    let body = `Č. ${num} byla přijata dispečerem.`;
+    if (driver) body += ` Řidič: ${driver}.`;
+    if (delivDate) body += ` Termín: ${delivDate}.`;
+    t.querySelector('.toast-body').textContent = body;
+  } else {
+    t.style.borderLeftColor = 'var(--red)';
+    t.querySelector('.toast-title').textContent = '❌ Objednávka odmítnuta';
+    t.querySelector('.toast-body').textContent = `Č. ${num}${note ? ' – ' + note : ''}`;
+  }
+  t.querySelector('.toast-actions').innerHTML = `
+    <button class="toast-btn dismiss" onclick="closeToast();showPage('history')" style="flex:1;background:var(--green-pale);color:var(--green-dark)">Zobrazit v historii</button>
+    <button class="toast-btn dismiss" onclick="closeToast()">Zavřít</button>`;
+  t.classList.add('open');
+  setTimeout(() => t.classList.remove('open'), 10000);
 }
 
-function toastAction(action) {
-  closeToast();
-  showPage(action === 'order' ? 'order' : 'pickup');
-}
+function closeToast() { document.getElementById('toast').classList.remove('open'); }
+function toastAction(action) { closeToast(); showPage(action); }
 
 function scheduleWeeklyNotif() {
   if (!settings.weekly) return;
   const last = localStorage.getItem('to_last_notif');
   const now = Date.now();
-  const week = 7 * 24 * 60 * 60 * 1000;
-  if (!last || (now - parseInt(last)) > week) {
-    setTimeout(() => {
-      showToast();
-      localStorage.setItem('to_last_notif', now.toString());
-    }, 8000);
+  if (!last || (now - parseInt(last)) > 7 * 24 * 3600 * 1000) {
+    setTimeout(() => { showWeeklyToast(); localStorage.setItem('to_last_notif', now.toString()); }, 8000);
   }
 }
 
-function scheduleConfirmToast(msg) {
-  setTimeout(() => {
-    const t = document.getElementById('toast');
-    t.querySelector('.toast-title').textContent = '✅ ' + msg;
-    t.querySelector('.toast-body').textContent = 'Zpracujeme ji do 24 hodin. Děkujeme!';
-    t.querySelector('.toast-actions').innerHTML = '<button class="toast-btn dismiss" onclick="closeToast()" style="flex:1">Zavřít</button>';
-    t.classList.add('open');
-    setTimeout(() => t.classList.remove('open'), 5000);
-  }, 800);
+/* ══════ UTILS ══════ */
+function selectVol(btn, vol) {
+  document.querySelectorAll('.vol-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected'); selectedVol = vol;
+  document.getElementById('pickup-vol-disp').textContent = vol + ' l';
+  document.getElementById('pickup-confirm-card').style.display = 'block';
+  document.getElementById('btn-pickup').disabled = false;
 }
-
-/* ══════ MODAL ══════ */
 function openModal(id) { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-
-/* ══════ UTILS ══════ */
 function generateOrderNum(prefix) {
-  const d = new Date();
-  const pad = n => String(n).padStart(2,'0');
-  const datePart = `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}`;
-  const rand = Math.floor(Math.random() * 9000) + 1000;
-  return `${prefix}-${datePart}-${rand}`;
+  const d = new Date(), pad = n => String(n).padStart(2,'0');
+  return `${prefix}-${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}-${Math.floor(Math.random()*9000)+1000}`;
 }
-
 function fmtDate(d) {
   const pad = n => String(n).padStart(2,'0');
   return `${pad(d.getDate())}.${pad(d.getMonth()+1)}.${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
-
 function flashBtn(btn, label, ms) {
-  const orig = btn.textContent;
-  btn.textContent = label;
-  setTimeout(() => btn.textContent = orig, ms);
+  const orig = btn.textContent; btn.textContent = label; setTimeout(() => btn.textContent = orig, ms);
 }
 </script>
 
