@@ -393,38 +393,42 @@
 
 <script>
 /* ══════════════════════════════════════
-   SHARED STORAGE BRIDGE
-   Obě appky komunikují přes window.storage (shared:true).
-   Zákaznická appka zapisuje nové objednávky, čte aktualizace stavů.
-   Klíče: "orders:list" (shared) = pole všech objednávek
+   STORAGE BRIDGE – localStorage + BroadcastChannel
+   Obě appky sdílejí stejný localStorage klíč.
+   BroadcastChannel notifikuje ostatní taby ve stejném prohlížeči.
 ══════════════════════════════════════ */
 
 const STORAGE_KEY = 'trafinoil:orders';
 
-async function sharedRead() {
-  try {
-    const r = await window.storage.get(STORAGE_KEY, true);
-    return r ? JSON.parse(r.value) : [];
-  } catch { return []; }
+// BroadcastChannel pro sync v rámci jednoho prohlížeče
+let bc;
+try {
+  bc = new BroadcastChannel('trafinoil');
+  bc.onmessage = () => { syncAndRender(); };
+} catch { bc = { postMessage(){} }; }
+
+function sharedRead() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch { return []; }
 }
 
-async function sharedWrite(orders) {
+function sharedWrite(orders) {
   try {
-    await window.storage.set(STORAGE_KEY, JSON.stringify(orders), true);
-  } catch (e) { console.warn('Shared storage nedostupný, fallback na localStorage', e); }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(orders));
+    bc.postMessage('update');
+  } catch (e) { console.warn('localStorage chyba', e); }
 }
 
-async function sharedAddOrder(order) {
-  const all = await sharedRead();
+function sharedAddOrder(order) {
+  const all = sharedRead();
   all.unshift(order);
   if (all.length > 200) all.splice(200);
-  await sharedWrite(all);
+  sharedWrite(all);
 }
 
-async function sharedUpdateOrder(num, patch) {
-  const all = await sharedRead();
+function sharedUpdateOrder(num, patch) {
+  const all = sharedRead();
   const idx = all.findIndex(o => o.num === num);
-  if (idx !== -1) { Object.assign(all[idx], patch); await sharedWrite(all); }
+  if (idx !== -1) { Object.assign(all[idx], patch); sharedWrite(all); }
 }
 
 /* ══════ STATE ══════ */
@@ -435,22 +439,20 @@ let settings = JSON.parse(localStorage.getItem('to_settings') || '{"weekly":true
 let knownStatuses = {}; // num -> status (pro detekci změn)
 
 /* ══════ INIT ══════ */
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
   loadSettings();
-  await syncHistoryFromShared();
+  syncHistoryFromShared();
   renderHistory();
   scheduleWeeklyNotif();
-  // Polling každých 15 sekund
-  setInterval(pollStatusUpdates, 15000);
+  // Polling každých 10 sekund
+  setInterval(pollStatusUpdates, 10000);
   const shown = localStorage.getItem('to_toast_shown');
   if (!shown) { setTimeout(() => { showWeeklyToast(); localStorage.setItem('to_toast_shown','1'); }, 3000); }
 });
 
-/* ══════ SYNC – načtení stavů z shared storage ══════ */
-async function syncHistoryFromShared() {
-  const shared = await sharedRead();
-  const myIco = settings.ico || '';
-  // Merge stavů do localHistory
+/* ══════ SYNC – načtení stavů ze sdíleného localStorage ══════ */
+function syncHistoryFromShared() {
+  const shared = sharedRead();
   shared.forEach(so => {
     const local = localHistory.find(h => h.num === so.num);
     if (local) {
@@ -464,8 +466,13 @@ async function syncHistoryFromShared() {
   localStorage.setItem('to_history', JSON.stringify(localHistory));
 }
 
-async function pollStatusUpdates() {
-  const shared = await sharedRead();
+/* Volá se i z BroadcastChannel */
+function syncAndRender() {
+  pollStatusUpdates();
+}
+
+function pollStatusUpdates() {
+  const shared = sharedRead();
   let changed = false;
   shared.forEach(so => {
     const local = localHistory.find(h => h.num === so.num);
@@ -522,7 +529,7 @@ function renderCart() {
 function clearCart() { cart = {}; renderCart(); }
 
 /* ══════ PLACE ORDER ══════ */
-async function placeOrder() {
+function placeOrder() {
   const orderNum = generateOrderNum('OBJ');
   const date = fmtDate(new Date());
   const keys = Object.keys(cart).filter(k => cart[k] > 0);
@@ -553,7 +560,7 @@ async function placeOrder() {
   };
 
   addLocalHistory(orderObj);
-  await sharedAddOrder(orderObj);
+  sharedAddOrder(orderObj);
   knownStatuses[orderNum] = 'pending';
 
   cart = {}; renderCart();
@@ -561,7 +568,7 @@ async function placeOrder() {
 }
 
 /* ══════ PLACE PICKUP ══════ */
-async function placePickup() {
+function placePickup() {
   if (!selectedVol) return;
   const orderNum = generateOrderNum('ODV');
   const date = fmtDate(new Date());
@@ -589,7 +596,7 @@ async function placePickup() {
   };
 
   addLocalHistory(pickupObj);
-  await sharedAddOrder(pickupObj);
+  sharedAddOrder(pickupObj);
   knownStatuses[orderNum] = 'pending';
 
   selectedVol = null;
