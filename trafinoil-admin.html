@@ -205,25 +205,43 @@
   <div class="pin-sub">Dispečink</div>
   <div class="pin-card" id="pin-card">
     <h2>Přihlášení</h2>
-    <p>Zadejte 4místný PIN</p>
-    <div class="pin-dots">
-      <div class="pin-dot" id="d0"></div><div class="pin-dot" id="d1"></div>
-      <div class="pin-dot" id="d2"></div><div class="pin-dot" id="d3"></div>
-    </div>
-    <div class="pin-keypad">
-      <button type="button" class="pin-key" onclick="pinPress('1')">1</button>
-      <button type="button" class="pin-key" onclick="pinPress('2')">2</button>
-      <button type="button" class="pin-key" onclick="pinPress('3')">3</button>
-      <button type="button" class="pin-key" onclick="pinPress('4')">4</button>
-      <button type="button" class="pin-key" onclick="pinPress('5')">5</button>
-      <button type="button" class="pin-key" onclick="pinPress('6')">6</button>
-      <button type="button" class="pin-key" onclick="pinPress('7')">7</button>
-      <button type="button" class="pin-key" onclick="pinPress('8')">8</button>
-      <button type="button" class="pin-key" onclick="pinPress('9')">9</button>
-      <button type="button" class="pin-key empty" disabled></button>
-      <button type="button" class="pin-key" onclick="pinPress('0')">0</button>
-      <button type="button" class="pin-key del" onclick="pinDel()">⌫</button>
-    </div>
+    <p>Zadejte PIN a potvrďte tlačítkem</p>
+    <input
+      type="password"
+      id="pin-input"
+      maxlength="4"
+      inputmode="numeric"
+      pattern="[0-9]*"
+      placeholder="• • • •"
+      autocomplete="off"
+      oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+      onkeydown="if(event.key==='Enter') checkPin()"
+      style="
+        width:100%; padding:18px; margin:20px 0 14px;
+        border:2px solid #d8e4d8; border-radius:12px;
+        font-size:32px; text-align:center; letter-spacing:12px;
+        font-family:'Barlow Condensed',sans-serif; font-weight:700;
+        color:#1a5c1a; outline:none; transition:border-color .2s;
+        -webkit-text-security:disc;
+      "
+      onfocus="this.style.borderColor='#2a7a2a'"
+      onblur="this.style.borderColor='#d8e4d8'"
+    >
+    <button
+      type="button"
+      onclick="checkPin()"
+      style="
+        width:100%; padding:15px; border:none; border-radius:12px;
+        background:linear-gradient(135deg,#1a5c1a,#2a7a2a); color:white;
+        font-family:'Barlow Condensed',sans-serif; font-size:17px;
+        font-weight:700; letter-spacing:1px; text-transform:uppercase;
+        cursor:pointer; transition:opacity .15s;
+      "
+      onmousedown="this.style.opacity='.8'"
+      onmouseup="this.style.opacity='1'"
+    >
+      Přihlásit se →
+    </button>
     <div class="pin-error" id="pin-error"></div>
   </div>
 </div>
@@ -346,33 +364,33 @@ const ordersRef = db.ref('orders');
 
 /* ══════ PIN ══════ */
 const DEF_PIN = '1234';
-let buf = '';
 function getPin() { return localStorage.getItem('admin_pin') || DEF_PIN; }
 
-function pinPress(d) {
-  if (buf.length >= 4) return;
-  buf += d; dots();
-  if (buf.length === 4) setTimeout(checkPin, 150);
-}
-function pinDel() { buf = buf.slice(0,-1); dots(); document.getElementById('pin-error').textContent=''; }
-function dots() { [0,1,2,3].forEach(i => document.getElementById('d'+i).classList.toggle('filled', i<buf.length)); }
 function checkPin() {
-  if (buf === getPin()) {
+  const val = (document.getElementById('pin-input').value || '').trim();
+  if (val === getPin()) {
     document.getElementById('pin-screen').style.display = 'none';
     document.getElementById('app').style.display = 'block';
+    document.getElementById('pin-input').value = '';
+    document.getElementById('pin-error').textContent = '';
     initApp();
   } else {
     document.getElementById('pin-error').textContent = 'Nesprávný PIN, zkuste znovu.';
-    buf = ''; dots();
+    document.getElementById('pin-input').value = '';
+    document.getElementById('pin-input').focus();
     const c = document.getElementById('pin-card');
     c.classList.remove('shake'); void c.offsetWidth; c.classList.add('shake');
   }
 }
+
 function logout() {
   document.getElementById('app').style.display = 'none';
   document.getElementById('pin-screen').style.display = 'flex';
-  buf = ''; dots(); document.getElementById('pin-error').textContent = '';
+  document.getElementById('pin-input').value = '';
+  document.getElementById('pin-error').textContent = '';
+  setTimeout(() => document.getElementById('pin-input').focus(), 100);
 }
+
 function changePin() {
   const v = (document.getElementById('new-pin').value||'').trim();
   if (!/^\d{4}$/.test(v)) { toast('error','Chyba','PIN musí mít přesně 4 číslice.'); return; }
@@ -380,10 +398,17 @@ function changePin() {
   document.getElementById('new-pin').value = '';
   toast('ok','PIN změněn','Nový PIN byl uložen.');
 }
-document.addEventListener('keydown', e => {
-  if (document.getElementById('pin-screen').style.display==='none') return;
-  if (e.key>='0'&&e.key<='9') pinPress(e.key);
-  if (e.key==='Backspace') pinDel();
+
+// Auto-submit po zadání 4 číslic
+document.addEventListener('DOMContentLoaded', () => {
+  const inp = document.getElementById('pin-input');
+  if (inp) {
+    inp.addEventListener('input', () => {
+      if (inp.value.length === 4) setTimeout(checkPin, 200);
+    });
+    // Automaticky zaměří input po načtení
+    setTimeout(() => inp.focus(), 300);
+  }
 });
 
 /* ══════ APP STATE ══════ */
