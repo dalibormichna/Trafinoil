@@ -13,48 +13,59 @@
 
 <style>
 :root {
-  --gd:#0f3d0f; --gm:#1a5c1a; --gx:#2a7a2a; --ga:#4caf50; --gp:#e8f5e9;
-  --am:#f59e0b; --ap:#fff8e1; --rd:#dc2626; --rp:#fee2e2; --bl:#2563eb;
-  --sf:#f4f7f4; --g1:#eef2ee; --g2:#d8e4d8; --g4:#7a987a; --g8:#162016;
-  --shsm:0 1px 4px rgba(0,0,0,.10); --shlg:0 8px 32px rgba(0,0,0,.18);
-  --r:12px; --rl:20px;
+  --gd:#0f3d0f;--gm:#1a5c1a;--gx:#2a7a2a;--ga:#4caf50;--gp:#e8f5e9;
+  --am:#f59e0b;--ap:#fff8e1;--rd:#dc2626;--rp:#fee2e2;--bl:#2563eb;
+  --sf:#f4f7f4;--g1:#eef2ee;--g2:#d8e4d8;--g4:#7a987a;--g8:#162016;
+  --shsm:0 1px 4px rgba(0,0,0,.10);--shlg:0 8px 32px rgba(0,0,0,.18);
+  --r:12px;--rl:20px;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:'Barlow',sans-serif;background:var(--sf);color:var(--g8);min-height:100vh;overflow-x:hidden}
 
-/* PIN */
-#pin-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(160deg,var(--gd) 0%,var(--gm) 50%,var(--gx) 100%);padding:32px 24px}
+/* ── PIN ── */
+#pin-screen{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:100vh;
+  background:linear-gradient(160deg,var(--gd) 0%,var(--gm) 50%,var(--gx) 100%);
+  padding:32px 24px;
+}
 .pin-logo{height:48px;filter:brightness(0) invert(1);margin-bottom:6px}
-#plf{display:none;font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:700;color:white;letter-spacing:2px;margin-bottom:6px}
-.pin-sub{font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:34px}
-.pin-card{background:white;border-radius:var(--rl);padding:28px 22px;width:100%;max-width:310px;box-shadow:var(--shlg)}
+.pin-card{background:white;border-radius:var(--rl);padding:28px 22px;width:100%;max-width:320px;box-shadow:var(--shlg)}
 .pin-card h2{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;letter-spacing:1px;text-align:center;color:var(--gm);text-transform:uppercase;margin-bottom:4px}
-.pin-card p{font-size:13px;color:var(--g4);text-align:center;margin-bottom:4px}
+.pin-card .hint{font-size:13px;color:var(--g4);text-align:center;margin-bottom:6px}
 #pin-input{
-  display:block;width:100%;padding:16px;margin:16px 0 12px;
+  display:block;width:100%;padding:16px;margin:14px 0 12px;
   border:2px solid var(--g2);border-radius:10px;
-  font-size:30px;text-align:center;letter-spacing:10px;
+  font-size:28px;text-align:center;letter-spacing:10px;
   font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--gm);
-  outline:none;transition:border-color .2s;background:white
+  outline:none;background:white;transition:border-color .2s;
 }
 #pin-input:focus{border-color:var(--gx)}
 #pin-submit{
   display:block;width:100%;padding:14px;border:none;border-radius:10px;
   background:linear-gradient(135deg,var(--gm),var(--gx));color:white;
   font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;
-  letter-spacing:1px;text-transform:uppercase;cursor:pointer
+  letter-spacing:1px;text-transform:uppercase;cursor:pointer;
 }
-#pin-submit:active{opacity:.85}
-.pin-error{text-align:center;color:var(--rd);font-size:13px;font-weight:600;margin-top:12px;min-height:18px}
+#pin-submit:active{opacity:.82}
+#pin-error{text-align:center;color:var(--rd);font-size:13px;font-weight:600;margin-top:12px;min-height:18px}
 @keyframes shake{0%,100%{transform:none}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
 .shake{animation:shake .35s ease}
 
-/* HEADER */
+/* ── LOADING ── */
+#loading-screen{
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  min-height:100vh;background:var(--sf);gap:16px;
+}
+.spinner{width:40px;height:40px;border:4px solid var(--g2);border-top-color:var(--gm);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-family:'Barlow Condensed',sans-serif;font-size:14px;letter-spacing:1px;color:var(--g4);text-transform:uppercase}
+
+/* ── APP ── */
 #app{display:none;padding-bottom:80px}
 header{background:linear-gradient(135deg,var(--gd),var(--gm));color:white;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.28)}
 .hinner{display:flex;align-items:center;justify-content:space-between;padding:12px 16px}
 .hlogo{height:30px;filter:brightness(0) invert(1)}
-#hlfb{display:none;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:white;letter-spacing:1px}
 .hright{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
 .htitle{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
 .hsync{font-size:11px;opacity:.65;display:flex;align-items:center;gap:4px}
@@ -64,7 +75,6 @@ header{background:linear-gradient(135deg,var(--gd),var(--gm));color:white;positi
 @keyframes sp{0%,100%{opacity:1}50%{opacity:.3}}
 #logout-btn{margin-top:3px;background:rgba(255,255,255,.14);border:none;color:white;padding:4px 10px;border-radius:6px;font-size:11px;font-family:'Barlow Condensed',sans-serif;font-weight:700;cursor:pointer}
 
-/* TABS */
 .tabs{display:flex;background:var(--gd);border-top:1px solid rgba(255,255,255,.1)}
 .tabw{position:relative;flex:1}
 .tab{display:block;width:100%;padding:9px 0;text-align:center;color:rgba(255,255,255,.55);font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;border:none;background:none}
@@ -78,13 +88,11 @@ header{background:linear-gradient(135deg,var(--gd),var(--gm));color:white;positi
 .slabel{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gm);margin-bottom:10px;margin-top:20px}
 .slabel:first-child{margin-top:0}
 
-/* STATS */
 .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .sc{background:white;border-radius:var(--r);padding:12px;text-align:center;box-shadow:var(--shsm);border:1px solid var(--g2)}
 .sn{font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:700;line-height:1}
 .sl{font-size:10px;color:var(--g4);margin-top:4px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
 
-/* ORDER CARD */
 .ocard{background:white;border-radius:var(--r);box-shadow:var(--shsm);border:1px solid var(--g2);border-left-width:4px;margin-bottom:10px;overflow:hidden}
 .ocard.pending{border-left-color:var(--am)}
 .ocard.confirmed{border-left-color:var(--ga)}
@@ -128,7 +136,6 @@ header{background:linear-gradient(135deg,var(--gd),var(--gm));color:white;positi
 .abtn-no{background:var(--rd);color:white}
 .abtn-sv{background:var(--bl);color:white}
 
-/* FILTER / SEARCH */
 .fbar{display:flex;gap:7px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px}
 .fbtn{padding:7px 13px;border-radius:20px;border:1.5px solid var(--g2);background:white;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;color:var(--g4);transition:all .18s}
 .fbtn.active{background:var(--gm);color:white;border-color:var(--gm)}
@@ -145,7 +152,6 @@ header{background:linear-gradient(135deg,var(--gd),var(--gm));color:white;positi
 .empty .ei{font-size:48px;margin-bottom:12px}
 .empty p{font-size:14px;line-height:1.6}
 
-/* SETTINGS */
 .dchip{display:inline-flex;align-items:center;gap:5px;background:var(--gp);border:1px solid var(--ga);border-radius:20px;padding:4px 10px;font-size:13px;font-weight:600;margin:3px}
 .dchip .rm{cursor:pointer;color:var(--rd);font-size:14px;font-weight:700}
 .dwrap{display:flex;flex-wrap:wrap;min-height:34px;margin-bottom:8px}
@@ -156,12 +162,11 @@ header{background:linear-gradient(135deg,var(--gd),var(--gm));color:white;positi
 .sbxbtn.g{background:var(--gx);color:white}
 .sbxbtn.r{background:var(--rd);color:white}
 
-/* TOAST */
 .toast{position:fixed;bottom:18px;left:13px;right:13px;background:white;border-radius:var(--r);box-shadow:var(--shlg);padding:12px 13px;z-index:2000;display:none;max-width:480px;margin:0 auto}
 .toast.on{display:flex;align-items:center;gap:10px;animation:tIn .25s ease}
 @keyframes tIn{from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1}}
 .tico{font-size:22px;flex-shrink:0}
-.tbody{flex:1}
+.tbody2{flex:1}
 .tt{font-weight:700;font-size:13px}
 .tb{font-size:12px;color:var(--g4);margin-top:1px}
 .tcl{font-size:18px;cursor:pointer;color:var(--g4)}
@@ -173,20 +178,26 @@ header{background:linear-gradient(135deg,var(--gd),var(--gm));color:white;positi
 </head>
 <body>
 
-<!-- ═══ PIN SCREEN ═══ -->
+<!-- ═══ PIN – žádná závislost na Firebase ═══ -->
 
 <div id="pin-screen">
   <img class="pin-logo" src="https://www.trafinoil.cz/dist/front/images/logo.svg" alt="Trafin Oil"
-       onerror="this.style.display='none';document.getElementById('plf').style.display='block'">
-  <div id="plf">TRAFIN OIL</div>
-  <div class="pin-sub">Dispečink</div>
+       onerror="this.style.display='none'">
+  <div style="font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.55);margin:6px 0 34px">Dispečink</div>
   <div class="pin-card" id="pin-card">
     <h2>Přihlášení</h2>
-    <p>Výchozí PIN: 1234</p>
+    <div class="hint">Výchozí PIN: <strong>1234</strong></div>
     <input type="password" id="pin-input" maxlength="4" inputmode="numeric" placeholder="••••" autocomplete="off">
     <button id="pin-submit">Přihlásit se →</button>
-    <div class="pin-error" id="pin-error"></div>
+    <div id="pin-error"></div>
   </div>
+</div>
+
+<!-- ═══ LOADING (čeká na Firebase) ═══ -->
+
+<div id="loading-screen">
+  <div class="spinner"></div>
+  <div class="loading-text">Načítání dat…</div>
 </div>
 
 <!-- ═══ APP ═══ -->
@@ -194,15 +205,14 @@ header{background:linear-gradient(135deg,var(--gd),var(--gm));color:white;positi
 <div id="app">
   <div class="toast" id="toast">
     <div class="tico" id="tico">✅</div>
-    <div class="tbody"><div class="tt" id="tt"></div><div class="tb" id="tb"></div></div>
+    <div class="tbody2"><div class="tt" id="tt"></div><div class="tb" id="tb"></div></div>
     <div class="tcl" id="toast-close">✕</div>
   </div>
 
   <header>
     <div class="hinner">
       <img class="hlogo" src="https://www.trafinoil.cz/dist/front/images/logo.svg" alt="Trafin Oil"
-           onerror="this.style.display='none';document.getElementById('hlfb').style.display='block'">
-      <span id="hlfb">TRAFIN OIL</span>
+           onerror="this.style.display='none'">
       <div class="hright">
         <div class="htitle">Dispečink</div>
         <div class="hsync"><span class="sdot" id="sdot"></span><span id="slabel">Připojování…</span></div>
@@ -280,392 +290,399 @@ header{background:linear-gradient(135deg,var(--gd),var(--gm));color:white;positi
   </div>
 </div>
 
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<!-- ═══════════════════════════════════════════════════
+     SCRIPT – PIN se spustí okamžitě (bez Firebase).
+     Firebase se načte dynamicky až po úspěšném přihlášení.
+════════════════════════════════════════════════════ -->
 
 <script>
-/* ═══════════════════════════════
-   FIREBASE
-═══════════════════════════════ */
-firebase.initializeApp({
-  apiKey:            "AIzaSyAyMrivTrAfIk7XQIdDHubqN8oVgUALDRE",
-  authDomain:        "trafinoil-gastro.firebaseapp.com",
-  databaseURL:       "https://trafinoil-gastro-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId:         "trafinoil-gastro",
-  storageBucket:     "trafinoil-gastro.firebasestorage.app",
-  messagingSenderId: "113292676903",
-  appId:             "1:113292676903:web:bfe2aae4a100ee1fd26302"
-});
-const db        = firebase.database();
-const ordersRef = db.ref('orders');
 
-/* ═══════════════════════════════
-   STATE
-═══════════════════════════════ */
-let orders    = {};
-let curFilter = 'all';
-let drivers   = JSON.parse(localStorage.getItem('admin_drivers') || '["Jan Novák","Petra Svobodová","Tomáš Kříž"]');
-let knownKeys = new Set();
+/* ── PIN (funguje bez Firebase, bez internetu) ── */
+(function() {
+  function getPin() { return localStorage.getItem('admin_pin') || '1234'; }
 
-/* ═══════════════════════════════
-   UTILS
-═══════════════════════════════ */
-function esc(s) {
-  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function ft(d) {
-  const p = n => String(n).padStart(2,'0');
-  return p(d.getHours()) + ':' + p(d.getMinutes());
-}
+  function tryLogin() {
+    const inp = document.getElementById('pin-input');
+    const val = inp.value.trim();
+    const err = document.getElementById('pin-error');
+    if (val === getPin()) {
+      err.textContent = '';
+      inp.value = '';
+      // Schovat PIN, ukázat loading
+      document.getElementById('pin-screen').style.display = 'none';
+      document.getElementById('loading-screen').style.display = 'flex';
+      // Načíst Firebase dynamicky
+      loadFirebase();
+    } else {
+      err.textContent = 'Nesprávný PIN, zkuste znovu.';
+      inp.value = '';
+      inp.focus();
+      const c = document.getElementById('pin-card');
+      c.classList.remove('shake');
+      void c.offsetWidth;
+      c.classList.add('shake');
+    }
+  }
 
-/* ═══════════════════════════════
-   PIN
-═══════════════════════════════ */
-function getPin() { return localStorage.getItem('admin_pin') || '1234'; }
+  document.getElementById('pin-submit').addEventListener('click', tryLogin);
 
-function checkPin() {
-  const val = document.getElementById('pin-input').value.trim();
-  if (val === getPin()) {
-    document.getElementById('pin-screen').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
-    document.getElementById('pin-input').value = '';
-    document.getElementById('pin-error').textContent = '';
-    initApp();
-  } else {
-    document.getElementById('pin-error').textContent = 'Nesprávný PIN, zkuste znovu.';
-    document.getElementById('pin-input').value = '';
+  document.getElementById('pin-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') tryLogin();
+  });
+
+  document.getElementById('pin-input').addEventListener('input', function() {
+    this.value = this.value.replace(/[^0-9]/g, '');
+    if (this.value.length === 4) setTimeout(tryLogin, 200);
+  });
+
+  // Zaměř input po načtení
+  window.addEventListener('load', function() {
     document.getElementById('pin-input').focus();
-    const c = document.getElementById('pin-card');
-    c.classList.remove('shake');
-    void c.offsetWidth;
-    c.classList.add('shake');
-  }
+  });
+})();
+
+/* ── Dynamické načtení Firebase po přihlášení ── */
+function loadFirebase() {
+  // Načteme oba skripty postupně
+  var s1 = document.createElement('script');
+  s1.src = 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js';
+  s1.onload = function() {
+    var s2 = document.createElement('script');
+    s2.src = 'https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js';
+    s2.onload = function() { initFirebase(); };
+    s2.onerror = function() { showAppWithError('Nepodařilo se načíst Firebase. Zkontrolujte připojení.'); };
+    document.head.appendChild(s2);
+  };
+  s1.onerror = function() { showAppWithError('Nepodařilo se načíst Firebase. Zkontrolujte připojení.'); };
+  document.head.appendChild(s1);
 }
 
-function logout() {
-  document.getElementById('app').style.display = 'none';
-  document.getElementById('pin-screen').style.display = 'flex';
-  document.getElementById('pin-input').value = '';
-  document.getElementById('pin-error').textContent = '';
-  document.getElementById('pin-input').focus();
+function showAppWithError(msg) {
+  document.getElementById('loading-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  document.getElementById('list-pending').innerHTML =
+    '<div class="empty"><div class="ei">⚠️</div><p>' + msg + '</p></div>';
+  setupAppEvents();
 }
 
-/* ═══════════════════════════════
-   INIT APP
-═══════════════════════════════ */
-function initApp() {
-  renderDrivers();
-
-  db.ref('.info/connected').on('value', snap => {
-    const on = snap.val();
-    document.getElementById('sdot').className = 'sdot ' + (on ? 'live' : 'offline');
-    document.getElementById('slabel').textContent = on ? 'Real-time · Firebase' : 'Offline';
+/* ── Firebase ── */
+function initFirebase() {
+  firebase.initializeApp({
+    apiKey:            'AIzaSyAyMrivTrAfIk7XQIdDHubqN8oVgUALDRE',
+    authDomain:        'trafinoil-gastro.firebaseapp.com',
+    databaseURL:       'https://trafinoil-gastro-default-rtdb.europe-west1.firebasedatabase.app',
+    projectId:         'trafinoil-gastro',
+    storageBucket:     'trafinoil-gastro.firebasestorage.app',
+    messagingSenderId: '113292676903',
+    appId:             '1:113292676903:web:bfe2aae4a100ee1fd26302'
   });
 
-  ordersRef.on('value', snap => {
-    const data = snap.val() || {};
-    Object.keys(data).forEach(k => {
-      if (!knownKeys.has(k) && Object.keys(orders).length > 0) {
-        setTimeout(() => {
-          const card = document.getElementById('card-' + k);
-          if (card) { card.classList.add('new-pulse'); setTimeout(() => card.classList.remove('new-pulse'), 700); }
-        }, 100);
-        showToast('ok', 'Nová objednávka', data[k].provozovna + ' · ' + data[k].vol);
-      }
-      knownKeys.add(k);
-    });
-    orders = data;
-    document.getElementById('lref').textContent = 'Aktualizováno: ' + ft(new Date());
-    updateBadge();
-    renderPending();
-    renderAll();
-    renderStats();
-  });
-}
+  var db        = firebase.database();
+  var ordersRef = db.ref('orders');
 
-/* ═══════════════════════════════
-   BADGE
-═══════════════════════════════ */
-function updateBadge() {
-  const n = Object.values(orders).filter(o => (o.status || 'pending') === 'pending').length;
-  const b = document.getElementById('tbadge');
-  b.textContent = n || '';
-  b.classList.toggle('on', n > 0);
-}
+  var orders    = {};
+  var curFilter = 'all';
+  var drivers   = JSON.parse(localStorage.getItem('admin_drivers') || '["Jan Novák","Petra Svobodová","Tomáš Kříž"]');
+  var knownKeys = {};
 
-/* ═══════════════════════════════
-   RENDER
-═══════════════════════════════ */
-function badgeHtml(s) {
-  if (s === 'confirmed') return `<span class="sbadge confirmed"><span class="bdot"></span>Potvrzeno</span>`;
-  if (s === 'rejected')  return `<span class="sbadge rejected"><span class="bdot"></span>Odmítnuto</span>`;
-  return `<span class="sbadge pending"><span class="bdot"></span>Čeká</span>`;
-}
+  /* UTILS */
+  function esc(s) {
+    return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function ft(d) { var p=function(n){return String(n).padStart(2,'0')}; return p(d.getHours())+':'+p(d.getMinutes()); }
 
-function cardHtml(fbKey, o) {
-  const s    = o.status || 'pending';
-  const isPu = o.type === 'pickup';
-  const drOpts = drivers.map(d => `<option value="${esc(d)}" ${o.driver === d ? 'selected' : ''}>${esc(d)}</option>`).join('');
-
-  let btns;
-  if (s === 'pending') {
-    btns = `<button class="abtn abtn-ok" data-key="${fbKey}" data-act="confirmed">✅ Potvrdit</button>
-            <button class="abtn abtn-no" data-key="${fbKey}" data-act="rejected">❌ Odmítnout</button>`;
-  } else if (s === 'confirmed') {
-    btns = `<button class="abtn abtn-sv" data-key="${fbKey}" data-act="save">💾 Uložit</button>
-            <button class="abtn abtn-no" data-key="${fbKey}" data-act="rejected">❌ Zrušit</button>`;
-  } else {
-    btns = `<button class="abtn abtn-ok" data-key="${fbKey}" data-act="confirmed">↩ Obnovit</button>
-            <button class="abtn abtn-sv" data-key="${fbKey}" data-act="save">💾 Uložit</button>`;
+  /* TOAST */
+  var tTimer;
+  function showToast(type, title, sub) {
+    clearTimeout(tTimer);
+    document.getElementById('tico').textContent = {ok:'✅',warn:'⚠️',error:'❌'}[type]||'✅';
+    document.getElementById('tt').textContent   = title;
+    document.getElementById('tb').textContent   = sub||'';
+    document.getElementById('toast').classList.add('on');
+    tTimer = setTimeout(function(){document.getElementById('toast').classList.remove('on');},4000);
   }
 
-  return `<div class="ocard ${s}" id="card-${fbKey}">
-    <div class="ohdr" data-toggle="${fbKey}">
-      <div class="otype">${isPu ? '🚛' : '📦'}</div>
-      <div class="oinfo">
-        <div class="onum">${esc(o.num)}</div>
-        <div class="oprov">${esc(o.provozovna || '–')}</div>
-        <div class="odesc">${esc(o.desc || '')}</div>
-        <div class="ometa">${esc(o.date || '')}${o.addr && o.addr !== '–' ? ' · ' + esc(o.addr) : ''}</div>
-      </div>
-      <div class="oright">
-        <div class="ovol">${esc(o.vol || '')}</div>
-        ${badgeHtml(s)}
-        <span class="chev">▼</span>
-      </div>
-    </div>
-    <div class="odetail">
-      <div class="drow"><span class="dl">IČO</span><span class="dv">${esc(o.ico || '–')}</span></div>
-      <div class="drow"><span class="dl">Telefon</span><span class="dv">${esc(o.phone || '–')}</span></div>
-      ${o.note ? `<div class="drow"><span class="dl">Pozn. zákazníka</span><span class="dv">${esc(o.note)}</span></div>` : ''}
-      ${(o.items || []).map(it => `<div class="drow"><span class="dl">${esc(it.name)}</span><span class="dv">${it.qty} l</span></div>`).join('')}
-      ${o.driver    ? `<div class="drow"><span class="dl">Řidič</span><span class="dv">${esc(o.driver)}</span></div>` : ''}
-      ${o.delivDate ? `<div class="drow"><span class="dl">Termín</span><span class="dv">${esc(o.delivDate)}</span></div>` : ''}
-      ${o.adminNote ? `<div class="drow"><span class="dl">Vaše poznámka</span><span class="dv" style="color:var(--bl)">${esc(o.adminNote)}</span></div>` : ''}
-      <div class="alabel">Zpracovat</div>
-      <div class="frow"><select id="dr-${fbKey}"><option value="">– Přiřadit řidiče –</option>${drOpts}</select></div>
-      <div class="frow"><input type="text" id="dt-${fbKey}" placeholder="Termín (28.3.2026)" value="${esc(o.delivDate || '')}"></div>
-      <textarea class="fnote" id="nt-${fbKey}" placeholder="Poznámka pro zákazníka…">${esc(o.adminNote || '')}</textarea>
+  /* NAV */
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active')});
+    document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active')});
+    document.getElementById('page-'+id).classList.add('active');
+    var t = document.querySelector('.tab[data-page="'+id+'"]');
+    if(t) t.classList.add('active');
+  }
+
+  /* BADGE */
+  function updateBadge() {
+    var n = Object.values(orders).filter(function(o){return (o.status||'pending')==='pending';}).length;
+    var b = document.getElementById('tbadge');
+    b.textContent = n||'';
+    b.classList.toggle('on', n>0);
+  }
+
+  /* RENDER */
+  function badgeHtml(s) {
+    if(s==='confirmed') return '<span class="sbadge confirmed"><span class="bdot"></span>Potvrzeno</span>';
+    if(s==='rejected')  return '<span class="sbadge rejected"><span class="bdot"></span>Odmítnuto</span>';
+    return '<span class="sbadge pending"><span class="bdot"></span>Čeká</span>';
+  }
+
+  function cardHtml(fbKey, o) {
+    var s    = o.status||'pending';
+    var isPu = o.type==='pickup';
+    var drOpts = drivers.map(function(d){
+      return '<option value="'+esc(d)+'"'+(o.driver===d?' selected':'')+'>'+esc(d)+'</option>';
+    }).join('');
+    var btns;
+    if(s==='pending'){
+      btns='<button class="abtn abtn-ok" data-key="'+fbKey+'" data-act="confirmed">✅ Potvrdit</button>'
+          +'<button class="abtn abtn-no" data-key="'+fbKey+'" data-act="rejected">❌ Odmítnout</button>';
+    } else if(s==='confirmed'){
+      btns='<button class="abtn abtn-sv" data-key="'+fbKey+'" data-act="save">💾 Uložit</button>'
+          +'<button class="abtn abtn-no" data-key="'+fbKey+'" data-act="rejected">❌ Zrušit</button>';
+    } else {
+      btns='<button class="abtn abtn-ok" data-key="'+fbKey+'" data-act="confirmed">↩ Obnovit</button>'
+          +'<button class="abtn abtn-sv" data-key="'+fbKey+'" data-act="save">💾 Uložit</button>';
+    }
+    return '<div class="ocard '+s+'" id="card-'+fbKey+'">'
+      +'<div class="ohdr" data-toggle="'+fbKey+'">'
+        +'<div class="otype">'+(isPu?'🚛':'📦')+'</div>'
+        +'<div class="oinfo">'
+          +'<div class="onum">'+esc(o.num)+'</div>'
+          +'<div class="oprov">'+esc(o.provozovna||'–')+'</div>'
+          +'<div class="odesc">'+esc(o.desc||'')+'</div>'
+          +'<div class="ometa">'+esc(o.date||'')+(o.addr&&o.addr!=='–'?' · '+esc(o.addr):'')+'</div>'
+        +'</div>'
+        +'<div class="oright">'
+          +'<div class="ovol">'+esc(o.vol||'')+'</div>'
+          +badgeHtml(s)
+          +'<span class="chev">▼</span>'
+        +'</div>'
+      +'</div>'
+      +'<div class="odetail">'
+        +'<div class="drow"><span class="dl">IČO</span><span class="dv">'+esc(o.ico||'–')+'</span></div>'
+        +'<div class="drow"><span class="dl">Telefon</span><span class="dv">'+esc(o.phone||'–')+'</span></div>'
+        +(o.note?'<div class="drow"><span class="dl">Pozn. zákazníka</span><span class="dv">'+esc(o.note)+'</span></div>':'')
+        +(o.items||[]).map(function(it){return '<div class="drow"><span class="dl">'+esc(it.name)+'</span><span class="dv">'+it.qty+' l</span></div>';}).join('')
+        +(o.driver?'<div class="drow"><span class="dl">Řidič</span><span class="dv">'+esc(o.driver)+'</span></div>':'')
+        +(o.delivDate?'<div class="drow"><span class="dl">Termín</span><span class="dv">'+esc(o.delivDate)+'</span></div>':'')
+        +(o.adminNote?'<div class="drow"><span class="dl">Vaše poznámka</span><span class="dv" style="color:var(--bl)">'+esc(o.adminNote)+'</span></div>':'')
+        +'<div class="alabel">Zpracovat</div>'
+        +'<div class="frow"><select id="dr-'+fbKey+'"><option value="">– Přiřadit řidiče –</option>'+drOpts+'</select></div>'
+        +'<div class="frow"><input type="text" id="dt-'+fbKey+'" placeholder="Termín (28.3.2026)" value="'+esc(o.delivDate||'')+'"></div>'
+        +'<textarea class="fnote" id="nt-'+fbKey+'" placeholder="Poznámka pro zákazníka…">'+esc(o.adminNote||'')+'</textarea>'
 
 ```
-  <div class="abtns">${btns}</div>
-</div>
+    +'<div class="abtns">'+btns+'</div>'
+  +'</div>'
++'</div>';
 ```
 
-  </div>`;
 }
 
 function ordersArr() {
 return Object.entries(orders)
-.map(([k, v]) => ({ fbKey: k, …v }))
-.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+.map(function(e){return Object.assign({fbKey:e[0]},e[1]);})
+.sort(function(a,b){return (b.createdAt||0)-(a.createdAt||0);});
 }
 
 function renderPending() {
-const el   = document.getElementById(‘list-pending’);
-const list = ordersArr().filter(o => (o.status || ‘pending’) === ‘pending’);
+var el   = document.getElementById(‘list-pending’);
+var list = ordersArr().filter(function(o){return (o.status||‘pending’)===‘pending’;});
 el.innerHTML = list.length
-? list.map(o => cardHtml(o.fbKey, o)).join(’’)
-: `<div class="empty"><div class="ei">🎉</div><p>Žádné čekající objednávky.<br>Vše zpracováno!</p></div>`;
+? list.map(function(o){return cardHtml(o.fbKey,o);}).join(’’)
+: ‘<div class="empty"><div class="ei">🎉</div><p>Žádné čekající objednávky.<br>Vše zpracováno!</p></div>’;
 }
 
 function renderAll() {
-const el  = document.getElementById(‘list-all’);
-const q   = (document.getElementById(‘q’)?.value || ‘’).toLowerCase();
-let list  = ordersArr();
-if (curFilter === ‘pending’)   list = list.filter(o => (o.status || ‘pending’) === ‘pending’);
-if (curFilter === ‘confirmed’) list = list.filter(o => o.status === ‘confirmed’);
-if (curFilter === ‘rejected’)  list = list.filter(o => o.status === ‘rejected’);
-if (curFilter === ‘order’)     list = list.filter(o => o.type === ‘order’);
-if (curFilter === ‘pickup’)    list = list.filter(o => o.type === ‘pickup’);
-if (q) list = list.filter(o => (o.num + o.provozovna + o.addr + o.ico + o.desc + ‘’).toLowerCase().includes(q));
+var el  = document.getElementById(‘list-all’);
+var q   = (document.getElementById(‘q’).value||’’).toLowerCase();
+var list = ordersArr();
+if(curFilter===‘pending’)   list=list.filter(function(o){return (o.status||‘pending’)===‘pending’;});
+if(curFilter===‘confirmed’) list=list.filter(function(o){return o.status===‘confirmed’;});
+if(curFilter===‘rejected’)  list=list.filter(function(o){return o.status===‘rejected’;});
+if(curFilter===‘order’)     list=list.filter(function(o){return o.type===‘order’;});
+if(curFilter===‘pickup’)    list=list.filter(function(o){return o.type===‘pickup’;});
+if(q) list=list.filter(function(o){return (o.num+o.provozovna+o.addr+o.ico+o.desc+’’).toLowerCase().includes(q);});
 el.innerHTML = list.length
-? list.map(o => cardHtml(o.fbKey, o)).join(’’)
-: `<div class="empty"><div class="ei">📭</div><p>Žádné záznamy.</p></div>`;
+? list.map(function(o){return cardHtml(o.fbKey,o);}).join(’’)
+: ‘<div class="empty"><div class="ei">📭</div><p>Žádné záznamy.</p></div>’;
 }
 
 function renderStats() {
-const all = ordersArr();
-document.getElementById(‘st-p’).textContent  = all.filter(o => (o.status || ‘pending’) === ‘pending’).length;
-document.getElementById(‘st-c’).textContent  = all.filter(o => o.status === ‘confirmed’).length;
-document.getElementById(‘st-r’).textContent  = all.filter(o => o.status === ‘rejected’).length;
-document.getElementById(‘st-o’).textContent  = all.filter(o => o.type === ‘order’).length;
-document.getElementById(‘st-pk’).textContent = all.filter(o => o.type === ‘pickup’).length;
+var all = ordersArr();
+document.getElementById(‘st-p’).textContent  = all.filter(function(o){return (o.status||‘pending’)===‘pending’;}).length;
+document.getElementById(‘st-c’).textContent  = all.filter(function(o){return o.status===‘confirmed’;}).length;
+document.getElementById(‘st-r’).textContent  = all.filter(function(o){return o.status===‘rejected’;}).length;
+document.getElementById(‘st-o’).textContent  = all.filter(function(o){return o.type===‘order’;}).length;
+document.getElementById(‘st-pk’).textContent = all.filter(function(o){return o.type===‘pickup’;}).length;
 document.getElementById(‘st-t’).textContent  = all.length;
-const rec = all.slice(0, 6);
+var rec = all.slice(0,6);
 document.getElementById(‘st-recent’).innerHTML = rec.length
-? rec.map(o => ` <div style="background:white;border-radius:var(--r);border:1px solid var(--g2);padding:11px 13px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:8px"> <div> <div style="font-size:13px;font-weight:600">${o.type === 'order' ? '📦' : '🚛'} ${esc(o.num)}</div> <div style="font-size:12px;color:var(--g4)">${esc(o.provozovna || '–')} · ${esc(o.date || '')}</div> </div> ${badgeHtml(o.status || 'pending')} </div>`).join(’’)
-: `<div class="empty" style="padding:20px"><p>Žádná data.</p></div>`;
+? rec.map(function(o){
+return ‘<div style="background:white;border-radius:var(--r);border:1px solid var(--g2);padding:11px 13px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:8px">’
++’<div><div style="font-size:13px;font-weight:600">’+(o.type===‘order’?‘📦’:‘🚛’)+’ ‘+esc(o.num)+’</div>’
++’<div style="font-size:12px;color:var(--g4)">’+esc(o.provozovna||’–’)+’ · ‘+esc(o.date||’’)+’</div></div>’
++badgeHtml(o.status||‘pending’)+’</div>’;
+}).join(’’)
+: ‘<div class="empty" style="padding:20px"><p>Žádná data.</p></div>’;
 }
 
-/* ═══════════════════════════════
-ACTION na objednávce
-═══════════════════════════════ */
-function actOrder(fbKey, action) {
-const driver    = document.getElementById(‘dr-’ + fbKey)?.value || ‘’;
-const delivDate = document.getElementById(‘dt-’ + fbKey)?.value || ‘’;
-const adminNote = document.getElementById(‘nt-’ + fbKey)?.value || ‘’;
-const cur       = orders[fbKey];
-const ns        = action === ‘save’ ? (cur?.status || ‘pending’) : action;
-
-ordersRef.child(fbKey).update({ status: ns, driver, delivDate, adminNote, updatedAt: new Date().toISOString() })
-.then(() => {
-if (action === ‘confirmed’) showToast(‘ok’, ‘Potvrzeno’, `${cur?.num || ''}${driver ? ' · ' + driver : ''}${delivDate ? ' · ' + delivDate : ''}`);
-else if (action === ‘rejected’) showToast(‘warn’, ‘Odmítnuto’, cur?.num || ‘’);
-else showToast(‘ok’, ‘Uloženo’, cur?.num || ‘’);
-document.getElementById(‘card-’ + fbKey)?.classList.remove(‘expanded’);
-})
-.catch(err => showToast(‘error’, ‘Chyba’, err.message));
-}
-
-/* ═══════════════════════════════
-DRIVERS
-═══════════════════════════════ */
 function renderDrivers() {
 document.getElementById(‘dwrap’).innerHTML = drivers.length
-? drivers.map((d, i) => `<div class="dchip">🚚 ${esc(d)}<span class="rm" data-di="${i}">✕</span></div>`).join(’’)
-: `<span style="font-size:13px;color:var(--g4)">Žádní řidiči.</span>`;
+? drivers.map(function(d,i){return ‘<div class="dchip">🚚 ‘+esc(d)+’<span class="rm" data-di="'+i+'">✕</span></div>’;}).join(’’)
+: ‘<span style="font-size:13px;color:var(--g4)">Žádní řidiči.</span>’;
 }
 
-/* ═══════════════════════════════
-TOAST
-═══════════════════════════════ */
-let tTimer;
-function showToast(type, title, sub) {
-clearTimeout(tTimer);
-document.getElementById(‘tico’).textContent = { ok: ‘✅’, warn: ‘⚠️’, error: ‘❌’ }[type] || ‘✅’;
-document.getElementById(‘tt’).textContent   = title;
-document.getElementById(‘tb’).textContent   = sub || ‘’;
-document.getElementById(‘toast’).classList.add(‘on’);
-tTimer = setTimeout(() => document.getElementById(‘toast’).classList.remove(‘on’), 4000);
+/* ACTION */
+function actOrder(fbKey, action) {
+var driver    = (document.getElementById(‘dr-’+fbKey)||{}).value||’’;
+var delivDate = (document.getElementById(‘dt-’+fbKey)||{}).value||’’;
+var adminNote = (document.getElementById(‘nt-’+fbKey)||{}).value||’’;
+var cur       = orders[fbKey];
+var ns        = action===‘save’ ? (cur&&cur.status||‘pending’) : action;
+ordersRef.child(fbKey).update({status:ns,driver:driver,delivDate:delivDate,adminNote:adminNote,updatedAt:new Date().toISOString()})
+.then(function(){
+if(action===‘confirmed’) showToast(‘ok’,‘Potvrzeno’,(cur&&cur.num||’’)+(driver?’ · ‘+driver:’’)+(delivDate?’ · ‘+delivDate:’’));
+else if(action===‘rejected’) showToast(‘warn’,‘Odmítnuto’,cur&&cur.num||’’);
+else showToast(‘ok’,‘Uloženo’,cur&&cur.num||’’);
+var card=document.getElementById(‘card-’+fbKey);
+if(card) card.classList.remove(‘expanded’);
+})
+.catch(function(err){showToast(‘error’,‘Chyba’,err.message);});
 }
 
-/* ═══════════════════════════════
-NAVIGATION
-═══════════════════════════════ */
-function showPage(id) {
-document.querySelectorAll(’.page’).forEach(p => p.classList.remove(‘active’));
-document.querySelectorAll(’.tab’).forEach(t => t.classList.remove(‘active’));
-document.getElementById(‘page-’ + id).classList.add(‘active’);
-document.querySelector(`.tab[data-page="${id}"]`)?.classList.add(‘active’);
+/* FIREBASE LISTENERS */
+db.ref(’.info/connected’).on(‘value’, function(snap) {
+var on = snap.val();
+document.getElementById(‘sdot’).className = ’sdot ’+(on?‘live’:‘offline’);
+document.getElementById(‘slabel’).textContent = on ? ‘Real-time · Firebase’ : ‘Offline’;
+});
+
+ordersRef.on(‘value’, function(snap) {
+var data = snap.val()||{};
+Object.keys(data).forEach(function(k) {
+if(!knownKeys[k] && Object.keys(orders).length>0) {
+setTimeout(function(){
+var card=document.getElementById(‘card-’+k);
+if(card){card.classList.add(‘new-pulse’);setTimeout(function(){card.classList.remove(‘new-pulse’);},700);}
+},100);
+showToast(‘ok’,‘Nová objednávka’,data[k].provozovna+’ · ’+data[k].vol);
 }
+knownKeys[k]=true;
+});
+orders=data;
+document.getElementById(‘lref’).textContent=’Aktualizováno: ’+ft(new Date());
+updateBadge();
+renderPending();
+renderAll();
+renderStats();
 
-/* ═══════════════════════════════
-GLOBAL EVENT DELEGATION
-– žádné inline handlery, vše zde
-═══════════════════════════════ */
-document.addEventListener(‘DOMContentLoaded’, () => {
+```
+// Skrýt loading, ukázat app
+document.getElementById('loading-screen').style.display='none';
+document.getElementById('app').style.display='block';
+```
 
-// Automaticky zaměří PIN input
+});
+
+/* APP EVENTS */
+setupAppEvents(showPage, actOrder, renderAll, renderDrivers, showToast, ordersRef, drivers, curFilter, function(f){curFilter=f;}, function(){return drivers;});
+renderDrivers();
+
+/* LOGOUT */
+document.getElementById(‘logout-btn’).addEventListener(‘click’, function(){
+// Odpojit Firebase listenery a schovat app
+ordersRef.off();
+document.getElementById(‘app’).style.display=‘none’;
+document.getElementById(‘pin-screen’).style.display=‘flex’;
+document.getElementById(‘pin-input’).value=’’;
+document.getElementById(‘pin-error’).textContent=’’;
 document.getElementById(‘pin-input’).focus();
-
-// PIN – submit button
-document.getElementById(‘pin-submit’).addEventListener(‘click’, checkPin);
-
-// PIN – Enter key
-document.getElementById(‘pin-input’).addEventListener(‘keydown’, e => {
-if (e.key === ‘Enter’) checkPin();
 });
+}
 
-// PIN – auto submit po 4 číslicích
-document.getElementById(‘pin-input’).addEventListener(‘input’, function() {
-this.value = this.value.replace(/[^0-9]/g, ‘’);
-if (this.value.length === 4) setTimeout(checkPin, 200);
-});
-
-// Logout
-document.getElementById(‘logout-btn’).addEventListener(‘click’, logout);
-
+/* ── App events (tab, filter, search, atd.) ── */
+function setupAppEvents(showPage, actOrder, renderAll, renderDrivers, showToast, ordersRef, drivers, curFilter, setFilter, getDrivers) {
 // Tabs
-document.querySelectorAll(’.tab’).forEach(btn => {
-btn.addEventListener(‘click’, () => showPage(btn.dataset.page));
+document.querySelectorAll(’.tab’).forEach(function(btn){
+btn.addEventListener(‘click’, function(){showPage(btn.dataset.page);});
 });
 
-// Filter buttons
-document.querySelectorAll(’.fbtn’).forEach(btn => {
-btn.addEventListener(‘click’, () => {
-curFilter = btn.dataset.filter;
-document.querySelectorAll(’.fbtn’).forEach(b => b.classList.remove(‘active’));
+// Filter
+document.querySelectorAll(’.fbtn’).forEach(function(btn){
+btn.addEventListener(‘click’, function(){
+setFilter(btn.dataset.filter);
+document.querySelectorAll(’.fbtn’).forEach(function(b){b.classList.remove(‘active’);});
 btn.classList.add(‘active’);
 renderAll();
 });
 });
 
 // Search
-document.getElementById(‘q’).addEventListener(‘input’, renderAll);
+document.getElementById(‘q’).addEventListener(‘input’, function(){renderAll();});
 
-// Refresh button
-document.getElementById(‘refresh-btn’).addEventListener(‘click’, () => {
-const s = document.getElementById(‘rspin’);
-s.classList.add(‘go’); setTimeout(() => s.classList.remove(‘go’), 500);
-showToast(‘ok’, ‘Připojeno’, ‘Data jsou aktuální v reálném čase.’);
+// Refresh
+document.getElementById(‘refresh-btn’).addEventListener(‘click’, function(){
+var s=document.getElementById(‘rspin’);
+s.classList.add(‘go’);setTimeout(function(){s.classList.remove(‘go’);},500);
+showToast(‘ok’,‘Připojeno’,‘Data jsou aktuální v reálném čase.’);
 });
 
 // Toast close
-document.getElementById(‘toast-close’).addEventListener(‘click’, () => {
+document.getElementById(‘toast-close’).addEventListener(‘click’, function(){
 document.getElementById(‘toast’).classList.remove(‘on’);
 });
 
 // PIN změna
-document.getElementById(‘pin-change-btn’).addEventListener(‘click’, () => {
-const v = (document.getElementById(‘new-pin’).value || ‘’).trim();
-if (!/^\d{4}$/.test(v)) { showToast(‘error’, ‘Chyba’, ‘PIN musí mít přesně 4 číslice.’); return; }
-localStorage.setItem(‘admin_pin’, v);
-document.getElementById(‘new-pin’).value = ‘’;
-showToast(‘ok’, ‘PIN změněn’, ‘Nový PIN byl uložen.’);
+document.getElementById(‘pin-change-btn’).addEventListener(‘click’, function(){
+var v=(document.getElementById(‘new-pin’).value||’’).trim();
+if(!/^\d{4}$/.test(v)){showToast(‘error’,‘Chyba’,‘PIN musí mít přesně 4 číslice.’);return;}
+localStorage.setItem(‘admin_pin’,v);
+document.getElementById(‘new-pin’).value=’’;
+showToast(‘ok’,‘PIN změněn’,‘Nový PIN byl uložen.’);
 });
 
 // Přidat řidiče
-document.getElementById(‘drv-add-btn’).addEventListener(‘click’, () => {
-const inp = document.getElementById(‘drv-inp’);
-const v   = inp.value.trim();
-if (!v || drivers.includes(v)) return;
-drivers.push(v); inp.value = ‘’;
-localStorage.setItem(‘admin_drivers’, JSON.stringify(drivers));
+document.getElementById(‘drv-add-btn’).addEventListener(‘click’, function(){
+var inp=document.getElementById(‘drv-inp’), v=inp.value.trim();
+if(!v||getDrivers().includes(v)) return;
+getDrivers().push(v); inp.value=’’;
+localStorage.setItem(‘admin_drivers’,JSON.stringify(getDrivers()));
 renderDrivers();
 });
 
 // Enter v poli řidiče
-document.getElementById(‘drv-inp’).addEventListener(‘keydown’, e => {
-if (e.key === ‘Enter’) document.getElementById(‘drv-add-btn’).click();
+document.getElementById(‘drv-inp’).addEventListener(‘keydown’, function(e){
+if(e.key===‘Enter’) document.getElementById(‘drv-add-btn’).click();
 });
 
 // Smazat vše
-document.getElementById(‘clear-all-btn’).addEventListener(‘click’, () => {
-if (!confirm(‘Opravdu smazat všechny objednávky z Firebase?’)) return;
-ordersRef.remove().then(() => showToast(‘ok’, ‘Smazáno’, ‘Všechny objednávky odstraněny.’));
+document.getElementById(‘clear-all-btn’).addEventListener(‘click’, function(){
+if(!confirm(‘Opravdu smazat všechny objednávky z Firebase?’)) return;
+ordersRef.remove().then(function(){showToast(‘ok’,‘Smazáno’,‘Všechny objednávky odstraněny.’);});
 });
 
-// Event delegation – karty, akce, toggle, smazat řidiče
-document.addEventListener(‘click’, e => {
-
-```
-// Toggle karty (rozbalit/sbalit)
-const hdr = e.target.closest('[data-toggle]');
-if (hdr) {
-  document.getElementById('card-' + hdr.dataset.toggle)?.classList.toggle('expanded');
-  return;
+// Event delegation – karty + akce + smazat řidiče
+document.addEventListener(‘click’, function(e){
+var hdr=e.target.closest(’[data-toggle]’);
+if(hdr){
+var card=document.getElementById(‘card-’+hdr.dataset.toggle);
+if(card) card.classList.toggle(‘expanded’);
+return;
 }
-
-// Akční tlačítka na kartách
-const abtn = e.target.closest('.abtn[data-key]');
-if (abtn) {
-  actOrder(abtn.dataset.key, abtn.dataset.act);
-  return;
+var abtn=e.target.closest(’.abtn[data-key]’);
+if(abtn){ actOrder(abtn.dataset.key, abtn.dataset.act); return; }
+var rm=e.target.closest(’.rm[data-di]’);
+if(rm){
+getDrivers().splice(parseInt(rm.dataset.di),1);
+localStorage.setItem(‘admin_drivers’,JSON.stringify(getDrivers()));
+renderDrivers();
 }
-
-// Smazat řidiče
-const rm = e.target.closest('.rm[data-di]');
-if (rm) {
-  drivers.splice(parseInt(rm.dataset.di), 1);
-  localStorage.setItem('admin_drivers', JSON.stringify(drivers));
-  renderDrivers();
-}
-```
-
 });
-});
+}
+
+// setupAppEvents volaný před Firebase (pro případ chyby)
+function setupAppEvents() {}
 </script>
 
 </body>
