@@ -1,374 +1,336 @@
 <!DOCTYPE html>
-
 <html lang="cs">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <meta name="theme-color" content="#0f3d0f">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Trafin Admin">
 <title>Trafin Oil – Dispečink</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --gd:#0f3d0f;--gm:#1a5c1a;--gx:#2a7a2a;--ga:#4caf50;--gp:#e8f5e9;
-  --am:#f59e0b;--ap:#fff8e1;--rd:#dc2626;--rp:#fee2e2;--bl:#2563eb;
-  --sf:#f4f7f4;--g1:#eef2ee;--g2:#d8e4d8;--g4:#7a987a;--g8:#162016;
-  --shsm:0 1px 4px rgba(0,0,0,.10);--shlg:0 8px 32px rgba(0,0,0,.18);
-  --r:12px;--rl:20px;
+:root{
+  --G:#1a5c1a;--Gd:#0f3d0f;--Gx:#2a7a2a;--Ga:#4caf50;--Gp:#e8f5e9;
+  --A:#f59e0b;--Ap:#fff8e1;--R:#dc2626;--Rp:#fee2e2;--B:#2563eb;
+  --bg:#f4f7f4;--c1:#eef2ee;--c2:#d8e4d8;--c4:#7a987a;--c8:#162016;
+  --sh:0 2px 8px rgba(0,0,0,.10);--shb:0 6px 24px rgba(0,0,0,.15);
+  --rad:12px;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{font-family:'Barlow',sans-serif;background:var(--sf);color:var(--g8);min-height:100vh;overflow-x:hidden}
+body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--c8);min-height:100vh}
+button{font-family:'Barlow',sans-serif;cursor:pointer}
+input,select,textarea{font-family:'Barlow',sans-serif}
 
 /* ── PIN ── */
-#pin-screen{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  min-height:100vh;
-  background:linear-gradient(160deg,var(--gd) 0%,var(--gm) 50%,var(--gx) 100%);
-  padding:32px 24px;
-}
-.pin-logo{height:48px;filter:brightness(0) invert(1);margin-bottom:6px}
-.pin-card{background:white;border-radius:var(--rl);padding:28px 22px;width:100%;max-width:320px;box-shadow:var(--shlg)}
-.pin-card h2{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;letter-spacing:1px;text-align:center;color:var(--gm);text-transform:uppercase;margin-bottom:4px}
-.pin-card .hint{font-size:13px;color:var(--g4);text-align:center;margin-bottom:6px}
-#pin-input{
-  display:block;width:100%;padding:16px;margin:14px 0 12px;
-  border:2px solid var(--g2);border-radius:10px;
-  font-size:28px;text-align:center;letter-spacing:10px;
-  font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--gm);
-  outline:none;background:white;transition:border-color .2s;
-}
-#pin-input:focus{border-color:var(--gx)}
-#pin-submit{
-  display:block;width:100%;padding:14px;border:none;border-radius:10px;
-  background:linear-gradient(135deg,var(--gm),var(--gx));color:white;
-  font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;
-  letter-spacing:1px;text-transform:uppercase;cursor:pointer;
-}
-#pin-submit:active{opacity:.82}
-#pin-error{text-align:center;color:var(--rd);font-size:13px;font-weight:600;margin-top:12px;min-height:18px}
-@keyframes shake{0%,100%{transform:none}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
-.shake{animation:shake .35s ease}
+#P{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;
+   background:linear-gradient(150deg,var(--Gd),var(--G) 55%,var(--Gx));padding:24px}
+#P img{height:44px;filter:brightness(0)invert(1);margin-bottom:24px}
+#P form{background:white;border-radius:16px;padding:28px 22px;width:100%;max-width:300px;box-shadow:var(--shb)}
+#P h2{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;letter-spacing:1px;
+       text-transform:uppercase;color:var(--G);text-align:center;margin-bottom:4px}
+#P p{font-size:13px;color:var(--c4);text-align:center;margin-bottom:16px}
+#pi{display:block;width:100%;padding:14px;margin-bottom:12px;border:2px solid var(--c2);border-radius:10px;
+    font-size:28px;text-align:center;letter-spacing:10px;font-family:'Barlow Condensed',sans-serif;
+    font-weight:700;color:var(--G);outline:none;transition:border-color .2s}
+#pi:focus{border-color:var(--Gx)}
+#P button[type=submit]{display:block;width:100%;padding:13px;border:none;border-radius:10px;
+  background:linear-gradient(135deg,var(--G),var(--Gx));color:white;
+  font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;
+  letter-spacing:1px;text-transform:uppercase}
+#P button:active{opacity:.85}
+#pe{text-align:center;color:var(--R);font-size:13px;font-weight:600;margin-top:10px;min-height:18px}
+@keyframes shake{0%,100%{transform:none}25%,75%{transform:translateX(-7px)}50%{transform:translateX(7px)}}
+.shake{animation:shake .3s ease}
 
 /* ── LOADING ── */
-#loading-screen{
-  display:none;flex-direction:column;align-items:center;justify-content:center;
-  min-height:100vh;background:var(--sf);gap:16px;
-}
-.spinner{width:40px;height:40px;border:4px solid var(--g2);border-top-color:var(--gm);border-radius:50%;animation:spin .8s linear infinite}
+#L{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:14px}
+.spin{width:36px;height:36px;border:3px solid var(--c2);border-top-color:var(--G);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.loading-text{font-family:'Barlow Condensed',sans-serif;font-size:14px;letter-spacing:1px;color:var(--g4);text-transform:uppercase}
+#L p{font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:1px;color:var(--c4);text-transform:uppercase}
 
 /* ── APP ── */
-#app{display:none;padding-bottom:80px}
-header{background:linear-gradient(135deg,var(--gd),var(--gm));color:white;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.28)}
-.hinner{display:flex;align-items:center;justify-content:space-between;padding:12px 16px}
-.hlogo{height:30px;filter:brightness(0) invert(1)}
-.hright{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
-.htitle{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
-.hsync{font-size:11px;opacity:.65;display:flex;align-items:center;gap:4px}
-.sdot{width:6px;height:6px;border-radius:50%;background:#9e9e9e;transition:background .3s}
-.sdot.live{background:#4caf50;animation:sp 2s infinite}
-.sdot.offline{background:var(--am)}
-@keyframes sp{0%,100%{opacity:1}50%{opacity:.3}}
-#logout-btn{margin-top:3px;background:rgba(255,255,255,.14);border:none;color:white;padding:4px 10px;border-radius:6px;font-size:11px;font-family:'Barlow Condensed',sans-serif;font-weight:700;cursor:pointer}
+#A{display:none;padding-bottom:80px}
+header{background:linear-gradient(135deg,var(--Gd),var(--G));color:white;position:sticky;top:0;z-index:50;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+.hi{display:flex;align-items:center;justify-content:space-between;padding:11px 16px}
+.hi img{height:28px;filter:brightness(0)invert(1)}
+.hr{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.hr .ht{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
+.hs{font-size:11px;opacity:.65;display:flex;align-items:center;gap:4px}
+.sd{width:6px;height:6px;border-radius:50%;background:#9e9e9e;transition:background .3s}
+.sd.live{background:#4caf50;animation:bl 2s infinite}
+.sd.off{background:var(--A)}
+@keyframes bl{0%,100%{opacity:1}50%{opacity:.3}}
+#ob{margin-top:3px;background:rgba(255,255,255,.14);border:none;color:white;padding:4px 10px;
+    border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700}
 
-.tabs{display:flex;background:var(--gd);border-top:1px solid rgba(255,255,255,.1)}
-.tabw{position:relative;flex:1}
-.tab{display:block;width:100%;padding:9px 0;text-align:center;color:rgba(255,255,255,.55);font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;border:none;background:none}
-.tab.active{color:white;border-bottom:3px solid var(--ga);background:rgba(255,255,255,.06)}
-.tab-icon{font-size:17px;display:block;margin-bottom:1px}
-.tbadge{position:absolute;top:5px;right:calc(50% - 20px);background:var(--rd);color:white;font-size:10px;font-weight:700;border-radius:10px;padding:1px 6px;display:none;pointer-events:none}
-.tbadge.on{display:block}
+.tabs{display:flex;background:var(--Gd);border-top:1px solid rgba(255,255,255,.1)}
+.tw{position:relative;flex:1}
+.tab{display:block;width:100%;padding:9px 0;text-align:center;color:rgba(255,255,255,.55);
+     font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
+     border:none;background:none;border-bottom:3px solid transparent;transition:all .2s}
+.tab.on{color:white;border-bottom-color:var(--Ga);background:rgba(255,255,255,.07)}
+.ti{font-size:16px;display:block;margin-bottom:1px}
+.tbg{position:absolute;top:5px;right:calc(50% - 18px);background:var(--R);color:white;
+     font-size:10px;font-weight:700;border-radius:10px;padding:1px 5px;display:none}
+.tbg.on{display:block}
 
-.page{display:none;padding:14px}
-.page.active{display:block}
-.slabel{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gm);margin-bottom:10px;margin-top:20px}
-.slabel:first-child{margin-top:0}
+.pg{display:none;padding:14px}
+.pg.on{display:block}
+.sl{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;
+    text-transform:uppercase;color:var(--G);margin:20px 0 10px}
+.sl:first-child{margin-top:0}
 
-.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.sc{background:white;border-radius:var(--r);padding:12px;text-align:center;box-shadow:var(--shsm);border:1px solid var(--g2)}
-.sn{font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:700;line-height:1}
-.sl{font-size:10px;color:var(--g4);margin-top:4px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+/* STATS */
+.sr{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.sc{background:white;border-radius:var(--rad);padding:12px;text-align:center;box-shadow:var(--sh);border:1px solid var(--c2)}
+.sn{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:700;line-height:1}
+.sk{font-size:10px;color:var(--c4);margin-top:3px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
 
-.ocard{background:white;border-radius:var(--r);box-shadow:var(--shsm);border:1px solid var(--g2);border-left-width:4px;margin-bottom:10px;overflow:hidden}
-.ocard.pending{border-left-color:var(--am)}
-.ocard.confirmed{border-left-color:var(--ga)}
-.ocard.rejected{border-left-color:var(--rd)}
-.new-pulse{animation:np .7s ease}
-@keyframes np{0%{box-shadow:0 0 0 0 rgba(76,175,80,.5)}100%{box-shadow:0 0 0 14px rgba(76,175,80,0)}}
-.ohdr{padding:12px 13px;display:flex;align-items:flex-start;gap:10px;cursor:pointer;user-select:none}
-.otype{font-size:22px;flex-shrink:0}
-.oinfo{flex:1;min-width:0}
-.onum{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--gm)}
-.oprov{font-weight:600;font-size:14px;margin-top:1px}
-.odesc{font-size:12px;color:var(--g4);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ometa{font-size:11px;color:var(--g4);margin-top:2px}
-.oright{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0}
-.ovol{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700}
-.chev{font-size:11px;color:var(--g4);transition:transform .2s}
-.ocard.expanded .chev{transform:rotate(180deg)}
-.sbadge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700}
-.sbadge.pending{background:var(--ap);color:#92400e}
-.sbadge.confirmed{background:var(--gp);color:var(--gm)}
-.sbadge.rejected{background:var(--rp);color:var(--rd)}
-.bdot{width:6px;height:6px;border-radius:50%;background:currentColor}
-.sbadge.pending .bdot{animation:pdot 1.3s infinite}
-@keyframes pdot{0%,100%{opacity:1}50%{opacity:.2}}
-.odetail{display:none;padding:0 13px 13px;border-top:1px solid var(--g1)}
-.ocard.expanded .odetail{display:block}
-.drow{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:1px solid var(--g1);gap:8px}
-.drow:last-child{border-bottom:none}
-.dl{color:var(--g4);flex-shrink:0}
+/* ORDER CARD */
+.oc{background:white;border-radius:var(--rad);box-shadow:var(--sh);border:1px solid var(--c2);
+    border-left:4px solid transparent;margin-bottom:10px;overflow:hidden}
+.oc.pending{border-left-color:var(--A)}
+.oc.confirmed{border-left-color:var(--Ga)}
+.oc.rejected{border-left-color:var(--R)}
+.oh{padding:12px 13px;display:flex;align-items:flex-start;gap:10px;cursor:pointer;user-select:none}
+.oi{flex:1;min-width:0}
+.on2{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--G)}
+.op{font-weight:600;font-size:14px;margin-top:1px}
+.od{font-size:12px;color:var(--c4);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.om{font-size:11px;color:var(--c4);margin-top:2px}
+.or2{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
+.ov{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700}
+.cv{font-size:11px;color:var(--c4);transition:transform .2s}
+.oc.ex .cv{transform:rotate(180deg)}
+.sb{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;
+    font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700}
+.sb.pending{background:var(--Ap);color:#92400e}
+.sb.confirmed{background:var(--Gp);color:var(--G)}
+.sb.rejected{background:var(--Rp);color:var(--R)}
+.bd{width:6px;height:6px;border-radius:50%;background:currentColor}
+.sb.pending .bd{animation:bl 1.3s infinite}
+.odt{display:none;padding:0 13px 13px;border-top:1px solid var(--c1)}
+.oc.ex .odt{display:block}
+.dr{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:1px solid var(--c1);gap:8px}
+.dr:last-child{border-bottom:none}
+.dk{color:var(--c4);flex-shrink:0}
 .dv{font-weight:600;text-align:right}
-.alabel{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gm);margin:13px 0 8px}
-.frow{display:flex;gap:8px;margin-bottom:8px}
-.frow input,.frow select{flex:1;padding:9px 11px;border:1.5px solid var(--g2);border-radius:8px;font-family:'Barlow',sans-serif;font-size:13px;color:var(--g8);background:white;outline:none;transition:border-color .2s}
-.frow input:focus,.frow select:focus{border-color:var(--gx)}
-.fnote{width:100%;padding:9px 11px;border:1.5px solid var(--g2);border-radius:8px;font-family:'Barlow',sans-serif;font-size:13px;background:white;outline:none;resize:none;height:60px;margin-bottom:8px;transition:border-color .2s;display:block}
-.fnote:focus{border-color:var(--gx)}
-.abtns{display:flex;gap:8px}
-.abtn{flex:1;padding:11px 6px;border:none;border-radius:9px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.5px;cursor:pointer;transition:all .15s;text-align:center}
-.abtn:active{transform:scale(.94)}
-.abtn-ok{background:var(--ga);color:white}
-.abtn-no{background:var(--rd);color:white}
-.abtn-sv{background:var(--bl);color:white}
+.al{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;
+    text-transform:uppercase;color:var(--G);margin:13px 0 7px}
+.fr{display:flex;gap:8px;margin-bottom:8px}
+.fr input,.fr select{flex:1;padding:9px 11px;border:1.5px solid var(--c2);border-radius:8px;
+  font-size:13px;color:var(--c8);background:white;outline:none;transition:border-color .2s}
+.fr input:focus,.fr select:focus{border-color:var(--Gx)}
+.fn{width:100%;padding:9px 11px;border:1.5px solid var(--c2);border-radius:8px;font-size:13px;
+    background:white;outline:none;resize:none;height:58px;margin-bottom:8px;display:block;transition:border-color .2s}
+.fn:focus{border-color:var(--Gx)}
+.ab{display:flex;gap:8px}
+.abtn{flex:1;padding:11px 6px;border:none;border-radius:9px;font-family:'Barlow Condensed',sans-serif;
+      font-weight:700;font-size:14px;letter-spacing:.5px;text-align:center}
+.abtn:active{opacity:.85}
+.ak{background:var(--Ga);color:white}
+.an{background:var(--R);color:white}
+.as{background:var(--B);color:white}
 
-.fbar{display:flex;gap:7px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px}
-.fbtn{padding:7px 13px;border-radius:20px;border:1.5px solid var(--g2);background:white;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;color:var(--g4);transition:all .18s}
-.fbtn.active{background:var(--gm);color:white;border-color:var(--gm)}
-.searchbar{position:relative;margin-bottom:12px}
-.searchbar input{width:100%;padding:10px 13px 10px 35px;border:1.5px solid var(--g2);border-radius:var(--r);font-family:'Barlow',sans-serif;font-size:14px;background:white;outline:none;transition:border-color .2s}
-.searchbar input:focus{border-color:var(--gx)}
-.sicon{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:15px;pointer-events:none}
-.refbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.lref{font-size:11px;color:var(--g4)}
-.refbtn{display:flex;align-items:center;gap:5px;padding:7px 12px;background:white;border:1.5px solid var(--g2);border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.5px;cursor:pointer;color:var(--gm)}
-.rspin{display:inline-block;transition:transform .5s}
-.rspin.go{transform:rotate(360deg)}
-.empty{text-align:center;padding:44px 20px;color:var(--g4)}
-.empty .ei{font-size:48px;margin-bottom:12px}
-.empty p{font-size:14px;line-height:1.6}
+/* FILTER / SEARCH */
+.fb{display:flex;gap:7px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px}
+.ft{padding:6px 12px;border-radius:20px;border:1.5px solid var(--c2);background:white;
+    font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;white-space:nowrap;color:var(--c4)}
+.ft.on{background:var(--G);color:white;border-color:var(--G)}
+.sb2{position:relative;margin-bottom:12px}
+.sb2 input{width:100%;padding:10px 13px 10px 34px;border:1.5px solid var(--c2);border-radius:var(--rad);
+  font-size:14px;background:white;outline:none;transition:border-color .2s}
+.sb2 input:focus{border-color:var(--Gx)}
+.si{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none}
+.rb{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.lr{font-size:11px;color:var(--c4)}
+.rf{display:flex;align-items:center;gap:5px;padding:7px 11px;background:white;border:1.5px solid var(--c2);
+    border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;color:var(--G)}
+.rs{display:inline-block;transition:transform .5s}
+.rs.go{transform:rotate(360deg)}
+.mt{text-align:center;padding:40px 20px;color:var(--c4)}
+.mt .ei{font-size:44px;margin-bottom:12px}
+.mt p{font-size:14px;line-height:1.6}
 
-.dchip{display:inline-flex;align-items:center;gap:5px;background:var(--gp);border:1px solid var(--ga);border-radius:20px;padding:4px 10px;font-size:13px;font-weight:600;margin:3px}
-.dchip .rm{cursor:pointer;color:var(--rd);font-size:14px;font-weight:700}
-.dwrap{display:flex;flex-wrap:wrap;min-height:34px;margin-bottom:8px}
-.sbox{background:white;border-radius:var(--r);border:1px solid var(--g2);padding:14px;margin-bottom:12px}
-.sbox input[type=text],.sbox input[type=password]{width:100%;padding:10px 12px;border:1.5px solid var(--g2);border-radius:8px;font-family:'Barlow',sans-serif;font-size:14px;outline:none;transition:border-color .2s;margin-bottom:10px}
-.sbox input:focus{border-color:var(--gx)}
-.sbxbtn{width:100%;padding:11px;border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;cursor:pointer}
-.sbxbtn.g{background:var(--gx);color:white}
-.sbxbtn.r{background:var(--rd);color:white}
+/* SETTINGS */
+.dw{display:flex;flex-wrap:wrap;min-height:32px;margin-bottom:8px}
+.dc{display:inline-flex;align-items:center;gap:5px;background:var(--Gp);border:1px solid var(--Ga);
+    border-radius:20px;padding:4px 10px;font-size:13px;font-weight:600;margin:3px}
+.dc .rm{cursor:pointer;color:var(--R);font-size:14px;font-weight:700}
+.bx{background:white;border-radius:var(--rad);border:1px solid var(--c2);padding:14px;margin-bottom:12px}
+.bx input[type=text],.bx input[type=password]{width:100%;padding:10px 12px;border:1.5px solid var(--c2);
+  border-radius:8px;font-size:14px;outline:none;transition:border-color .2s;margin-bottom:10px}
+.bx input:focus{border-color:var(--Gx)}
+.bxb{width:100%;padding:11px;border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;
+     font-weight:700;font-size:15px}
+.bxb.g{background:var(--Gx);color:white}
+.bxb.r{background:var(--R);color:white}
 
-.toast{position:fixed;bottom:18px;left:13px;right:13px;background:white;border-radius:var(--r);box-shadow:var(--shlg);padding:12px 13px;z-index:2000;display:none;max-width:480px;margin:0 auto}
-.toast.on{display:flex;align-items:center;gap:10px;animation:tIn .25s ease}
-@keyframes tIn{from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1}}
-.tico{font-size:22px;flex-shrink:0}
-.tbody2{flex:1}
-.tt{font-weight:700;font-size:13px}
-.tb{font-size:12px;color:var(--g4);margin-top:1px}
-.tcl{font-size:18px;cursor:pointer;color:var(--g4)}
-
-.fade-in{animation:fadeIn .3s ease both}
-@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+/* TOAST */
+.tst{position:fixed;bottom:16px;left:12px;right:12px;background:white;border-radius:var(--rad);
+     box-shadow:var(--shb);padding:11px 12px;z-index:200;display:none;max-width:480px;margin:0 auto}
+.tst.on{display:flex;align-items:center;gap:10px;animation:tIn .2s ease}
+@keyframes tIn{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
+.ti2{font-size:20px;flex-shrink:0}
+.tb2{flex:1}
+.tt2{font-weight:700;font-size:13px}
+.ts2{font-size:12px;color:var(--c4);margin-top:1px}
+.tc{font-size:17px;cursor:pointer;color:var(--c4)}
 </style>
-
 </head>
 <body>
 
-<!-- ═══ PIN – žádná závislost na Firebase ═══ -->
-
-<div id="pin-screen">
-  <img class="pin-logo" src="https://www.trafinoil.cz/dist/front/images/logo.svg" alt="Trafin Oil"
+<!-- PIN – čistý form, funguje všude -->
+<div id="P">
+  <img src="https://www.trafinoil.cz/dist/front/images/logo.svg" alt="Trafin Oil"
        onerror="this.style.display='none'">
-  <div style="font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.55);margin:6px 0 34px">Dispečink</div>
-  <div class="pin-card" id="pin-card">
-    <h2>Přihlášení</h2>
-    <div class="hint">Výchozí PIN: <strong>1234</strong></div>
-    <input type="password" id="pin-input" maxlength="4" inputmode="numeric" placeholder="••••" autocomplete="off">
-    <button id="pin-submit">Přihlásit se →</button>
-    <div id="pin-error"></div>
-  </div>
+  <form id="pf">
+    <h2>Dispečink</h2>
+    <p>Výchozí PIN: <strong>1234</strong></p>
+    <input id="pi" type="password" maxlength="4" inputmode="numeric"
+           placeholder="••••" autocomplete="off" required>
+    <button type="submit">Přihlásit se →</button>
+    <div id="pe"></div>
+  </form>
 </div>
 
-<!-- ═══ LOADING (čeká na Firebase) ═══ -->
+<!-- LOADING -->
+<div id="L"><div class="spin"></div><p>Načítání…</p></div>
 
-<div id="loading-screen">
-  <div class="spinner"></div>
-  <div class="loading-text">Načítání dat…</div>
-</div>
-
-<!-- ═══ APP ═══ -->
-
-<div id="app">
-  <div class="toast" id="toast">
-    <div class="tico" id="tico">✅</div>
-    <div class="tbody2"><div class="tt" id="tt"></div><div class="tb" id="tb"></div></div>
-    <div class="tcl" id="toast-close">✕</div>
+<!-- APP -->
+<div id="A">
+  <div class="tst" id="tst">
+    <div class="ti2" id="ti2">✅</div>
+    <div class="tb2"><div class="tt2" id="tt2"></div><div class="ts2" id="ts2"></div></div>
+    <div class="tc" id="tc">✕</div>
   </div>
 
   <header>
-    <div class="hinner">
-      <img class="hlogo" src="https://www.trafinoil.cz/dist/front/images/logo.svg" alt="Trafin Oil"
+    <div class="hi">
+      <img src="https://www.trafinoil.cz/dist/front/images/logo.svg" alt="Trafin Oil"
            onerror="this.style.display='none'">
-      <div class="hright">
-        <div class="htitle">Dispečink</div>
-        <div class="hsync"><span class="sdot" id="sdot"></span><span id="slabel">Připojování…</span></div>
-        <button id="logout-btn">Odhlásit</button>
+      <div class="hr">
+        <div class="ht">Dispečink</div>
+        <div class="hs"><span class="sd" id="sd"></span><span id="sl2">Připojování…</span></div>
+        <button id="ob">Odhlásit</button>
       </div>
     </div>
     <div class="tabs">
-      <div class="tabw">
-        <button class="tab active" data-page="pending"><span class="tab-icon">⏳</span>Čekající</button>
-        <div class="tbadge" id="tbadge"></div>
+      <div class="tw">
+        <button class="tab on" data-pg="pending"><span class="ti">⏳</span>Čekající</button>
+        <div class="tbg" id="tbg"></div>
       </div>
-      <div class="tabw"><button class="tab" data-page="all"><span class="tab-icon">📋</span>Vše</button></div>
-      <div class="tabw"><button class="tab" data-page="stats"><span class="tab-icon">📊</span>Přehled</button></div>
-      <div class="tabw"><button class="tab" data-page="asett"><span class="tab-icon">⚙️</span>Nastavení</button></div>
+      <div class="tw"><button class="tab" data-pg="all"><span class="ti">📋</span>Vše</button></div>
+      <div class="tw"><button class="tab" data-pg="stats"><span class="ti">📊</span>Přehled</button></div>
+      <div class="tw"><button class="tab" data-pg="cfg"><span class="ti">⚙️</span>Nastavení</button></div>
     </div>
   </header>
 
-  <div class="page active fade-in" id="page-pending">
-    <div class="refbar">
-      <span class="lref" id="lref">Real-time · Firebase</span>
-      <button class="refbtn" id="refresh-btn"><span class="rspin" id="rspin">↻</span> Obnovit</button>
-    </div>
-    <div id="list-pending"></div>
+  <div class="pg on" id="pg-pending">
+    <div class="rb"><span class="lr" id="lr">Firebase · real-time</span>
+      <button class="rf" id="rfb"><span class="rs" id="rs">↻</span> Obnovit</button></div>
+    <div id="lp"></div>
   </div>
 
-  <div class="page fade-in" id="page-all">
-    <div class="searchbar"><span class="sicon">🔍</span><input type="text" id="q" placeholder="Hledat č. objednávky, provozovnu…"></div>
-    <div class="fbar">
-      <button class="fbtn active" data-filter="all">Vše</button>
-      <button class="fbtn" data-filter="pending">⏳ Čekající</button>
-      <button class="fbtn" data-filter="confirmed">✅ Potvrzené</button>
-      <button class="fbtn" data-filter="rejected">❌ Odmítnuté</button>
-      <button class="fbtn" data-filter="order">📦 Dodávky</button>
-      <button class="fbtn" data-filter="pickup">🚛 Odvozy</button>
+  <div class="pg" id="pg-all">
+    <div class="sb2"><span class="si">🔍</span>
+      <input type="text" id="sq" placeholder="Hledat č. objednávky, provozovnu…"></div>
+    <div class="fb">
+      <button class="ft on" data-f="all">Vše</button>
+      <button class="ft" data-f="pending">⏳ Čekající</button>
+      <button class="ft" data-f="confirmed">✅ Potvrzené</button>
+      <button class="ft" data-f="rejected">❌ Odmítnuté</button>
+      <button class="ft" data-f="order">📦 Dodávky</button>
+      <button class="ft" data-f="pickup">🚛 Odvozy</button>
     </div>
-    <div id="list-all"></div>
+    <div id="la"></div>
   </div>
 
-  <div class="page fade-in" id="page-stats">
-    <p class="slabel">Statistiky</p>
-    <div class="stats-row">
-      <div class="sc"><div class="sn" id="st-p" style="color:var(--am)">0</div><div class="sl">Čekající</div></div>
-      <div class="sc"><div class="sn" id="st-c" style="color:var(--gx)">0</div><div class="sl">Potvrzené</div></div>
-      <div class="sc"><div class="sn" id="st-r" style="color:var(--rd)">0</div><div class="sl">Odmítnuté</div></div>
+  <div class="pg" id="pg-stats">
+    <p class="sl">Statistiky</p>
+    <div class="sr">
+      <div class="sc"><div class="sn" id="sp" style="color:var(--A)">0</div><div class="sk">Čekající</div></div>
+      <div class="sc"><div class="sn" id="sc2" style="color:var(--Gx)">0</div><div class="sk">Potvrzené</div></div>
+      <div class="sc"><div class="sn" id="sr2" style="color:var(--R)">0</div><div class="sk">Odmítnuté</div></div>
     </div>
-    <div class="stats-row" style="margin-top:10px">
-      <div class="sc"><div class="sn" id="st-o" style="color:var(--bl)">0</div><div class="sl">Dodávky</div></div>
-      <div class="sc"><div class="sn" id="st-pk" style="color:var(--am)">0</div><div class="sl">Odvozy</div></div>
-      <div class="sc"><div class="sn" id="st-t" style="color:var(--gx)">0</div><div class="sl">Celkem</div></div>
+    <div class="sr" style="margin-top:10px">
+      <div class="sc"><div class="sn" id="so" style="color:var(--B)">0</div><div class="sk">Dodávky</div></div>
+      <div class="sc"><div class="sn" id="sk2" style="color:var(--A)">0</div><div class="sk">Odvozy</div></div>
+      <div class="sc"><div class="sn" id="st2" style="color:var(--Gx)">0</div><div class="sk">Celkem</div></div>
     </div>
-    <p class="slabel">Poslední aktivita</p>
-    <div id="st-recent"></div>
+    <p class="sl">Poslední aktivita</p>
+    <div id="sre"></div>
   </div>
 
-  <div class="page fade-in" id="page-asett">
-    <p class="slabel">Řidiči</p>
-    <div class="sbox">
-      <div class="dwrap" id="dwrap"></div>
+  <div class="pg" id="pg-cfg">
+    <p class="sl">Řidiči</p>
+    <div class="bx">
+      <div class="dw" id="dw"></div>
       <div style="display:flex;gap:8px">
-        <input type="text" id="drv-inp" placeholder="Jméno řidiče" style="flex:1;padding:10px 12px;border:1.5px solid var(--g2);border-radius:8px;font-family:'Barlow',sans-serif;font-size:14px;outline:none">
-        <button id="drv-add-btn" style="padding:10px 14px;background:var(--gx);color:white;border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;cursor:pointer;flex-shrink:0">Přidat</button>
+        <input type="text" id="di" placeholder="Jméno řidiče"
+          style="flex:1;padding:10px 12px;border:1.5px solid var(--c2);border-radius:8px;font-size:14px;outline:none">
+        <button id="dab" style="padding:10px 13px;background:var(--Gx);color:white;border:none;
+          border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;flex-shrink:0">Přidat</button>
       </div>
     </div>
-    <p class="slabel">Změna PINu</p>
-    <div class="sbox">
-      <label style="display:block;font-size:12px;font-weight:600;color:var(--gm);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Nový PIN (4 číslice)</label>
-      <input type="password" id="new-pin" maxlength="4" placeholder="••••" style="text-align:center;letter-spacing:8px;font-size:20px">
-      <button id="pin-change-btn" class="sbxbtn g">Uložit nový PIN</button>
+    <p class="sl">Změna PINu</p>
+    <div class="bx">
+      <label style="display:block;font-size:12px;font-weight:600;color:var(--G);text-transform:uppercase;
+        letter-spacing:.5px;margin-bottom:6px">Nový PIN (4 číslice)</label>
+      <input type="password" id="np" maxlength="4" placeholder="••••"
+        style="text-align:center;letter-spacing:8px;font-size:20px">
+      <button id="cpb" class="bxb g">Uložit nový PIN</button>
     </div>
-    <p class="slabel">Data</p>
-    <div class="sbox">
-      <p style="font-size:13px;color:var(--g4);margin-bottom:12px">Smazat všechny objednávky z Firebase. Nevratná akce.</p>
-      <button id="clear-all-btn" class="sbxbtn r">🗑 Smazat všechna data</button>
+    <p class="sl">Data</p>
+    <div class="bx">
+      <p style="font-size:13px;color:var(--c4);margin-bottom:12px">Smazat všechny objednávky z Firebase.</p>
+      <button id="cab" class="bxb r">🗑 Smazat vše</button>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════
-     SCRIPT – PIN se spustí okamžitě (bez Firebase).
-     Firebase se načte dynamicky až po úspěšném přihlášení.
-════════════════════════════════════════════════════ -->
-
 <script>
+/* ════════════════════════════════
+   PIN  (žádný Firebase)
+════════════════════════════════ */
+var PIN_KEY = 'admin_pin';
+function getPin(){ return localStorage.getItem(PIN_KEY) || '1234'; }
 
-/* ── PIN (funguje bez Firebase, bez internetu) ── */
-(function() {
-  function getPin() { return localStorage.getItem('admin_pin') || '1234'; }
-
-  function tryLogin() {
-    const inp = document.getElementById('pin-input');
-    const val = inp.value.trim();
-    const err = document.getElementById('pin-error');
-    if (val === getPin()) {
-      err.textContent = '';
-      inp.value = '';
-      // Schovat PIN, ukázat loading
-      document.getElementById('pin-screen').style.display = 'none';
-      document.getElementById('loading-screen').style.display = 'flex';
-      // Načíst Firebase dynamicky
-      loadFirebase();
-    } else {
-      err.textContent = 'Nesprávný PIN, zkuste znovu.';
-      inp.value = '';
-      inp.focus();
-      const c = document.getElementById('pin-card');
-      c.classList.remove('shake');
-      void c.offsetWidth;
-      c.classList.add('shake');
-    }
+document.getElementById('pf').addEventListener('submit', function(e){
+  e.preventDefault();
+  var v = document.getElementById('pi').value.trim();
+  if(v === getPin()){
+    document.getElementById('pi').value = '';
+    document.getElementById('pe').textContent = '';
+    document.getElementById('P').style.display = 'none';
+    document.getElementById('L').style.display = 'flex';
+    startApp();
+  } else {
+    document.getElementById('pe').textContent = 'Nesprávný PIN.';
+    document.getElementById('pi').value = '';
+    document.getElementById('pi').focus();
+    var f = document.querySelector('#pf');
+    f.classList.remove('shake'); void f.offsetWidth; f.classList.add('shake');
   }
+});
 
-  document.getElementById('pin-submit').addEventListener('click', tryLogin);
-
-  document.getElementById('pin-input').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') tryLogin();
+/* ════════════════════════════════
+   FIREBASE – načte se až po přihlášení
+════════════════════════════════ */
+function startApp(){
+  function loadScript(src, cb){
+    var s = document.createElement('script');
+    s.src = src;
+    s.onload = cb;
+    s.onerror = function(){ showApp(); toast('e','Chyba','Nepodařilo se načíst Firebase.'); };
+    document.head.appendChild(s);
+  }
+  loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js', function(){
+    loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js', initFB);
   });
-
-  document.getElementById('pin-input').addEventListener('input', function() {
-    this.value = this.value.replace(/[^0-9]/g, '');
-    if (this.value.length === 4) setTimeout(tryLogin, 200);
-  });
-
-  // Zaměř input po načtení
-  window.addEventListener('load', function() {
-    document.getElementById('pin-input').focus();
-  });
-})();
-
-/* ── Dynamické načtení Firebase po přihlášení ── */
-function loadFirebase() {
-  // Načteme oba skripty postupně
-  var s1 = document.createElement('script');
-  s1.src = 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js';
-  s1.onload = function() {
-    var s2 = document.createElement('script');
-    s2.src = 'https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js';
-    s2.onload = function() { initFirebase(); };
-    s2.onerror = function() { showAppWithError('Nepodařilo se načíst Firebase. Zkontrolujte připojení.'); };
-    document.head.appendChild(s2);
-  };
-  s1.onerror = function() { showAppWithError('Nepodařilo se načíst Firebase. Zkontrolujte připojení.'); };
-  document.head.appendChild(s1);
 }
 
-function showAppWithError(msg) {
-  document.getElementById('loading-screen').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
-  document.getElementById('list-pending').innerHTML =
-    '<div class="empty"><div class="ei">⚠️</div><p>' + msg + '</p></div>';
-  setupAppEvents();
-}
-
-/* ── Firebase ── */
-function initFirebase() {
+function initFB(){
   firebase.initializeApp({
-    apiKey:            'AIzaSyAyMrivTrAfIk7XQIdDHubqN8oVgUALDRE',
+    apiKey:            'AIzaSyB_IhlLzzZs1Mq_HfYPb9P1Hd0EEaefPK8',
     authDomain:        'trafinoil-gastro.firebaseapp.com',
     databaseURL:       'https://trafinoil-gastro-default-rtdb.europe-west1.firebasedatabase.app',
     projectId:         'trafinoil-gastro',
@@ -377,313 +339,256 @@ function initFirebase() {
     appId:             '1:113292676903:web:bfe2aae4a100ee1fd26302'
   });
 
-  var db        = firebase.database();
-  var ordersRef = db.ref('orders');
+  var db  = firebase.database();
+  var ref = db.ref('orders');
+  var ords = {}, flt = 'all', known = {};
+  var drvs = JSON.parse(localStorage.getItem('admin_drivers') ||
+    '["Jan Novák","Petra Svobodová","Tomáš Kříž"]');
 
-  var orders    = {};
-  var curFilter = 'all';
-  var drivers   = JSON.parse(localStorage.getItem('admin_drivers') || '["Jan Novák","Petra Svobodová","Tomáš Kříž"]');
-  var knownKeys = {};
+  showApp();
 
-  /* UTILS */
-  function esc(s) {
-    return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
-  function ft(d) { var p=function(n){return String(n).padStart(2,'0')}; return p(d.getHours())+':'+p(d.getMinutes()); }
+  /* connection */
+  db.ref('.info/connected').on('value', function(s){
+    var on = s.val();
+    document.getElementById('sd').className = 'sd ' + (on?'live':'off');
+    document.getElementById('sl2').textContent = on ? 'Real-time' : 'Offline';
+  });
 
-  /* TOAST */
-  var tTimer;
-  function showToast(type, title, sub) {
-    clearTimeout(tTimer);
-    document.getElementById('tico').textContent = {ok:'✅',warn:'⚠️',error:'❌'}[type]||'✅';
-    document.getElementById('tt').textContent   = title;
-    document.getElementById('tb').textContent   = sub||'';
-    document.getElementById('toast').classList.add('on');
-    tTimer = setTimeout(function(){document.getElementById('toast').classList.remove('on');},4000);
-  }
+  /* real-time listener */
+  ref.on('value', function(s){
+    var data = s.val() || {};
+    Object.keys(data).forEach(function(k){
+      if(!known[k] && Object.keys(ords).length){
+        var d = data[k];
+        setTimeout(function(){
+          var c = document.getElementById('c-'+k);
+          if(c){ c.style.animation=''; void c.offsetWidth; c.style.animation='newCard .6s ease'; }
+        },80);
+        toast('ok', 'Nová objednávka', (d.provozovna||'')+ ' · '+(d.vol||''));
+      }
+      known[k] = 1;
+    });
+    ords = data;
+    document.getElementById('lr').textContent = 'Aktualizováno ' + ftime(new Date());
+    badge(); rPending(); rAll(); rStats();
+  });
 
-  /* NAV */
-  function showPage(id) {
-    document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active')});
-    document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active')});
-    document.getElementById('page-'+id).classList.add('active');
-    var t = document.querySelector('.tab[data-page="'+id+'"]');
-    if(t) t.classList.add('active');
-  }
+  /* helpers */
+  function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function ftime(d){ var p=function(n){return String(n).padStart(2,'0')}; return p(d.getHours())+':'+p(d.getMinutes()); }
 
-  /* BADGE */
-  function updateBadge() {
-    var n = Object.values(orders).filter(function(o){return (o.status||'pending')==='pending';}).length;
-    var b = document.getElementById('tbadge');
-    b.textContent = n||'';
-    b.classList.toggle('on', n>0);
-  }
-
-  /* RENDER */
-  function badgeHtml(s) {
-    if(s==='confirmed') return '<span class="sbadge confirmed"><span class="bdot"></span>Potvrzeno</span>';
-    if(s==='rejected')  return '<span class="sbadge rejected"><span class="bdot"></span>Odmítnuto</span>';
-    return '<span class="sbadge pending"><span class="bdot"></span>Čeká</span>';
+  function badge(){
+    var n = Object.values(ords).filter(function(o){return (o.status||'pending')==='pending';}).length;
+    var b = document.getElementById('tbg');
+    b.textContent = n||''; b.classList.toggle('on', n>0);
   }
 
-  function cardHtml(fbKey, o) {
-    var s    = o.status||'pending';
-    var isPu = o.type==='pickup';
-    var drOpts = drivers.map(function(d){
+  function bHtml(s){
+    if(s==='confirmed') return '<span class="sb confirmed"><span class="bd"></span>Potvrzeno</span>';
+    if(s==='rejected')  return '<span class="sb rejected"><span class="bd"></span>Odmítnuto</span>';
+    return '<span class="sb pending"><span class="bd"></span>Čeká</span>';
+  }
+
+  function cHtml(k, o){
+    var s = o.status||'pending', pu = o.type==='pickup';
+    var dOpts = drvs.map(function(d){
       return '<option value="'+esc(d)+'"'+(o.driver===d?' selected':'')+'>'+esc(d)+'</option>';
     }).join('');
     var btns;
-    if(s==='pending'){
-      btns='<button class="abtn abtn-ok" data-key="'+fbKey+'" data-act="confirmed">✅ Potvrdit</button>'
-          +'<button class="abtn abtn-no" data-key="'+fbKey+'" data-act="rejected">❌ Odmítnout</button>';
-    } else if(s==='confirmed'){
-      btns='<button class="abtn abtn-sv" data-key="'+fbKey+'" data-act="save">💾 Uložit</button>'
-          +'<button class="abtn abtn-no" data-key="'+fbKey+'" data-act="rejected">❌ Zrušit</button>';
-    } else {
-      btns='<button class="abtn abtn-ok" data-key="'+fbKey+'" data-act="confirmed">↩ Obnovit</button>'
-          +'<button class="abtn abtn-sv" data-key="'+fbKey+'" data-act="save">💾 Uložit</button>';
-    }
-    return '<div class="ocard '+s+'" id="card-'+fbKey+'">'
-      +'<div class="ohdr" data-toggle="'+fbKey+'">'
-        +'<div class="otype">'+(isPu?'🚛':'📦')+'</div>'
-        +'<div class="oinfo">'
-          +'<div class="onum">'+esc(o.num)+'</div>'
-          +'<div class="oprov">'+esc(o.provozovna||'–')+'</div>'
-          +'<div class="odesc">'+esc(o.desc||'')+'</div>'
-          +'<div class="ometa">'+esc(o.date||'')+(o.addr&&o.addr!=='–'?' · '+esc(o.addr):'')+'</div>'
+    if(s==='pending')
+      btns='<button class="abtn ak" data-k="'+k+'" data-a="confirmed">✅ Potvrdit</button>'
+          +'<button class="abtn an" data-k="'+k+'" data-a="rejected">❌ Odmítnout</button>';
+    else if(s==='confirmed')
+      btns='<button class="abtn as" data-k="'+k+'" data-a="save">💾 Uložit</button>'
+          +'<button class="abtn an" data-k="'+k+'" data-a="rejected">❌ Zrušit</button>';
+    else
+      btns='<button class="abtn ak" data-k="'+k+'" data-a="confirmed">↩ Obnovit</button>'
+          +'<button class="abtn as" data-k="'+k+'" data-a="save">💾 Uložit</button>';
+
+    return '<div class="oc '+s+'" id="c-'+k+'" style="animation:none">'
+      +'<div class="oh" data-t="'+k+'">'
+        +'<div style="font-size:22px;flex-shrink:0">'+(pu?'🚛':'📦')+'</div>'
+        +'<div class="oi">'
+          +'<div class="on2">'+esc(o.num)+'</div>'
+          +'<div class="op">'+esc(o.provozovna||'–')+'</div>'
+          +'<div class="od">'+esc(o.desc||'')+'</div>'
+          +'<div class="om">'+esc(o.date||'')+(o.addr&&o.addr!=='–'?' · '+esc(o.addr):'')+'</div>'
         +'</div>'
-        +'<div class="oright">'
-          +'<div class="ovol">'+esc(o.vol||'')+'</div>'
-          +badgeHtml(s)
-          +'<span class="chev">▼</span>'
-        +'</div>'
+        +'<div class="or2"><div class="ov">'+esc(o.vol||'')+'</div>'+bHtml(s)+'<span class="cv">▼</span></div>'
       +'</div>'
-      +'<div class="odetail">'
-        +'<div class="drow"><span class="dl">IČO</span><span class="dv">'+esc(o.ico||'–')+'</span></div>'
-        +'<div class="drow"><span class="dl">Telefon</span><span class="dv">'+esc(o.phone||'–')+'</span></div>'
-        +(o.note?'<div class="drow"><span class="dl">Pozn. zákazníka</span><span class="dv">'+esc(o.note)+'</span></div>':'')
-        +(o.items||[]).map(function(it){return '<div class="drow"><span class="dl">'+esc(it.name)+'</span><span class="dv">'+it.qty+' l</span></div>';}).join('')
-        +(o.driver?'<div class="drow"><span class="dl">Řidič</span><span class="dv">'+esc(o.driver)+'</span></div>':'')
-        +(o.delivDate?'<div class="drow"><span class="dl">Termín</span><span class="dv">'+esc(o.delivDate)+'</span></div>':'')
-        +(o.adminNote?'<div class="drow"><span class="dl">Vaše poznámka</span><span class="dv" style="color:var(--bl)">'+esc(o.adminNote)+'</span></div>':'')
-        +'<div class="alabel">Zpracovat</div>'
-        +'<div class="frow"><select id="dr-'+fbKey+'"><option value="">– Přiřadit řidiče –</option>'+drOpts+'</select></div>'
-        +'<div class="frow"><input type="text" id="dt-'+fbKey+'" placeholder="Termín (28.3.2026)" value="'+esc(o.delivDate||'')+'"></div>'
-        +'<textarea class="fnote" id="nt-'+fbKey+'" placeholder="Poznámka pro zákazníka…">'+esc(o.adminNote||'')+'</textarea>'
+      +'<div class="odt">'
+        +'<div class="dr"><span class="dk">IČO</span><span class="dv">'+esc(o.ico||'–')+'</span></div>'
+        +'<div class="dr"><span class="dk">Telefon</span><span class="dv">'+esc(o.phone||'–')+'</span></div>'
+        +(o.note?'<div class="dr"><span class="dk">Pozn. zákazníka</span><span class="dv">'+esc(o.note)+'</span></div>':'')
+        +(o.items||[]).map(function(i){return '<div class="dr"><span class="dk">'+esc(i.name)+'</span><span class="dv">'+i.qty+' l</span></div>';}).join('')
+        +(o.driver?'<div class="dr"><span class="dk">Řidič</span><span class="dv">'+esc(o.driver)+'</span></div>':'')
+        +(o.delivDate?'<div class="dr"><span class="dk">Termín</span><span class="dv">'+esc(o.delivDate)+'</span></div>':'')
+        +(o.adminNote?'<div class="dr"><span class="dk">Poznámka</span><span class="dv" style="color:var(--B)">'+esc(o.adminNote)+'</span></div>':'')
+        +'<div class="al">Zpracovat</div>'
+        +'<div class="fr"><select id="dr-'+k+'"><option value="">– Řidič –</option>'+dOpts+'</select></div>'
+        +'<div class="fr"><input type="text" id="dt-'+k+'" placeholder="Termín (28.3.2026)" value="'+esc(o.delivDate||'')+'"></div>'
+        +'<textarea class="fn" id="nt-'+k+'" placeholder="Poznámka pro zákazníka…">'+esc(o.adminNote||'')+'</textarea>'
+        +'<div class="ab">'+btns+'</div>'
+      +'</div></div>';
+  }
 
-```
-    +'<div class="abtns">'+btns+'</div>'
-  +'</div>'
-+'</div>';
-```
+  function arr(){
+    return Object.entries(ords)
+      .map(function(e){ return Object.assign({_k:e[0]},e[1]); })
+      .sort(function(a,b){ return (b.createdAt||0)-(a.createdAt||0); });
+  }
 
+  function rPending(){
+    var l = arr().filter(function(o){return (o.status||'pending')==='pending';});
+    document.getElementById('lp').innerHTML = l.length
+      ? l.map(function(o){return cHtml(o._k,o);}).join('')
+      : '<div class="mt"><div class="ei">🎉</div><p>Vše zpracováno!</p></div>';
+  }
+
+  function rAll(){
+    var q = (document.getElementById('sq').value||'').toLowerCase();
+    var l = arr();
+    if(flt==='pending')   l=l.filter(function(o){return (o.status||'pending')==='pending';});
+    if(flt==='confirmed') l=l.filter(function(o){return o.status==='confirmed';});
+    if(flt==='rejected')  l=l.filter(function(o){return o.status==='rejected';});
+    if(flt==='order')     l=l.filter(function(o){return o.type==='order';});
+    if(flt==='pickup')    l=l.filter(function(o){return o.type==='pickup';});
+    if(q) l=l.filter(function(o){return (o.num+o.provozovna+o.addr+o.ico+o.desc+'').toLowerCase().includes(q);});
+    document.getElementById('la').innerHTML = l.length
+      ? l.map(function(o){return cHtml(o._k,o);}).join('')
+      : '<div class="mt"><div class="ei">📭</div><p>Žádné záznamy.</p></div>';
+  }
+
+  function rStats(){
+    var a = arr();
+    document.getElementById('sp').textContent  = a.filter(function(o){return (o.status||'pending')==='pending';}).length;
+    document.getElementById('sc2').textContent = a.filter(function(o){return o.status==='confirmed';}).length;
+    document.getElementById('sr2').textContent = a.filter(function(o){return o.status==='rejected';}).length;
+    document.getElementById('so').textContent  = a.filter(function(o){return o.type==='order';}).length;
+    document.getElementById('sk2').textContent = a.filter(function(o){return o.type==='pickup';}).length;
+    document.getElementById('st2').textContent = a.length;
+    document.getElementById('sre').innerHTML = a.slice(0,6).map(function(o){
+      return '<div style="background:white;border-radius:var(--rad);border:1px solid var(--c2);padding:10px 13px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:8px">'
+        +'<div><div style="font-size:13px;font-weight:600">'+(o.type==='order'?'📦':'🚛')+' '+esc(o.num)+'</div>'
+        +'<div style="font-size:12px;color:var(--c4)">'+esc(o.provozovna||'–')+' · '+esc(o.date||'')+'</div></div>'
+        +bHtml(o.status||'pending')+'</div>';
+    }).join('') || '<div class="mt" style="padding:16px"><p>Žádná data.</p></div>';
+  }
+
+  function rDrivers(){
+    document.getElementById('dw').innerHTML = drvs.length
+      ? drvs.map(function(d,i){return '<div class="dc">🚚 '+esc(d)+'<span class="rm" data-i="'+i+'">✕</span></div>';}).join('')
+      : '<span style="font-size:13px;color:var(--c4)">Žádní řidiči.</span>';
+  }
+  rDrivers();
+
+  function actOrder(k, action){
+    var o   = ords[k];
+    var drv = (document.getElementById('dr-'+k)||{}).value||'';
+    var dt  = (document.getElementById('dt-'+k)||{}).value||'';
+    var nt  = (document.getElementById('nt-'+k)||{}).value||'';
+    var ns  = action==='save' ? (o&&o.status||'pending') : action;
+    ref.child(k).update({status:ns,driver:drv,delivDate:dt,adminNote:nt,updatedAt:new Date().toISOString()})
+      .then(function(){
+        if(action==='confirmed') toast('ok','Potvrzeno',(o&&o.num||'')+(drv?' · '+drv:'')+(dt?' · '+dt:''));
+        else if(action==='rejected') toast('warn','Odmítnuto',o&&o.num||'');
+        else toast('ok','Uloženo',o&&o.num||'');
+        var c=document.getElementById('c-'+k); if(c) c.classList.remove('ex');
+      }).catch(function(e){toast('e','Chyba',e.message);});
+  }
+
+  /* ── EVENTS po přihlášení ── */
+  document.querySelectorAll('.tab').forEach(function(b){
+    b.addEventListener('click', function(){
+      document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on');});
+      document.querySelectorAll('.pg').forEach(function(x){x.classList.remove('on');});
+      b.classList.add('on');
+      document.getElementById('pg-'+b.dataset.pg).classList.add('on');
+    });
+  });
+
+  document.querySelectorAll('.ft').forEach(function(b){
+    b.addEventListener('click', function(){
+      flt = b.dataset.f;
+      document.querySelectorAll('.ft').forEach(function(x){x.classList.remove('on');});
+      b.classList.add('on'); rAll();
+    });
+  });
+
+  document.getElementById('sq').addEventListener('input', rAll);
+
+  document.getElementById('rfb').addEventListener('click', function(){
+    var r=document.getElementById('rs');
+    r.classList.add('go'); setTimeout(function(){r.classList.remove('go');},500);
+    toast('ok','Aktuální','Data jsou live z Firebase.');
+  });
+
+  document.getElementById('tc').addEventListener('click', function(){
+    document.getElementById('tst').classList.remove('on');
+  });
+
+  document.getElementById('cpb').addEventListener('click', function(){
+    var v=(document.getElementById('np').value||'').trim();
+    if(!/^\d{4}$/.test(v)){toast('e','Chyba','PIN musí být 4 číslice.');return;}
+    localStorage.setItem(PIN_KEY,v);
+    document.getElementById('np').value='';
+    toast('ok','PIN změněn','');
+  });
+
+  document.getElementById('dab').addEventListener('click', function(){
+    var v=document.getElementById('di').value.trim();
+    if(!v||drvs.includes(v)) return;
+    drvs.push(v); document.getElementById('di').value='';
+    localStorage.setItem('admin_drivers',JSON.stringify(drvs)); rDrivers();
+  });
+
+  document.getElementById('cab').addEventListener('click', function(){
+    if(!confirm('Smazat všechny objednávky?')) return;
+    ref.remove().then(function(){toast('ok','Smazáno','');});
+  });
+
+  document.getElementById('ob').addEventListener('click', function(){
+    ref.off(); firebase.app().delete().catch(function(){});
+    document.getElementById('A').style.display='none';
+    document.getElementById('P').style.display='flex';
+    document.getElementById('pi').value='';
+  });
+
+  /* delegation – karty + akce + smazat řidiče */
+  document.addEventListener('click', function(e){
+    var t = e.target.closest('[data-t]');
+    if(t){ var c=document.getElementById('c-'+t.dataset.t); if(c) c.classList.toggle('ex'); return; }
+    var a = e.target.closest('.abtn[data-k]');
+    if(a){ actOrder(a.dataset.k, a.dataset.a); return; }
+    var r2 = e.target.closest('.rm[data-i]');
+    if(r2){ drvs.splice(+r2.dataset.i,1); localStorage.setItem('admin_drivers',JSON.stringify(drvs)); rDrivers(); }
+  });
 }
 
-function ordersArr() {
-return Object.entries(orders)
-.map(function(e){return Object.assign({fbKey:e[0]},e[1]);})
-.sort(function(a,b){return (b.createdAt||0)-(a.createdAt||0);});
+/* ════════════════════════════════
+   UTILS
+════════════════════════════════ */
+function showApp(){
+  document.getElementById('L').style.display='none';
+  document.getElementById('A').style.display='block';
 }
 
-function renderPending() {
-var el   = document.getElementById(‘list-pending’);
-var list = ordersArr().filter(function(o){return (o.status||‘pending’)===‘pending’;});
-el.innerHTML = list.length
-? list.map(function(o){return cardHtml(o.fbKey,o);}).join(’’)
-: ‘<div class="empty"><div class="ei">🎉</div><p>Žádné čekající objednávky.<br>Vše zpracováno!</p></div>’;
+var _tt;
+function toast(type, title, sub){
+  clearTimeout(_tt);
+  document.getElementById('ti2').textContent = type==='ok'?'✅':type==='warn'?'⚠️':'❌';
+  document.getElementById('tt2').textContent = title;
+  document.getElementById('ts2').textContent = sub||'';
+  document.getElementById('tst').classList.add('on');
+  _tt = setTimeout(function(){document.getElementById('tst').classList.remove('on');},4000);
 }
 
-function renderAll() {
-var el  = document.getElementById(‘list-all’);
-var q   = (document.getElementById(‘q’).value||’’).toLowerCase();
-var list = ordersArr();
-if(curFilter===‘pending’)   list=list.filter(function(o){return (o.status||‘pending’)===‘pending’;});
-if(curFilter===‘confirmed’) list=list.filter(function(o){return o.status===‘confirmed’;});
-if(curFilter===‘rejected’)  list=list.filter(function(o){return o.status===‘rejected’;});
-if(curFilter===‘order’)     list=list.filter(function(o){return o.type===‘order’;});
-if(curFilter===‘pickup’)    list=list.filter(function(o){return o.type===‘pickup’;});
-if(q) list=list.filter(function(o){return (o.num+o.provozovna+o.addr+o.ico+o.desc+’’).toLowerCase().includes(q);});
-el.innerHTML = list.length
-? list.map(function(o){return cardHtml(o.fbKey,o);}).join(’’)
-: ‘<div class="empty"><div class="ei">📭</div><p>Žádné záznamy.</p></div>’;
-}
+/* auto-focus PIN */
+window.addEventListener('load', function(){ document.getElementById('pi').focus(); });
 
-function renderStats() {
-var all = ordersArr();
-document.getElementById(‘st-p’).textContent  = all.filter(function(o){return (o.status||‘pending’)===‘pending’;}).length;
-document.getElementById(‘st-c’).textContent  = all.filter(function(o){return o.status===‘confirmed’;}).length;
-document.getElementById(‘st-r’).textContent  = all.filter(function(o){return o.status===‘rejected’;}).length;
-document.getElementById(‘st-o’).textContent  = all.filter(function(o){return o.type===‘order’;}).length;
-document.getElementById(‘st-pk’).textContent = all.filter(function(o){return o.type===‘pickup’;}).length;
-document.getElementById(‘st-t’).textContent  = all.length;
-var rec = all.slice(0,6);
-document.getElementById(‘st-recent’).innerHTML = rec.length
-? rec.map(function(o){
-return ‘<div style="background:white;border-radius:var(--r);border:1px solid var(--g2);padding:11px 13px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:8px">’
-+’<div><div style="font-size:13px;font-weight:600">’+(o.type===‘order’?‘📦’:‘🚛’)+’ ‘+esc(o.num)+’</div>’
-+’<div style="font-size:12px;color:var(--g4)">’+esc(o.provozovna||’–’)+’ · ‘+esc(o.date||’’)+’</div></div>’
-+badgeHtml(o.status||‘pending’)+’</div>’;
-}).join(’’)
-: ‘<div class="empty" style="padding:20px"><p>Žádná data.</p></div>’;
-}
-
-function renderDrivers() {
-document.getElementById(‘dwrap’).innerHTML = drivers.length
-? drivers.map(function(d,i){return ‘<div class="dchip">🚚 ‘+esc(d)+’<span class="rm" data-di="'+i+'">✕</span></div>’;}).join(’’)
-: ‘<span style="font-size:13px;color:var(--g4)">Žádní řidiči.</span>’;
-}
-
-/* ACTION */
-function actOrder(fbKey, action) {
-var driver    = (document.getElementById(‘dr-’+fbKey)||{}).value||’’;
-var delivDate = (document.getElementById(‘dt-’+fbKey)||{}).value||’’;
-var adminNote = (document.getElementById(‘nt-’+fbKey)||{}).value||’’;
-var cur       = orders[fbKey];
-var ns        = action===‘save’ ? (cur&&cur.status||‘pending’) : action;
-ordersRef.child(fbKey).update({status:ns,driver:driver,delivDate:delivDate,adminNote:adminNote,updatedAt:new Date().toISOString()})
-.then(function(){
-if(action===‘confirmed’) showToast(‘ok’,‘Potvrzeno’,(cur&&cur.num||’’)+(driver?’ · ‘+driver:’’)+(delivDate?’ · ‘+delivDate:’’));
-else if(action===‘rejected’) showToast(‘warn’,‘Odmítnuto’,cur&&cur.num||’’);
-else showToast(‘ok’,‘Uloženo’,cur&&cur.num||’’);
-var card=document.getElementById(‘card-’+fbKey);
-if(card) card.classList.remove(‘expanded’);
-})
-.catch(function(err){showToast(‘error’,‘Chyba’,err.message);});
-}
-
-/* FIREBASE LISTENERS */
-db.ref(’.info/connected’).on(‘value’, function(snap) {
-var on = snap.val();
-document.getElementById(‘sdot’).className = ’sdot ’+(on?‘live’:‘offline’);
-document.getElementById(‘slabel’).textContent = on ? ‘Real-time · Firebase’ : ‘Offline’;
-});
-
-ordersRef.on(‘value’, function(snap) {
-var data = snap.val()||{};
-Object.keys(data).forEach(function(k) {
-if(!knownKeys[k] && Object.keys(orders).length>0) {
-setTimeout(function(){
-var card=document.getElementById(‘card-’+k);
-if(card){card.classList.add(‘new-pulse’);setTimeout(function(){card.classList.remove(‘new-pulse’);},700);}
-},100);
-showToast(‘ok’,‘Nová objednávka’,data[k].provozovna+’ · ’+data[k].vol);
-}
-knownKeys[k]=true;
-});
-orders=data;
-document.getElementById(‘lref’).textContent=’Aktualizováno: ’+ft(new Date());
-updateBadge();
-renderPending();
-renderAll();
-renderStats();
-
-```
-// Skrýt loading, ukázat app
-document.getElementById('loading-screen').style.display='none';
-document.getElementById('app').style.display='block';
-```
-
-});
-
-/* APP EVENTS */
-setupAppEvents(showPage, actOrder, renderAll, renderDrivers, showToast, ordersRef, drivers, curFilter, function(f){curFilter=f;}, function(){return drivers;});
-renderDrivers();
-
-/* LOGOUT */
-document.getElementById(‘logout-btn’).addEventListener(‘click’, function(){
-// Odpojit Firebase listenery a schovat app
-ordersRef.off();
-document.getElementById(‘app’).style.display=‘none’;
-document.getElementById(‘pin-screen’).style.display=‘flex’;
-document.getElementById(‘pin-input’).value=’’;
-document.getElementById(‘pin-error’).textContent=’’;
-document.getElementById(‘pin-input’).focus();
-});
-}
-
-/* ── App events (tab, filter, search, atd.) ── */
-function setupAppEvents(showPage, actOrder, renderAll, renderDrivers, showToast, ordersRef, drivers, curFilter, setFilter, getDrivers) {
-// Tabs
-document.querySelectorAll(’.tab’).forEach(function(btn){
-btn.addEventListener(‘click’, function(){showPage(btn.dataset.page);});
-});
-
-// Filter
-document.querySelectorAll(’.fbtn’).forEach(function(btn){
-btn.addEventListener(‘click’, function(){
-setFilter(btn.dataset.filter);
-document.querySelectorAll(’.fbtn’).forEach(function(b){b.classList.remove(‘active’);});
-btn.classList.add(‘active’);
-renderAll();
-});
-});
-
-// Search
-document.getElementById(‘q’).addEventListener(‘input’, function(){renderAll();});
-
-// Refresh
-document.getElementById(‘refresh-btn’).addEventListener(‘click’, function(){
-var s=document.getElementById(‘rspin’);
-s.classList.add(‘go’);setTimeout(function(){s.classList.remove(‘go’);},500);
-showToast(‘ok’,‘Připojeno’,‘Data jsou aktuální v reálném čase.’);
-});
-
-// Toast close
-document.getElementById(‘toast-close’).addEventListener(‘click’, function(){
-document.getElementById(‘toast’).classList.remove(‘on’);
-});
-
-// PIN změna
-document.getElementById(‘pin-change-btn’).addEventListener(‘click’, function(){
-var v=(document.getElementById(‘new-pin’).value||’’).trim();
-if(!/^\d{4}$/.test(v)){showToast(‘error’,‘Chyba’,‘PIN musí mít přesně 4 číslice.’);return;}
-localStorage.setItem(‘admin_pin’,v);
-document.getElementById(‘new-pin’).value=’’;
-showToast(‘ok’,‘PIN změněn’,‘Nový PIN byl uložen.’);
-});
-
-// Přidat řidiče
-document.getElementById(‘drv-add-btn’).addEventListener(‘click’, function(){
-var inp=document.getElementById(‘drv-inp’), v=inp.value.trim();
-if(!v||getDrivers().includes(v)) return;
-getDrivers().push(v); inp.value=’’;
-localStorage.setItem(‘admin_drivers’,JSON.stringify(getDrivers()));
-renderDrivers();
-});
-
-// Enter v poli řidiče
-document.getElementById(‘drv-inp’).addEventListener(‘keydown’, function(e){
-if(e.key===‘Enter’) document.getElementById(‘drv-add-btn’).click();
-});
-
-// Smazat vše
-document.getElementById(‘clear-all-btn’).addEventListener(‘click’, function(){
-if(!confirm(‘Opravdu smazat všechny objednávky z Firebase?’)) return;
-ordersRef.remove().then(function(){showToast(‘ok’,‘Smazáno’,‘Všechny objednávky odstraněny.’);});
-});
-
-// Event delegation – karty + akce + smazat řidiče
-document.addEventListener(‘click’, function(e){
-var hdr=e.target.closest(’[data-toggle]’);
-if(hdr){
-var card=document.getElementById(‘card-’+hdr.dataset.toggle);
-if(card) card.classList.toggle(‘expanded’);
-return;
-}
-var abtn=e.target.closest(’.abtn[data-key]’);
-if(abtn){ actOrder(abtn.dataset.key, abtn.dataset.act); return; }
-var rm=e.target.closest(’.rm[data-di]’);
-if(rm){
-getDrivers().splice(parseInt(rm.dataset.di),1);
-localStorage.setItem(‘admin_drivers’,JSON.stringify(getDrivers()));
-renderDrivers();
-}
-});
-}
-
-// setupAppEvents volaný před Firebase (pro případ chyby)
-function setupAppEvents() {}
+/* CSS pro new card pulse */
+document.head.insertAdjacentHTML('beforeend',
+  '<style>@keyframes newCard{0%{box-shadow:0 0 0 0 rgba(76,175,80,.5)}100%{box-shadow:0 0 0 14px rgba(76,175,80,0)}}</style>');
 </script>
-
 </body>
 </html>
