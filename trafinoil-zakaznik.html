@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="theme-color" content="#1a5c1a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Trafin Oil">
+<title>Trafin Oil – Objednávky</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{
+  --G:#1a5c1a;--Gd:#0f3d0f;--Gx:#2a7a2a;--Ga:#4caf50;--Gp:#e8f5e9;
+  --A:#f59e0b;--R:#dc2626;--B:#2563eb;--Bp:#eff6ff;
+  --bg:#f7faf7;--c1:#f1f5f1;--c2:#dde8dd;--c4:#8ca88c;--c6:#4a644a;--c8:#1e2e1e;
+  --sh:0 1px 4px rgba(0,0,0,.10);--shm:0 4px 16px rgba(0,0,0,.12);--shb:0 8px 32px rgba(0,0,0,.16);
+  --rad:12px;--radl:20px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--c8);min-height:100vh;overflow-x:hidden;padding-bottom:80px}
+button{font-family:'Barlow',sans-serif;cursor:pointer}
+
+/* HEADER */
+header{background:linear-gradient(135deg,var(--Gd),var(--Gx));color:white;position:sticky;top:0;z-index:50;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+.hi{display:flex;align-items:center;justify-content:space-between;padding:13px 18px}
+.hi img{height:34px;filter:brightness(0)invert(1)}
+.hr{display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.ht{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;opacity:.85}
+.hs{font-size:11px;color:rgba(255,255,255,.65);display:flex;align-items:center;gap:4px}
+.sd{width:6px;height:6px;border-radius:50%;background:#9e9e9e;transition:background .3s}
+.sd.live{background:#4caf50;animation:bl 2s infinite}
+.sd.off{background:var(--A)}
+@keyframes bl{0%,100%{opacity:1}50%{opacity:.3}}
+.tabs{display:flex;background:var(--Gd);border-top:1px solid rgba(255,255,255,.1)}
+.tab{flex:1;padding:9px 0;text-align:center;color:rgba(255,255,255,.6);font-size:11px;font-weight:600;
+     letter-spacing:.8px;text-transform:uppercase;border:none;background:none;
+     border-bottom:3px solid transparent;transition:all .2s}
+.tab.on{color:white;border-bottom-color:var(--Ga);background:rgba(255,255,255,.06)}
+.ti{font-size:17px;display:block;margin-bottom:2px}
+
+/* PAGES */
+.pg{display:none;padding:18px 15px}
+.pg.on{display:block}
+.sl{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;
+    text-transform:uppercase;color:var(--G);margin:22px 0 11px}
+.sl:first-child{margin-top:0}
+.info{background:var(--Gp);border-left:4px solid var(--G);border-radius:0 var(--rad) var(--rad) 0;
+      padding:11px 13px;font-size:13px;color:var(--Gd);margin-bottom:15px;line-height:1.5}
+
+/* CARD */
+.card{background:white;border-radius:var(--rad);box-shadow:var(--sh);overflow:hidden;margin-bottom:12px;border:1px solid var(--c2)}
+.ch{background:linear-gradient(90deg,var(--Gd),var(--Gx));color:white;padding:11px 15px;display:flex;align-items:center;gap:10px}
+.ch .ci{font-size:19px}
+.ch h3{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700}
+.ch p{font-size:12px;opacity:.8;margin-top:1px}
+.cb{padding:14px}
+
+/* OIL ROWS */
+.or{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--c1)}
+.or:last-child{border-bottom:none;padding-bottom:0}
+.or:first-child{padding-top:0}
+.on2{font-weight:600;font-size:15px}
+.os{font-size:12px;color:var(--c4);margin-top:2px}
+.obs{display:flex;gap:6px}
+.qb{border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-weight:700;
+    font-size:14px;padding:8px 13px;transition:transform .12s}
+.qb:active{transform:scale(.91)}
+.qb.s{background:var(--Gp);color:var(--Gd)}
+.qb.l{background:var(--Gx);color:white}
+
+/* CART */
+.cart{background:linear-gradient(135deg,var(--Gd),var(--Gx));color:white;border-radius:var(--rad);
+      padding:15px;margin-bottom:12px;box-shadow:var(--shm)}
+.cart h3{font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;opacity:.8;margin-bottom:9px}
+.ci2{display:flex;justify-content:space-between;font-size:14px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.15)}
+.ci2:last-child{border-bottom:none}
+.cq{font-weight:700;font-family:'Barlow Condensed',sans-serif;font-size:16px}
+.ct{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:700}
+.ce{text-align:center;opacity:.6;font-size:14px;padding:8px 0}
+
+/* BUTTONS */
+.btn{display:block;width:100%;padding:14px;border:none;border-radius:var(--rad);
+     font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;
+     letter-spacing:1px;text-transform:uppercase;text-align:center;margin-bottom:10px;transition:opacity .15s}
+.btn:active{opacity:.85}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.bg{background:var(--Ga);color:white;box-shadow:0 4px 12px rgba(76,175,80,.4)}
+.ba{background:var(--A);color:white}
+.bo{background:transparent;color:var(--G);border:2px solid var(--Gx)}
+
+/* VOLUME */
+.vs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:15px}
+.vb{flex:1;min-width:58px;padding:10px 6px;border:2px solid var(--c2);border-radius:8px;background:white;
+    font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;text-align:center;color:var(--c6);transition:all .18s}
+.vb.on{border-color:var(--Gx);background:var(--Gp);color:var(--Gd)}
+.vl{font-size:10px;display:block;font-weight:500;opacity:.7;margin-top:1px}
+
+/* STATUS BADGES */
+.sb{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;
+    font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700}
+.sb.pending{background:#fff8e1;color:#b45309}
+.sb.confirmed{background:var(--Gp);color:var(--G)}
+.sb.rejected{background:#fee2e2;color:var(--R)}
+.bd{width:7px;height:7px;border-radius:50%;background:currentColor}
+.sb.pending .bd{animation:bl 1.5s infinite}
+
+/* HISTORY */
+.hi2{background:white;border-radius:var(--rad);border:1px solid var(--c2);padding:13px;margin-bottom:10px;box-shadow:var(--sh)}
+.hr2{display:flex;gap:11px;align-items:flex-start}
+.hic{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.hic.order{background:var(--Gp)}
+.hic.pickup{background:#fff3e0}
+.hco{flex:1;min-width:0}
+.ht2{font-weight:600;font-size:14px}
+.hs2{font-size:12px;color:var(--c4);margin-top:3px}
+.an{margin-top:7px;background:var(--Bp);border-left:3px solid var(--B);border-radius:0 6px 6px 0;padding:7px 10px;font-size:12px;color:#1e40af}
+.an strong{display:block;font-size:10px;letter-spacing:.5px;text-transform:uppercase;margin-bottom:2px;opacity:.7}
+
+/* SETTINGS */
+.sr{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--c1)}
+.sr:last-child{border-bottom:none}
+.sl2{font-size:14px;font-weight:500}
+.ss{font-size:12px;color:var(--c4);margin-top:2px}
+.tgl{width:44px;height:24px;background:var(--c2);border-radius:12px;position:relative;cursor:pointer;transition:background .2s;flex-shrink:0}
+.tgl.on{background:var(--Gx)}
+.tgl::after{content:'';width:18px;height:18px;background:white;border-radius:50%;position:absolute;top:3px;left:3px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.tgl.on::after{transform:translateX(20px)}
+.ig{margin-bottom:13px}
+.ig label{display:block;font-size:12px;font-weight:600;color:var(--G);letter-spacing:.5px;text-transform:uppercase;margin-bottom:5px}
+.ig input{width:100%;padding:11px 13px;border:1.5px solid var(--c2);border-radius:8px;font-size:15px;color:var(--c8);outline:none;transition:border-color .2s}
+.ig input:focus{border-color:var(--Gx)}
+
+/* CONTACT */
+.cs{background:var(--Gd);color:white;border-radius:var(--rad);padding:15px;text-align:center;margin-top:8px}
+.cs .cp{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;letter-spacing:1px}
+.cs .cx{font-size:12px;opacity:.7;margin-top:3px}
+
+/* MODAL */
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;
+    padding:18px 15px;overflow-y:auto;backdrop-filter:blur(3px);align-items:center;justify-content:center}
+.mo.on{display:flex}
+.md{background:white;border-radius:var(--radl);width:100%;max-width:420px;overflow:hidden;
+    box-shadow:var(--shb);animation:su .22s ease}
+@keyframes su{from{transform:translateY(28px);opacity:0}to{transform:none;opacity:1}}
+.mh{background:linear-gradient(135deg,var(--Gd),var(--Gx));color:white;padding:20px;text-align:center}
+.mh h2{font-family:'Barlow Condensed',sans-serif;font-size:21px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.mh p{font-size:13px;opacity:.8;margin-top:4px}
+.mb{padding:22px 18px}
+.mn{text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;color:var(--c4);text-transform:uppercase;margin-bottom:3px}
+.mn strong{display:block;font-size:26px;color:var(--G);letter-spacing:3px;margin-top:2px}
+.qr{display:flex;justify-content:center;margin:18px 0;padding:14px;background:var(--c1);border-radius:var(--rad)}
+.dr2{display:flex;justify-content:space-between;font-size:14px;padding:6px 0;border-bottom:1px solid var(--c1)}
+.dr2:last-child{border-bottom:none}
+.dk{color:var(--c4)}
+.dv{font-weight:600;color:var(--G)}
+
+/* TOAST */
+.tst{position:fixed;top:11px;left:14px;right:14px;background:white;border-radius:var(--rad);
+     box-shadow:var(--shb);border-left:5px solid var(--G);padding:13px 15px;z-index:200;
+     display:none;max-width:480px;margin:0 auto}
+.tst.on{display:block;animation:tIn .28s ease}
+@keyframes tIn{from{transform:translateY(-16px);opacity:0}to{transform:none;opacity:1}}
+.tt{font-weight:700;font-size:14px;color:var(--G);margin-bottom:2px}
+.tb{font-size:13px;color:var(--c6)}
+.ta{display:flex;gap:8px;margin-top:9px}
+.tbtn{flex:1;padding:8px;border:none;border-radius:7px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px}
+.tbtn.y{background:var(--Gx);color:white}
+.tbtn.n{background:var(--c1);color:var(--c6)}
+</style>
+</head>
+<body>
+
+<div class="tst" id="tst">
+  <div class="tt" id="tt"></div>
+  <div class="tb" id="tb"></div>
+  <div class="ta" id="ta"></div>
+</div>
+
+<header>
+  <div class="hi">
+    <img src="https://www.trafinoil.cz/dist/front/images/logo.svg" alt="Trafin Oil" onerror="this.style.display='none'">
+    <div class="hr">
+      <div class="ht">Gastro portál</div>
+      <div class="hs"><span class="sd" id="sd"></span><span id="sl3">Připojování…</span></div>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab on" data-pg="order"><span class="ti">🛒</span>Objednat</button>
+    <button class="tab" data-pg="pickup"><span class="ti">🚛</span>Odvoz</button>
+    <button class="tab" data-pg="history"><span class="ti">📋</span>Historie</button>
+    <button class="tab" data-pg="cfg"><span class="ti">⚙️</span>Nastavení</button>
+  </div>
+</header>
+
+<!-- OBJEDNÁVKA -->
+<div class="pg on" id="pg-order">
+  <div class="info"><strong>Přivezeme zdarma</strong> – doručení fritovacích olejů po celé ČR. Zpracujeme do 24 h.</div>
+  <p class="sl">Fritovací oleje</p>
+  <div class="card">
+    <div class="ch"><span class="ci">🍟</span><div><h3>Fritovací oleje</h3><p>Vyberte produkt a množství</p></div></div>
+    <div class="cb">
+      <div class="or"><div><div class="on2">Frit Standard</div><div class="os">Rafinovaný rostlinný – vysoký bod kouře</div></div><div class="obs"><button class="qb s" data-n="Frit Standard" data-q="10">+10 l</button><button class="qb l" data-n="Frit Standard" data-q="500">+500 l</button></div></div>
+      <div class="or"><div><div class="on2">Smažáček Premium</div><div class="os">Směsný olej pro smažení</div></div><div class="obs"><button class="qb s" data-n="Smažáček Premium" data-q="10">+10 l</button><button class="qb l" data-n="Smažáček Premium" data-q="500">+500 l</button></div></div>
+      <div class="or"><div><div class="on2">Palmový olej</div><div class="os">Tuhý palmový tuk – fritování & pečení</div></div><div class="obs"><button class="qb s" data-n="Palmový olej" data-q="10">+10 l</button><button class="qb l" data-n="Palmový olej" data-q="500">+500 l</button></div></div>
+      <div class="or"><div><div class="on2">Řepkový olej</div><div class="os">Univerzální – studená i teplá kuchyně</div></div><div class="obs"><button class="qb s" data-n="Řepkový olej" data-q="10">+10 l</button><button class="qb l" data-n="Řepkový olej" data-q="500">+500 l</button></div></div>
+      <div class="or"><div><div class="on2">Slunečnicový olej</div><div class="os">Rafinovaný – jemná chuť</div></div><div class="obs"><button class="qb s" data-n="Slunečnicový olej" data-q="10">+10 l</button><button class="qb l" data-n="Slunečnicový olej" data-q="500">+500 l</button></div></div>
+    </div>
+  </div>
+  <p class="sl">Košík</p>
+  <div class="cart">
+    <h3>Vybrané položky</h3>
+    <div id="ci3"><div class="ce">Košík je prázdný. Přidejte oleje výše ↑</div></div>
+    <div class="ct" id="ctot" style="display:none">Celkem: <span id="ctv">0</span> l</div>
+  </div>
+  <button class="btn bo" id="clr" style="display:none">🗑 Vyprázdnit</button>
+  <button class="btn bg" id="ord" disabled>📦 Odeslat objednávku</button>
+  <div class="cs"><div class="cp">📞 800 800 070</div><div class="cx">Zákaznická linka · Po–Pá 8–18 h · Zdarma</div></div>
+</div>
+
+<!-- ODVOZ -->
+<div class="pg" id="pg-pickup">
+  <div class="info"><strong>Výkup použitého oleje</strong> – férový výkup, ekologická likvidace.</div>
+  <p class="sl">Objem k odvozu</p>
+  <div class="card">
+    <div class="ch"><span class="ci">🚛</span><div><h3>Odvoz použitého oleje</h3><p>Vyberte objem v nádrži</p></div></div>
+    <div class="cb">
+      <p style="font-size:13px;color:var(--c4);margin-bottom:13px">Minimum <strong>40 l</strong>, maximum <strong>200 l</strong>.</p>
+      <div class="vs">
+        <button class="vb" data-v="40">40<span class="vl">litrů</span></button>
+        <button class="vb" data-v="60">60<span class="vl">litrů</span></button>
+        <button class="vb" data-v="80">80<span class="vl">litrů</span></button>
+        <button class="vb" data-v="100">100<span class="vl">litrů</span></button>
+        <button class="vb" data-v="120">120<span class="vl">litrů</span></button>
+        <button class="vb" data-v="150">150<span class="vl">litrů</span></button>
+        <button class="vb" data-v="180">180<span class="vl">litrů</span></button>
+        <button class="vb" data-v="200">200<span class="vl">litrů</span></button>
+      </div>
+      <div class="ig"><label>Poznámka pro řidiče (nepovinné)</label>
+        <input type="text" id="pn" placeholder="Např. zadní vchod…"></div>
+    </div>
+  </div>
+  <div class="card" id="pcc" style="display:none">
+    <div class="cb">
+      <div class="dr2"><span class="dk">Objem k odvozu</span><span class="dv" id="pvd">–</span></div>
+      <div class="dr2"><span class="dk">Druh odpadu</span><span class="dv">Použitý kuchyňský olej</span></div>
+    </div>
+  </div>
+  <button class="btn ba" id="pu" disabled>🚛 Objednat odvoz</button>
+  <div class="cs"><div class="cp">📞 800 800 070</div><div class="cx">Zákaznická linka · Po–Pá 8–18 h · Zdarma</div></div>
+</div>
+
+<!-- HISTORIE -->
+<div class="pg" id="pg-history">
+  <p class="sl">Moje objednávky</p>
+  <div id="hl"><div style="text-align:center;padding:38px 0;color:var(--c4)"><div style="font-size:44px;margin-bottom:11px">📋</div><div style="font-size:14px">Zatím žádné objednávky.</div></div></div>
+</div>
+
+<!-- NASTAVENÍ -->
+<div class="pg" id="pg-cfg">
+  <p class="sl">Profil provozovny</p>
+  <div class="card"><div class="cb">
+    <div class="ig"><label>Název provozovny</label><input type="text" id="sn" placeholder="Restaurace U Nováků"></div>
+    <div class="ig"><label>Adresa</label><input type="text" id="sa" placeholder="Ul. Příklad 1, Praha"></div>
+    <div class="ig"><label>IČO</label><input type="text" id="si" placeholder="12345678" maxlength="8"></div>
+    <div class="ig"><label>Telefon</label><input type="tel" id="sp" placeholder="+420 777 000 000"></div>
+  </div></div>
+  <p class="sl">Notifikace</p>
+  <div class="card"><div class="cb">
+    <div class="sr">
+      <div><div class="sl2">Týdenní připomínka</div><div class="ss">Dotaz každý týden na olej / odvoz</div></div>
+      <div class="tgl on" id="tw"></div>
+    </div>
+  </div></div>
+  <button class="btn bg" id="sv" style="margin-top:8px">💾 Uložit nastavení</button>
+</div>
+
+<!-- MODAL: OBJEDNÁVKA -->
+<div class="mo" id="mo">
+  <div class="md">
+    <div class="mh"><div style="font-size:34px;margin-bottom:7px">✅</div><h2>Objednávka odeslána</h2><p>Dispečer ji brzy zpracuje</p></div>
+    <div class="mb">
+      <div class="mn">Číslo objednávky<strong id="mon">–</strong></div>
+      <div class="qr"><div id="qr"></div></div>
+      <div id="mi" style="margin-bottom:13px"></div>
+      <div class="dr2"><span class="dk">Datum</span><span class="dv" id="md2">–</span></div>
+      <div class="dr2"><span class="dk">Celkem</span><span class="dv" id="mt2">–</span></div>
+      <button class="btn bg" id="mc" style="margin-top:18px">Zavřít</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: ODVOZ -->
+<div class="mo" id="mop">
+  <div class="md">
+    <div class="mh" style="background:linear-gradient(135deg,#b45309,#f59e0b)"><div style="font-size:34px;margin-bottom:7px">🚛</div><h2>Odvoz objednán</h2><p>Řidič vás bude kontaktovat</p></div>
+    <div class="mb">
+      <div class="mn">Číslo žádosti<strong id="mpn">–</strong></div>
+      <div class="qr"><div id="qrp"></div></div>
+      <div class="dr2"><span class="dk">Objem</span><span class="dv" id="mpv">–</span></div>
+      <div class="dr2"><span class="dk">Datum</span><span class="dv" id="mpd">–</span></div>
+      <button class="btn ba" id="mpc" style="margin-top:18px">Zavřít</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script>
+/* ════════ FIREBASE ════════ */
+firebase.initializeApp({
+  apiKey:            'AIzaSyB_IhlLzzZs1Mq_HfYPb9P1Hd0EEaefPK8',
+  authDomain:        'trafinoil-gastro.firebaseapp.com',
+  databaseURL:       'https://trafinoil-gastro-default-rtdb.europe-west1.firebasedatabase.app',
+  projectId:         'trafinoil-gastro',
+  storageBucket:     'trafinoil-gastro.firebasestorage.app',
+  messagingSenderId: '113292676903',
+  appId:             '1:113292676903:web:bfe2aae4a100ee1fd26302'
+});
+var db  = firebase.database();
+var ref = db.ref('orders');
+
+/* ════════ STATE ════════ */
+var cart  = {};
+var selVol = null;
+var hist  = JSON.parse(localStorage.getItem('to_hist') || '[]');
+var cfg   = JSON.parse(localStorage.getItem('to_cfg')  || '{"weekly":true,"name":"","addr":"","ico":"","phone":""}');
+var known = {};
+hist.forEach(function(h){ known[h.num] = h.status||'pending'; });
+
+/* ════════ INIT ════════ */
+document.addEventListener('DOMContentLoaded', function(){
+  loadCfg();
+  renderHist();
+  initFB();
+  schedWeekly();
+});
+
+function initFB(){
+  db.ref('.info/connected').on('value', function(s){
+    var on = s.val();
+    document.getElementById('sd').className = 'sd '+(on?'live':'off');
+    document.getElementById('sl3').textContent = on ? 'Připojeno' : 'Offline';
+  });
+  ref.on('value', function(s){
+    var data = s.val()||{};
+    Object.values(data).forEach(function(o){
+      var h = hist.find(function(x){return x.num===o.num;});
+      if(!h) return;
+      var prev = known[o.num];
+      var curr = o.status||'pending';
+      h.status=curr; h.driver=o.driver||h.driver||''; h.delivDate=o.delivDate||h.delivDate||''; h.adminNote=o.adminNote||h.adminNote||'';
+      if(prev!==undefined && curr!==prev){
+        if(curr==='confirmed') showStatusToast(o.num,'confirmed',o.driver,o.delivDate,o.adminNote);
+        if(curr==='rejected')  showStatusToast(o.num,'rejected',null,null,o.adminNote);
+      }
+      known[o.num]=curr;
+    });
+    localStorage.setItem('to_hist',JSON.stringify(hist));
+    renderHist();
+  });
+}
+
+/* ════════ NAV ════════ */
+document.querySelectorAll('.tab').forEach(function(b){
+  b.addEventListener('click', function(){
+    document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on');});
+    document.querySelectorAll('.pg').forEach(function(x){x.classList.remove('on');});
+    b.classList.add('on');
+    document.getElementById('pg-'+b.dataset.pg).classList.add('on');
+  });
+});
+
+/* ════════ CART ════════ */
+document.querySelectorAll('.qb').forEach(function(b){
+  b.addEventListener('click', function(){
+    var n=b.dataset.n, q=+b.dataset.q;
+    cart[n]=(cart[n]||0)+q;
+    renderCart();
+    b.style.transform='scale(1.18)'; setTimeout(function(){b.style.transform='';},180);
+  });
+});
+function renderCart(){
+  var keys=Object.keys(cart).filter(function(k){return cart[k]>0;});
+  var ci=document.getElementById('ci3'), ct=document.getElementById('ctot'), ord=document.getElementById('ord'), clr=document.getElementById('clr');
+  if(!keys.length){
+    ci.innerHTML='<div class="ce">Košík je prázdný. Přidejte oleje výše ↑</div>';
+    ct.style.display='none'; ord.disabled=true; clr.style.display='none'; return;
+  }
+  var sum=0;
+  ci.innerHTML=keys.map(function(k){sum+=cart[k];return '<div class="ci2"><span>'+k+'</span><span class="cq">'+cart[k]+' l</span></div>';}).join('');
+  document.getElementById('ctv').textContent=sum;
+  ct.style.display='block'; ord.disabled=false; clr.style.display='block';
+}
+document.getElementById('clr').addEventListener('click', function(){cart={};renderCart();});
+
+/* ════════ PLACE ORDER ════════ */
+document.getElementById('ord').addEventListener('click', function(){
+  var num=genNum('OBJ'), date=fmtDate(new Date());
+  var keys=Object.keys(cart).filter(function(k){return cart[k]>0;});
+  var tot=keys.reduce(function(s,k){return s+cart[k];},0);
+  document.getElementById('mon').textContent=num;
+  document.getElementById('md2').textContent=date;
+  document.getElementById('mt2').textContent=tot+' litrů';
+  document.getElementById('mi').innerHTML=keys.map(function(k){return '<div class="dr2"><span class="dk">'+k+'</span><span class="dv">'+cart[k]+' l</span></div>';}).join('');
+  document.getElementById('qr').innerHTML='';
+  new QRCode(document.getElementById('qr'),{text:'SPD*1.0*ACC:CZ6508000000192000145399*AM:0.00*MSG:'+num+'*X-VS:'+num.replace(/\D/g,''),width:150,height:150,colorDark:'#1a5c1a',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});
+  var obj={num:num,type:'order',date:date,status:'pending',desc:keys.map(function(k){return k+' '+cart[k]+'l';}).join(', '),items:keys.map(function(k){return{name:k,qty:cart[k]};}),vol:tot+' l',provozovna:cfg.name||'–',addr:cfg.addr||'–',ico:cfg.ico||'–',phone:cfg.phone||'–',driver:'',delivDate:'',adminNote:'',createdAt:Date.now()};
+  addHist(obj); known[num]='pending';
+  ref.child(num.replace(/-/g,'_')).set(obj);
+  cart={}; renderCart();
+  document.getElementById('mo').classList.add('on');
+});
+document.getElementById('mc').addEventListener('click',function(){document.getElementById('mo').classList.remove('on');});
+
+/* ════════ PLACE PICKUP ════════ */
+document.querySelectorAll('.vb').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.vb').forEach(function(x){x.classList.remove('on');});
+    b.classList.add('on'); selVol=+b.dataset.v;
+    document.getElementById('pvd').textContent=selVol+' l';
+    document.getElementById('pcc').style.display='block';
+    document.getElementById('pu').disabled=false;
+  });
+});
+document.getElementById('pu').addEventListener('click',function(){
+  if(!selVol) return;
+  var num=genNum('ODV'), date=fmtDate(new Date());
+  document.getElementById('mpn').textContent=num;
+  document.getElementById('mpv').textContent=selVol+' l';
+  document.getElementById('mpd').textContent=date;
+  document.getElementById('qrp').innerHTML='';
+  new QRCode(document.getElementById('qrp'),{text:'TRAFIN-ODVOZ*'+num+'*VOL:'+selVol+'L*'+date,width:150,height:150,colorDark:'#b45309',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});
+  var obj={num:num,type:'pickup',date:date,status:'pending',desc:'Odvoz použitého oleje',vol:selVol+' l',volNum:selVol,note:document.getElementById('pn').value,provozovna:cfg.name||'–',addr:cfg.addr||'–',ico:cfg.ico||'–',phone:cfg.phone||'–',driver:'',delivDate:'',adminNote:'',createdAt:Date.now()};
+  addHist(obj); known[num]='pending';
+  ref.child(num.replace(/-/g,'_')).set(obj);
+  selVol=null;
+  document.querySelectorAll('.vb').forEach(function(x){x.classList.remove('on');});
+  document.getElementById('pcc').style.display='none';
+  document.getElementById('pu').disabled=true;
+  document.getElementById('pn').value='';
+  document.getElementById('mop').classList.add('on');
+});
+document.getElementById('mpc').addEventListener('click',function(){document.getElementById('mop').classList.remove('on');});
+
+/* ════════ HISTORY ════════ */
+function addHist(item){
+  hist.unshift(item);
+  if(hist.length>100) hist=hist.slice(0,100);
+  localStorage.setItem('to_hist',JSON.stringify(hist));
+  renderHist();
+}
+function sLabel(s){
+  if(s==='confirmed') return '<span class="sb confirmed"><span class="bd"></span>Potvrzeno</span>';
+  if(s==='rejected')  return '<span class="sb rejected"><span class="bd"></span>Odmítnuto</span>';
+  return '<span class="sb pending"><span class="bd"></span>Čeká</span>';
+}
+function renderHist(){
+  var el=document.getElementById('hl');
+  if(!hist.length){el.innerHTML='<div style="text-align:center;padding:38px 0;color:var(--c4)"><div style="font-size:44px;margin-bottom:11px">📋</div><div style="font-size:14px">Zatím žádné objednávky.</div></div>';return;}
+  el.innerHTML=hist.map(function(h){
+    return '<div class="hi2"><div class="hr2"><div class="hic '+h.type+'">'+(h.type==='order'?'📦':'🚛')+'</div><div class="hco"><div class="ht2">'+(h.type==='order'?'Objednávka oleje':'Odvoz oleje')+'</div><div class="hs2">'+h.desc+'</div><div class="hs2" style="font-size:11px;margin-top:2px">'+h.num+' · '+h.date+'</div>'+(h.driver?'<div class="hs2" style="font-size:11px;margin-top:2px">🚚 '+h.driver+(h.delivDate?' · '+h.delivDate:'')+'</div>':'')+'</div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0"><span style="font-family:\'Barlow Condensed\',sans-serif;font-size:14px;font-weight:700;color:var(--G)">'+h.vol+'</span>'+sLabel(h.status||'pending')+'</div></div>'+(h.adminNote?'<div class="an"><strong>Poznámka dispečera</strong>'+h.adminNote+'</div>':'')+'</div>';
+  }).join('');
+}
+
+/* ════════ SETTINGS ════════ */
+function loadCfg(){
+  document.getElementById('sn').value=cfg.name||'';
+  document.getElementById('sa').value=cfg.addr||'';
+  document.getElementById('si').value=cfg.ico||'';
+  document.getElementById('sp').value=cfg.phone||'';
+  document.getElementById('tw').classList.toggle('on',cfg.weekly!==false);
+}
+document.getElementById('sv').addEventListener('click',function(){
+  cfg.name=document.getElementById('sn').value;
+  cfg.addr=document.getElementById('sa').value;
+  cfg.ico =document.getElementById('si').value;
+  cfg.phone=document.getElementById('sp').value;
+  localStorage.setItem('to_cfg',JSON.stringify(cfg));
+  var b=document.getElementById('sv'); b.textContent='✅ Uloženo!'; setTimeout(function(){b.textContent='💾 Uložit nastavení';},2000);
+});
+document.getElementById('tw').addEventListener('click',function(){
+  this.classList.toggle('on'); cfg.weekly=this.classList.contains('on');
+  localStorage.setItem('to_cfg',JSON.stringify(cfg));
+});
+
+/* ════════ TOASTS ════════ */
+var _tt;
+function openToast(ms){
+  clearTimeout(_tt);
+  document.getElementById('tst').classList.add('on');
+  _tt=setTimeout(function(){document.getElementById('tst').classList.remove('on');},ms);
+}
+function showWeeklyToast(){
+  document.getElementById('tst').style.borderLeftColor='var(--G)';
+  document.getElementById('tt').textContent='🛢️ Trafin Oil – Připomínka';
+  document.getElementById('tb').textContent='Potřebujete objednat čerstvý olej nebo odvézt použitý?';
+  document.getElementById('ta').innerHTML='<button class="tbtn y" id="tw2">📦 Objednat</button><button class="tbtn y" id="tpu" style="background:#f59e0b">🚛 Odvoz</button><button class="tbtn n" id="tcl">Zavřít</button>';
+  document.getElementById('tw2').onclick=function(){document.getElementById('tst').classList.remove('on');document.querySelector('[data-pg=order]').click();};
+  document.getElementById('tpu').onclick=function(){document.getElementById('tst').classList.remove('on');document.querySelector('[data-pg=pickup]').click();};
+  document.getElementById('tcl').onclick=function(){document.getElementById('tst').classList.remove('on');};
+  openToast(12000);
+}
+function showStatusToast(num,status,driver,delivDate,note){
+  document.getElementById('tst').style.borderLeftColor=status==='confirmed'?'#4caf50':'var(--R)';
+  document.getElementById('tt').textContent=status==='confirmed'?'✅ Objednávka potvrzena':'❌ Objednávka odmítnuta';
+  var body=status==='confirmed'?'Č. '+num+' přijata.'+(driver?' Řidič: '+driver+'.':"")+(delivDate?' Termín: '+delivDate+'.':""): 'Č. '+num+(note?' – '+note:'');
+  document.getElementById('tb').textContent=body;
+  document.getElementById('ta').innerHTML='<button class="tbtn y" id="tsh">Zobrazit v historii</button><button class="tbtn n" id="tcl2">Zavřít</button>';
+  document.getElementById('tsh').onclick=function(){document.getElementById('tst').classList.remove('on');document.querySelector('[data-pg=history]').click();};
+  document.getElementById('tcl2').onclick=function(){document.getElementById('tst').classList.remove('on');};
+  openToast(10000);
+}
+function schedWeekly(){
+  if(!cfg.weekly) return;
+  var last=localStorage.getItem('to_lnotif'), now=Date.now();
+  if(!last||now-+last>7*24*3600*1000){
+    setTimeout(function(){showWeeklyToast();localStorage.setItem('to_lnotif',now);},8000);
+  }
+}
+
+/* ════════ UTILS ════════ */
+function genNum(p){var d=new Date(),pad=function(n){return String(n).padStart(2,'0')};return p+'-'+d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'-'+(Math.floor(Math.random()*9000)+1000);}
+function fmtDate(d){var p=function(n){return String(n).padStart(2,'0')};return p(d.getDate())+'.'+p(d.getMonth()+1)+'.'+d.getFullYear()+' '+p(d.getHours())+':'+p(d.getMinutes());}
+</script>
+</body>
+</html>
